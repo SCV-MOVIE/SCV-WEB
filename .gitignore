@@ -36,3 +36,7 @@ yarn-error.log*
 next-env.d.ts
 
 .eslintcache
+
+# zero-install
+.yarn/unplugged
+.yarn/build-state.yml
