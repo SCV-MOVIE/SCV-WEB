@@ -11,20 +11,6 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Typography type="h1" color="black">
-        hi
-      </Typography>
-      <Typography type="h2" color="red">
-        hi
-      </Typography>
-      <Typography type="h3" color="blue">
-        hi
-      </Typography>
-      <Typography type="h4" color="white">
-        hi
-      </Typography>
-      <Typography type="h4">hi</Typography>
-      <Logo width={100} height={'100'} />
     </>
   );
 }
