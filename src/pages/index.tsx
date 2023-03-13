@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Typography from '@/components/common/Typography';
+import Logo from '../components/common/Logo';
 
 export default function Home() {
   return (
@@ -23,6 +24,7 @@ export default function Home() {
         hi
       </Typography>
       <Typography type="h4">hi</Typography>
+      <Logo width={100} height={'100'} />
     </>
   );
 }
