@@ -1,6 +1,11 @@
 import React from 'react';
 import NextDocument, { Html, Head, Main, NextScript } from 'next/document';
-import { getCssText } from '@/stitches.config';
+
+import { getCssText, globalCss } from '@root/stitches.config';
+
+const globalStyles = globalCss({
+  body: { margin: 0, backgroundColor: '$background' },
+});
 
 export default class Document extends NextDocument {
   render() {
@@ -9,7 +14,7 @@ export default class Document extends NextDocument {
         <Head>
           <style dangerouslySetInnerHTML={{ __html: getCssText() }} />
         </Head>
-        <body>
+        <body style={{ ...globalStyles }}>
           <Main />
           <NextScript />
         </body>
