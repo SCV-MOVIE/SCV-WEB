@@ -4,39 +4,61 @@ import type * as Stitches from '@stitches/react';
 export const { styled, css, getCssText, createTheme, globalCss, config } = createStitches({
   theme: {
     colors: {
-      textPrimary: '#1c1c1c',
-      textSecondary: '#909090',
+      // Gray Scale
+      white: '#F8FAF9',
+      gray100: '#E5E8EB',
+      gray200: '#D1D6DB',
+      gray300: '#8B95A1',
+      gray400: '#4E5968',
+      gray500: '#292929',
+      black: '#181818',
+      background: '#0D0D0D',
 
-      backgroundPrimary: '#fff',
-      backgroundSecondary: '#1c1c1c',
-      backgroundPrimary70: 'rgba(255, 255, 255, 0.7)',
+      // core color
+      coreBlue: '#4285F4',
+      coreRed: '#EA4335',
+      coreYellow: '#FBBC04',
+      coreGreen: '#0F9D58',
 
-      gray500: '#909090',
+      // red color
+      red100: '#FFEBEE',
+      red200: '#FFCDD2',
+      red300: '#EF9A9A',
+      red400: '#E57373',
+      red500: '#EF5350',
+      red600: '#F44336',
 
-      white: '#ffffff',
+      // gren color
+      green100: '#E8F5E9',
+      green200: '#C8E6C9',
+      green300: '#A5D6A7',
+      green400: '#81C784',
+      green500: '#66BB6A',
+      green600: '#4CAF50',
 
-      functionalRed: '#be3455',
-      functionalGreen: '#45b26b',
+      // yellow color
+      yellow100: '#FFF8E1',
+      yellow200: '#FFECB3',
+      yellow300: '#FFE082',
+      yellow400: '#FFD54F',
+      yellow500: '#FFCA28',
+      yellow600: '#FFC107',
+
+      // blue color
+      blue100: '#E3F2FD',
+      blue200: '#BBDEFB',
+      blue300: '#90CAF9',
+      blue400: '#64B5F6',
+      blue500: '#42A5F5',
+      blue600: '#2196F3',
+
+      // oragne
+      orange: '#FF6B00',
     },
     radii: {
       small: '4px',
-      rounded: '8px',
-    },
-  },
-  utils: {
-    bodyText: (level: 1 | 2) => {
-      if (level === 1) {
-        return {
-          fontSize: '20px',
-          lineHeight: '30px',
-          fontWeight: 'normal',
-        };
-      }
-      return {
-        fontSize: '14px',
-        lineHeight: '21px',
-        fontWeight: 'normal',
-      };
+      medium: '8px',
+      large: '16px',
     },
   },
   media: {
@@ -46,17 +68,6 @@ export const { styled, css, getCssText, createTheme, globalCss, config } = creat
     bp4: '(min-width: 1280px)',
     bp5: '(min-width: 1440px)',
     bp6: '(min-width: 1920px)',
-  },
-});
-
-export const darkTheme = createTheme('dark', {
-  colors: {
-    textPrimary: '#ebebeb',
-    textSecondary: '#909090',
-
-    backgroundPrimary: '#1c1c1c',
-    backgroundSecondary: '#fff',
-    backgroundPrimary70: 'rgba(28, 28, 28, 0.7)',
   },
 });
 
