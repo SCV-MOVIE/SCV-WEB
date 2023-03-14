@@ -7,7 +7,7 @@ function NavBar() {
   return (
     <Wrapper>
       <Link href="/">
-        <StyledLogo width={230} height={100} />
+        <StyledLogo width={80} height={80} />
       </Link>
       <SubNavBar>
         <Link href="/login">
