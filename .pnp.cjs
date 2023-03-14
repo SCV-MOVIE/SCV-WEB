@@ -37,6 +37,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint", "npm:8.35.0"],\
             ["eslint-config-next", "virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:13.2.3"],\
             ["eslint-config-prettier", "virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:8.7.0"],\
+            ["framer-motion", "virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:10.2.5"],\
             ["husky", "npm:8.0.3"],\
             ["lint-staged", "npm:13.2.0"],\
             ["next", "virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:13.2.3"],\
@@ -55,6 +56,25 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["@babel/runtime", "npm:7.21.0"],\
             ["regenerator-runtime", "npm:0.13.11"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@emotion/is-prop-valid", [\
+        ["npm:0.8.8", {\
+          "packageLocation": "./.yarn/cache/@emotion-is-prop-valid-npm-0.8.8-261a0f2426-bb7ec6d48c.zip/node_modules/@emotion/is-prop-valid/",\
+          "packageDependencies": [\
+            ["@emotion/is-prop-valid", "npm:0.8.8"],\
+            ["@emotion/memoize", "npm:0.7.4"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["@emotion/memoize", [\
+        ["npm:0.7.4", {\
+          "packageLocation": "./.yarn/cache/@emotion-memoize-npm-0.7.4-5648cf11b8-4e3920d4ec.zip/node_modules/@emotion/memoize/",\
+          "packageDependencies": [\
+            ["@emotion/memoize", "npm:0.7.4"]\
           ],\
           "linkType": "HARD"\
         }]\
@@ -1939,6 +1959,34 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["framer-motion", [\
+        ["npm:10.2.5", {\
+          "packageLocation": "./.yarn/cache/framer-motion-npm-10.2.5-a19344f910-05c82a4e25.zip/node_modules/framer-motion/",\
+          "packageDependencies": [\
+            ["framer-motion", "npm:10.2.5"]\
+          ],\
+          "linkType": "SOFT"\
+        }],\
+        ["virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:10.2.5", {\
+          "packageLocation": "./.yarn/__virtual__/framer-motion-virtual-ffc28a484e/0/cache/framer-motion-npm-10.2.5-a19344f910-05c82a4e25.zip/node_modules/framer-motion/",\
+          "packageDependencies": [\
+            ["framer-motion", "virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:10.2.5"],\
+            ["@emotion/is-prop-valid", "npm:0.8.8"],\
+            ["@types/react", "npm:18.0.28"],\
+            ["@types/react-dom", "npm:18.0.11"],\
+            ["react", "npm:18.2.0"],\
+            ["react-dom", "virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:18.2.0"],\
+            ["tslib", "npm:2.5.0"]\
+          ],\
+          "packagePeers": [\
+            "@types/react-dom",\
+            "@types/react",\
+            "react-dom",\
+            "react"\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["fs.realpath", [\
         ["npm:1.0.0", {\
           "packageLocation": "./.yarn/cache/fs.realpath-npm-1.0.0-c8f05d8126-99ddea01a7.zip/node_modules/fs.realpath/",\
@@ -3624,6 +3672,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["eslint", "npm:8.35.0"],\
             ["eslint-config-next", "virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:13.2.3"],\
             ["eslint-config-prettier", "virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:8.7.0"],\
+            ["framer-motion", "virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:10.2.5"],\
             ["husky", "npm:8.0.3"],\
             ["lint-staged", "npm:13.2.0"],\
             ["next", "virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:13.2.3"],\
