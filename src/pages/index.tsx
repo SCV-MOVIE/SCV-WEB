@@ -6,7 +6,7 @@ import { styled } from '@root/stitches.config';
 const movieInfo = {
   title: 'Joker',
   date: '2021',
-  star: 5,
+  star: 4.5,
   genre: ['Drama', 'Comedy', 'Adventure'],
 };
 

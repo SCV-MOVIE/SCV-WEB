@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion';
 
 import { Typography } from './common';
 import { styled } from '@root/stitches.config';
-import { Play, Star } from '@root/public/icons';
+import { Play, Star, HalfStar } from '@root/public/icons';
 
 type FontLargeSize = {
   title: 'h1';
@@ -62,11 +62,10 @@ function ThumbnailCard({ src, info, size = 'small', alt = 'movie-thumbnail' }: P
           >
             <PlayIcon size={size} />
             <StarSection>
-              <Star />
-              <Star />
-              <Star />
-              <Star />
-              <Star />
+              {[...Array(Math.floor(info.star))].map((_, idx) => (
+                <Star key={idx} />
+              ))}
+              {Math.round(info.star % 1) && <HalfStar />}{' '}
             </StarSection>
             <motion.div>
               <Typography type={fontSizes.title} color="white">
