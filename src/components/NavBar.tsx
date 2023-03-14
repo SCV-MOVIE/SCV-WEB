@@ -1,7 +1,6 @@
 import Link from 'next/link';
 
-import Logo from './common/Logo';
-import Typography from './common/Typography';
+import { Logo, Typography } from './common';
 import { styled } from '@root/stitches.config';
 
 function NavBar() {
