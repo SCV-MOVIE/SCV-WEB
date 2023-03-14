@@ -1,7 +1,7 @@
 import { createStitches } from '@stitches/react';
 import type * as Stitches from '@stitches/react';
 
-export const { styled, css, getCssText, createTheme, globalCss, config } = createStitches({
+export const { styled, css, getCssText, createTheme, globalCss, reset, config } = createStitches({
   theme: {
     colors: {
       // Gray Scale
@@ -62,12 +62,12 @@ export const { styled, css, getCssText, createTheme, globalCss, config } = creat
     },
   },
   media: {
-    bp1: '(min-width: 360px)',
-    bp2: '(min-width: 768px)',
-    bp3: '(min-width: 1024px)',
-    bp4: '(min-width: 1280px)',
-    bp5: '(min-width: 1440px)',
-    bp6: '(min-width: 1920px)',
+    bp1: '(max-width: 360px)',
+    bp2: '(max-width: 768px)',
+    bp3: '(max-width: 1024px)',
+    bp4: '(max-width: 1280px)',
+    bp5: '(max-width: 1440px)',
+    bp6: '(max-width: 1920px)',
   },
 });
 
