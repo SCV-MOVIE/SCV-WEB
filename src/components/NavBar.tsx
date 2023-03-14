@@ -38,6 +38,8 @@ function NavBar() {
 
 const Wrapper = styled('div', {
   width: '100%',
+  height: '80px',
+  maxHeight: '80px',
   display: 'flex',
   justifyContent: 'space-between',
   alignItems: 'center',
@@ -63,6 +65,10 @@ const SubNavBar = styled('nav', {
   },
   '& > a:hover': {
     color: '$red',
+  },
+
+  '@bp2': {
+    paddingRight: 80,
   },
 });
 
