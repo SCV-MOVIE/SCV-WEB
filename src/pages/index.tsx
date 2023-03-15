@@ -1,6 +1,6 @@
 import Head from 'next/head';
 
-import { ThumbnailCard } from '@/components';
+import { Button, LinedTitle, ThumbnailCard } from '@/components';
 import { styled } from '@root/stitches.config';
 
 const movieInfo = {
@@ -19,7 +19,8 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <div>
+      <Content>
+        <LinedTitle title={'Trending Movies'} />
         <FeatureSection>
           <MovieCard src="/thumbnail.jpeg" info={movieInfo} />
           <MovieCard src="/thumbnail.jpeg" info={movieInfo} />
@@ -27,22 +28,42 @@ export default function Home() {
           <MovieCard src="/thumbnail.jpeg" info={movieInfo} />
           <MovieCard src="/thumbnail.jpeg" info={movieInfo} />
         </FeatureSection>
-        <FeatureSection>
-          <MovieCard src="/thumbnail.jpeg" size="large" info={movieInfo} />
-          <MovieCard src="/thumbnail.jpeg" size="large" info={movieInfo} />
-          <MovieCard src="/thumbnail.jpeg" size="large" info={movieInfo} />
-        </FeatureSection>
-      </div>
+        <MovieSection>
+          <LinedTitle title={'Romance Movies'} />
+          <FeatureSection>
+            <MovieCard src="/thumbnail.jpeg" size="large" info={movieInfo} />
+            <MovieCard src="/thumbnail.jpeg" size="large" info={movieInfo} />
+            <MovieCard src="/thumbnail.jpeg" size="large" info={movieInfo} />
+          </FeatureSection>
+        </MovieSection>
+        <MovieSection>
+          <LinedTitle title={'Action Movies'} />
+          <FeatureSection>
+            <MovieCard src="/thumbnail.jpeg" size="large" info={movieInfo} />
+            <MovieCard src="/thumbnail.jpeg" size="large" info={movieInfo} />
+            <MovieCard src="/thumbnail.jpeg" size="large" info={movieInfo} />
+          </FeatureSection>
+        </MovieSection>
+      </Content>
     </>
   );
 }
+
+const Content = styled('div', {
+  paddingInline: 40,
+});
 
 const FeatureSection = styled('div', {
   width: '100%',
   display: 'flex',
   gap: 56,
+  marginTop: 40,
 });
 
 const MovieCard = styled(ThumbnailCard, {
   objectFit: 'cover',
+});
+
+const MovieSection = styled('div', {
+  marginBlock: 72,
 });
