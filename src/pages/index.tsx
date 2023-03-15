@@ -1,13 +1,16 @@
 import Head from 'next/head';
 
-import { Button, LinedTitle, ThumbnailCard } from '@/components';
 import { styled } from '@root/stitches.config';
+import { LinedTitle, MainMovieThumbnail, ThumbnailCard } from '@/components';
 
-const movieInfo = {
+const DUMMY_MOVIE = {
   title: 'Joker',
+  description:
+    'In 1970s London amidst the punk rock revolution, a young grifter named Estella is determined to make a name for herself with her designs.\n She befriends a pair of young thieves who appreciate her appetite for mischief, and together they are able to build a life for themselves on the London streets.',
   date: '2021',
-  star: 4.5,
-  genre: ['Drama', 'Comedy', 'Adventure'],
+  rating: 4.5,
+  genres: ['Drama', 'Comedy', 'Adventure'],
+  image: '/thumbnail.png',
 };
 
 export default function Home() {
@@ -19,29 +22,30 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <MainMovieThumbnail movie={DUMMY_MOVIE} />
       <Content>
         <LinedTitle title={'Trending Movies'} />
         <FeatureSection>
-          <MovieCard src="/thumbnail.jpeg" info={movieInfo} />
-          <MovieCard src="/thumbnail.jpeg" info={movieInfo} />
-          <MovieCard src="/thumbnail.jpeg" info={movieInfo} />
-          <MovieCard src="/thumbnail.jpeg" info={movieInfo} />
-          <MovieCard src="/thumbnail.jpeg" info={movieInfo} />
+          <MovieCard src="/thumbnail.jpeg" movie={DUMMY_MOVIE} />
+          <MovieCard src="/thumbnail.jpeg" movie={DUMMY_MOVIE} />
+          <MovieCard src="/thumbnail.jpeg" movie={DUMMY_MOVIE} />
+          <MovieCard src="/thumbnail.jpeg" movie={DUMMY_MOVIE} />
+          <MovieCard src="/thumbnail.jpeg" movie={DUMMY_MOVIE} />
         </FeatureSection>
         <MovieSection>
           <LinedTitle title={'Romance Movies'} />
           <FeatureSection>
-            <MovieCard src="/thumbnail.jpeg" size="large" info={movieInfo} />
-            <MovieCard src="/thumbnail.jpeg" size="large" info={movieInfo} />
-            <MovieCard src="/thumbnail.jpeg" size="large" info={movieInfo} />
+            <MovieCard src="/thumbnail.jpeg" size="large" movie={DUMMY_MOVIE} />
+            <MovieCard src="/thumbnail.jpeg" size="large" movie={DUMMY_MOVIE} />
+            <MovieCard src="/thumbnail.jpeg" size="large" movie={DUMMY_MOVIE} />
           </FeatureSection>
         </MovieSection>
         <MovieSection>
           <LinedTitle title={'Action Movies'} />
           <FeatureSection>
-            <MovieCard src="/thumbnail.jpeg" size="large" info={movieInfo} />
-            <MovieCard src="/thumbnail.jpeg" size="large" info={movieInfo} />
-            <MovieCard src="/thumbnail.jpeg" size="large" info={movieInfo} />
+            <MovieCard src="/thumbnail.jpeg" size="large" movie={DUMMY_MOVIE} />
+            <MovieCard src="/thumbnail.jpeg" size="large" movie={DUMMY_MOVIE} />
+            <MovieCard src="/thumbnail.jpeg" size="large" movie={DUMMY_MOVIE} />
           </FeatureSection>
         </MovieSection>
       </Content>
@@ -51,6 +55,13 @@ export default function Home() {
 
 const Content = styled('div', {
   paddingInline: 40,
+  zIndex: 105,
+  position: 'relative',
+  top: '-256px',
+
+  '@bp2': {
+    paddingInline: 24,
+  },
 });
 
 const FeatureSection = styled('div', {
@@ -58,6 +69,7 @@ const FeatureSection = styled('div', {
   display: 'flex',
   gap: 56,
   marginTop: 40,
+  overflow: 'scroll',
 });
 
 const MovieCard = styled(ThumbnailCard, {
@@ -65,5 +77,5 @@ const MovieCard = styled(ThumbnailCard, {
 });
 
 const MovieSection = styled('div', {
-  marginBlock: 72,
+  marginTop: 72,
 });

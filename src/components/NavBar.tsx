@@ -43,6 +43,10 @@ const Wrapper = styled(FlexDiv, {
   margin: '0 auto',
   zIndex: '9999',
   paddingLeft: 40,
+
+  '@bp2': {
+    paddingLeft: 24,
+  },
 });
 
 const StyledLogo = styled(Logo, {

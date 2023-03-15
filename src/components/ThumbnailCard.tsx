@@ -2,9 +2,11 @@ import React from 'react';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 
+import { Movie } from '../@types';
 import { FlexDiv, FlexMotionDiv, Typography } from './common';
 import { styled } from '@root/stitches.config';
 import { Play, Star, HalfStar } from '@root/public/icons';
+import MovieRating from './MovieRating';
 
 type FontLargeSize = {
   title: 'h1';
@@ -20,15 +22,10 @@ interface Props {
   src: string;
   size?: 'small' | 'large';
   alt?: string;
-  info: {
-    title: string;
-    date: string;
-    genre: string[];
-    star: number;
-  };
+  movie: Movie;
 }
 
-function ThumbnailCard({ src, info, size = 'small', alt = 'movie-thumbnail' }: Props) {
+function ThumbnailCard({ src, movie, size = 'small', alt = 'movie-thumbnail' }: Props) {
   const fontSizes = React.useMemo<FontSize>(
     () =>
       size === 'small'
@@ -58,21 +55,16 @@ function ThumbnailCard({ src, info, size = 'small', alt = 'movie-thumbnail' }: P
           gap={4}
         >
           <PlayIcon size={size} />
-          <FlexDiv align="end">
-            {[...Array(Math.floor(info.star))].map((_, idx) => (
-              <Star key={idx} />
-            ))}
-            {Math.round(info.star % 1) && <HalfStar />}{' '}
-          </FlexDiv>
+          <MovieRating rating={movie.rating} />
           <motion.div>
             <Typography type={fontSizes.title} color="white">
-              {info.title}
+              {movie.title}
             </Typography>
             <Typography type={fontSizes.description} color="white">
-              {info.date}
+              {movie.date}
             </Typography>
             <Typography type={fontSizes.description} color="white">
-              {info.genre.map((genre) => genre).join(', ')}
+              {movie.genres.map((genre) => genre).join(', ')}
             </Typography>
           </motion.div>
         </OverlayLayout>
@@ -94,7 +86,7 @@ const Wrapper = styled(FlexMotionDiv, {
         height: 320,
       },
       large: {
-        width: 380,
+        minWidth: 380,
         height: 512,
       },
     },
