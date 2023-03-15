@@ -1,15 +1,15 @@
 import Link from 'next/link';
 
-import { Logo, Typography } from './common';
+import { FlexDiv, FlexNav, Logo, Typography } from './common';
 import { styled } from '@root/stitches.config';
 
 function NavBar() {
   return (
-    <Wrapper>
+    <Wrapper align="center" justify="between">
       <Link href="/">
         <StyledLogo width={80} height={80} />
       </Link>
-      <SubNavBar>
+      <SubNavBar justify="end" gap="40">
         <Link href="/login">
           <Typography type="body3" color="white">
             Login
@@ -35,13 +35,10 @@ function NavBar() {
   );
 }
 
-const Wrapper = styled('div', {
+const Wrapper = styled(FlexDiv, {
   width: '100%',
   height: '80px',
   maxHeight: '80px',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
   position: 'fixed',
   margin: '0 auto',
   zIndex: '9999',
@@ -52,11 +49,7 @@ const StyledLogo = styled(Logo, {
   maxWidth: 300,
 });
 
-const SubNavBar = styled('nav', {
-  display: 'flex',
-  justifyContent: 'end',
-  gap: 40,
-  flex: 1,
+const SubNavBar = styled(FlexNav, {
   paddingRight: 140,
 
   '& > a': {

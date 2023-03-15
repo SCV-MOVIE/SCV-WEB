@@ -2,7 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { AnimatePresence, motion } from 'framer-motion';
 
-import { Typography } from './common';
+import { FlexDiv, FlexMotionDiv, Typography } from './common';
 import { styled } from '@root/stitches.config';
 import { Play, Star, HalfStar } from '@root/public/icons';
 
@@ -29,7 +29,6 @@ interface Props {
 }
 
 function ThumbnailCard({ src, info, size = 'small', alt = 'movie-thumbnail' }: Props) {
-  const [isHover, setIsHover] = React.useState(false);
   const fontSizes = React.useMemo<FontSize>(
     () =>
       size === 'small'
@@ -44,51 +43,45 @@ function ThumbnailCard({ src, info, size = 'small', alt = 'movie-thumbnail' }: P
     [size],
   );
 
-  const handleMouseHover = React.useCallback(() => {
-    setIsHover((prev) => !prev);
-  }, []);
-
   return (
-    <Wrapper size={size} onMouseEnter={handleMouseHover} onMouseLeave={handleMouseHover}>
+    <Wrapper size={size} justify="center">
       <ThumbnailImage fill alt={alt} src={src} />
       <AnimatePresence>
-        {isHover && (
-          <OverlayLayout
-            initial={{ opacity: 0 }}
-            whileHover={{ opacity: 1 }}
-            transition={{
-              duration: 0.2,
-            }}
-          >
-            <PlayIcon size={size} />
-            <StarSection>
-              {[...Array(Math.floor(info.star))].map((_, idx) => (
-                <Star key={idx} />
-              ))}
-              {Math.round(info.star % 1) && <HalfStar />}{' '}
-            </StarSection>
-            <motion.div>
-              <Typography type={fontSizes.title} color="white">
-                {info.title}
-              </Typography>
-              <Typography type={fontSizes.description} color="white">
-                {info.date}
-              </Typography>
-              <Typography type={fontSizes.description} color="white">
-                {info.genre.map((genre) => genre).join(', ')}
-              </Typography>
-            </motion.div>
-          </OverlayLayout>
-        )}
+        <OverlayLayout
+          initial={{ opacity: 0 }}
+          whileHover={{ opacity: 1 }}
+          transition={{
+            duration: 0.2,
+          }}
+          justify="end"
+          direction="column"
+          gap={4}
+        >
+          <PlayIcon size={size} />
+          <FlexDiv align="end">
+            {[...Array(Math.floor(info.star))].map((_, idx) => (
+              <Star key={idx} />
+            ))}
+            {Math.round(info.star % 1) && <HalfStar />}{' '}
+          </FlexDiv>
+          <motion.div>
+            <Typography type={fontSizes.title} color="white">
+              {info.title}
+            </Typography>
+            <Typography type={fontSizes.description} color="white">
+              {info.date}
+            </Typography>
+            <Typography type={fontSizes.description} color="white">
+              {info.genre.map((genre) => genre).join(', ')}
+            </Typography>
+          </motion.div>
+        </OverlayLayout>
       </AnimatePresence>
     </Wrapper>
   );
 }
 
-const Wrapper = styled(motion.div, {
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
+const Wrapper = styled(FlexMotionDiv, {
   position: 'relative',
   borderRadius: '$large',
   overflow: 'hidden',
@@ -122,20 +115,12 @@ const ThumbnailImage = styled(Image, {
   backfaceVisibility: 'hidden',
 });
 
-const OverlayLayout = styled(motion.div, {
+const OverlayLayout = styled(FlexMotionDiv, {
   width: '100%',
   height: '100%',
   paddingLeft: 24,
-  paddingBottom: 32,
+  paddingBottom: 16,
   zIndex: 99,
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-end',
-  position: 'relative',
-});
-
-const StarSection = styled('section', {
-  display: 'flex',
 });
 
 const PlayIcon = styled(Play, {
