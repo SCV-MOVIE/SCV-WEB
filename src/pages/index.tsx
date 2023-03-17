@@ -1,7 +1,7 @@
 import Head from 'next/head';
 
 import { styled } from '@root/stitches.config';
-import { LinedTitle, MainMovieThumbnail, ThumbnailCard } from '@/components';
+import { Bottom, LinedTitle, MainMovieThumbnail, ThumbnailCard } from '@/components';
 
 const DUMMY_MOVIE = {
   title: 'Joker',
@@ -45,10 +45,11 @@ export default function Home() {
           <FeatureSection>
             <MovieCard src="/thumbnail.jpeg" size="large" movie={DUMMY_MOVIE} />
             <MovieCard src="/thumbnail.jpeg" size="large" movie={DUMMY_MOVIE} />
-            <MovieCard src="/thumbnail.jpeg" size="large" movie={DUMMY_MOVIE} />
+            <MovieCard src="/thumbnail.jpeg" size="large" movie={DUMMY_MOVIE} />s
           </FeatureSection>
         </MovieSection>
       </Content>
+      <StyledBottom />
     </>
   );
 }
@@ -78,4 +79,9 @@ const MovieCard = styled(ThumbnailCard, {
 
 const MovieSection = styled('div', {
   marginTop: 72,
+});
+
+const StyledBottom = styled(Bottom, {
+  position: 'relative',
+  top: -100,
 });
