@@ -71,6 +71,12 @@ const FeatureSection = styled('div', {
   gap: 56,
   marginTop: 40,
   overflow: 'scroll',
+  '&::-webkit-scrollbar': {
+    width: 0,
+  },
+  '&::-webkit-scrollbar-thumb': {
+    height: 0,
+  },
 });
 
 const MovieCard = styled(ThumbnailCard, {
