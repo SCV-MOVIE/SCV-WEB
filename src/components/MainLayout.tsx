@@ -1,10 +1,37 @@
 import React from 'react';
+import localFont from 'next/font/local';
 import { styled } from 'stitches.config';
+
 import NavBar from './NavBar';
+
+const pretandard = localFont({
+  src: [
+    {
+      path: '../../public/fonts/Pretendard-Bold.woff',
+      weight: '700',
+      style: 'bold',
+    },
+    {
+      path: '../../public/fonts/Pretendard-Semibold.woff',
+      weight: '600',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/Pretendard-Medium.woff',
+      weight: '500',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/Pretendard-Regular.woff',
+      weight: '400',
+      style: 'normal',
+    },
+  ],
+});
 
 function MainLayout({ children }: React.PropsWithChildren<unknown>) {
   return (
-    <Wrapper>
+    <Wrapper className={pretandard.className}>
       <NavBar />
       <Main>
         <Content>{children}</Content>
