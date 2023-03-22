@@ -10,7 +10,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ type = 'text', label, status, ...props }, ref) => {
     return (
-      <div>
+      <div style={{ width: '100%' }}>
         {label && <Label htmlFor={type}>{label}</Label>}
         <StyledInput
           id={type}
@@ -30,20 +30,26 @@ const StyledInput = styled('input', {
   padding: '1rem',
   width: '100%',
   height: '32px',
+  outline: 'none',
+  appearance: 'none',
+  '-webkit-appearance': 'none',
+  '-moz-appearance': 'none',
+  borderRadius: '$small',
+
   '&:focus': {
-    border: '2px solid $coreBlue',
+    border: '1px solid $coreBlue',
   },
   variants: {
     status: {
       success: {
-        border: '2px solid $coreGreen',
+        border: '1px solid $coreGreen',
       },
       fail: {
-        border: '2px solid $coreRed',
+        border: '1px solid $coreRed',
         color: '$coreRed',
       },
       default: {
-        border: '2px solid $gray400',
+        border: '1px solid $gray400',
       },
     },
   },

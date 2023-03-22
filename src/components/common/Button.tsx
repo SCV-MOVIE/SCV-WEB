@@ -21,6 +21,21 @@ const StyledButton = styled('button', {
   alignItems: 'center',
   justifyContent: 'center',
   gap: '8px',
+  border: 'none',
+  outline: 'none',
+  borderRadius: '$small',
+  cursor: 'pointer',
+  backgroundColor: '$blue400',
+  transition: 'all 0.15s ease-in',
+
+  '&:disabled': {
+    cursor: 'default',
+    backgroundColor: '$gray400',
+  },
+
+  '&:hover': {
+    backgroundColor: '$blue500',
+  },
 });
 
 const IconBox = styled('span', {

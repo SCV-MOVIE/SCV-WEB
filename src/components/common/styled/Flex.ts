@@ -51,6 +51,9 @@ const baseFlex = css({
       between: {
         justifyContent: 'space-between',
       },
+      around: {
+        justifyContent: 'space-around',
+      },
     },
     wrap: {
       noWrap: {

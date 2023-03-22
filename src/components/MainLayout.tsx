@@ -21,11 +21,11 @@ const Wrapper = styled('div', {
 
 const Main = styled('main', {
   width: '100%',
+  height: '100%',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'flex-start',
   alignItems: 'center',
-  backgroundColor: '$background',
 
   '@bp1': {},
   '@bp2': {},

@@ -19,8 +19,7 @@ const Wrapper = styled(FlexDiv, {
   height: '100px',
   textAlign: 'center',
   position: 'relative',
-  display: 'block',
-  overflow: 'hidden',
+  paddingBottom: 80,
 });
 
 const Infomation = styled(FlexDiv, {});

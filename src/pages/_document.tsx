@@ -5,13 +5,19 @@ import { getCssText, reset, globalCss } from '@root/stitches.config';
 
 const globalStyles = globalCss({
   body: {
+    width: '100%',
+    height: '100vh',
     margin: 0,
+    backgroundColor: '$background',
     overscrollBehaviorBlock: 'none',
     '&::-webkit-scrollbar': {
       width: 0,
     },
     '&::-webkit-scrollbar-thumb': {
       height: 0,
+    },
+    '& > #__next': {
+      height: '100%',
     },
   },
 });
@@ -27,7 +33,7 @@ export default class Document extends NextDocument {
     return (
       <Html>
         <Head>
-          <style dangerouslySetInnerHTML={{ __html: getCssText() + getCssAndReset() }} />
+          <style dangerouslySetInnerHTML={{ __html: getCssAndReset() }} />
         </Head>
         <body style={{ ...globalStyles }}>
           <Main />
