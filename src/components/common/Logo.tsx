@@ -16,6 +16,7 @@ function Logo({ width, height }: Props) {
 
 const Wrapper = styled('div', {
   maxWidth: '100%',
+  textAlign: 'center',
 });
 
 export default Logo;
