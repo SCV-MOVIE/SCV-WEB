@@ -32,22 +32,6 @@ export default function Home() {
           <MovieCard src="/thumbnail.jpeg" movie={DUMMY_MOVIE} />
           <MovieCard src="/thumbnail.jpeg" movie={DUMMY_MOVIE} />
         </FeatureSection>
-        <MovieSection>
-          <LinedTitle title={'Romance Movies'} />
-          <FeatureSection>
-            <MovieCard src="/thumbnail.jpeg" size="large" movie={DUMMY_MOVIE} />
-            <MovieCard src="/thumbnail.jpeg" size="large" movie={DUMMY_MOVIE} />
-            <MovieCard src="/thumbnail.jpeg" size="large" movie={DUMMY_MOVIE} />
-          </FeatureSection>
-        </MovieSection>
-        <MovieSection>
-          <LinedTitle title={'Action Movies'} />
-          <FeatureSection>
-            <MovieCard src="/thumbnail.jpeg" size="large" movie={DUMMY_MOVIE} />
-            <MovieCard src="/thumbnail.jpeg" size="large" movie={DUMMY_MOVIE} />
-            <MovieCard src="/thumbnail.jpeg" size="large" movie={DUMMY_MOVIE} />s
-          </FeatureSection>
-        </MovieSection>
       </Content>
       <StyledBottom />
     </>
@@ -81,10 +65,6 @@ const FeatureSection = styled('div', {
 
 const MovieCard = styled(ThumbnailCard, {
   objectFit: 'cover',
-});
-
-const MovieSection = styled('div', {
-  marginTop: 72,
 });
 
 const StyledBottom = styled(Bottom, {
