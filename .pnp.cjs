@@ -31,7 +31,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@chakra-ui/react", "virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:2.5.5"],\
             ["@emotion/react", "virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:11.10.6"],\
             ["@emotion/styled", "virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:11.10.6"],\
-            ["@stitches/react", "virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:1.2.8"],\
             ["@svgr/webpack", "npm:6.5.1"],\
             ["@types/node", "npm:18.14.4"],\
             ["@types/react", "npm:18.0.28"],\
@@ -5251,28 +5250,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
-      ["@stitches/react", [\
-        ["npm:1.2.8", {\
-          "packageLocation": "./.yarn/cache/@stitches-react-npm-1.2.8-445a1042b8-029795323c.zip/node_modules/@stitches/react/",\
-          "packageDependencies": [\
-            ["@stitches/react", "npm:1.2.8"]\
-          ],\
-          "linkType": "SOFT"\
-        }],\
-        ["virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:1.2.8", {\
-          "packageLocation": "./.yarn/__virtual__/@stitches-react-virtual-81667e0515/0/cache/@stitches-react-npm-1.2.8-445a1042b8-029795323c.zip/node_modules/@stitches/react/",\
-          "packageDependencies": [\
-            ["@stitches/react", "virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:1.2.8"],\
-            ["@types/react", "npm:18.0.28"],\
-            ["react", "npm:18.2.0"]\
-          ],\
-          "packagePeers": [\
-            "@types/react",\
-            "react"\
-          ],\
-          "linkType": "HARD"\
-        }]\
-      ]],\
       ["@svgr/babel-plugin-add-jsx-attribute", [\
         ["npm:6.5.1", {\
           "packageLocation": "./.yarn/cache/@svgr-babel-plugin-add-jsx-attribute-npm-6.5.1-e8ce01471e-cab8383283.zip/node_modules/@svgr/babel-plugin-add-jsx-attribute/",\
@@ -9778,7 +9755,6 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@chakra-ui/react", "virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:2.5.5"],\
             ["@emotion/react", "virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:11.10.6"],\
             ["@emotion/styled", "virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:11.10.6"],\
-            ["@stitches/react", "virtual:fa128a7fef49f3234560a8d14b9bc81af933fe9213328f3a1190cadbb912dfe35ea73b9e1424c0b8393b81466baf71d9ab696f830d9a13e020c2a87ce3b2a571#npm:1.2.8"],\
             ["@svgr/webpack", "npm:6.5.1"],\
             ["@types/node", "npm:18.14.4"],\
             ["@types/react", "npm:18.0.28"],\
