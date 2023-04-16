@@ -1,4 +1,4 @@
-import { styled } from '@root/stitches.config';
+import styled from '@emotion/styled';
 import Image from 'next/image';
 
 interface Props {
@@ -14,9 +14,9 @@ function Logo({ width, height }: Props) {
   );
 }
 
-const Wrapper = styled('div', {
-  maxWidth: '100%',
-  textAlign: 'center',
-});
+const Wrapper = styled.div`
+  max-width: 100%;
+  text-align: center;
+`;
 
 export default Logo;

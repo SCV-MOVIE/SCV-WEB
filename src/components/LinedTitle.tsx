@@ -1,5 +1,5 @@
-import { styled } from '@root/stitches.config';
-import { Typography } from './common';
+import { Heading } from '@chakra-ui/react';
+import styled from '@emotion/styled';
 
 interface Props {
   title: string;
@@ -8,16 +8,18 @@ interface Props {
 function LinedTitle({ title }: Props) {
   return (
     <>
-      <Typography type="h3">{title}</Typography>
+      <Heading as="h1" size="3xl" color="white" marginBottom={4}>
+        {title}
+      </Heading>
       <Line />
     </>
   );
 }
 
-const Line = styled('div', {
-  width: 60,
-  height: 2,
-  backgroundColor: '$coreBlue',
-});
+const Line = styled.div`
+  width: 80px;
+  height: 2px;
+  background-color: ${({ theme }) => theme.colors.blue400};
+`;
 
 export default LinedTitle;

@@ -1,71 +1,51 @@
+import React from 'react';
 import Link from 'next/link';
+import styled from '@emotion/styled';
+import { HStack, Text } from '@chakra-ui/react';
 
-import { FlexDiv, FlexNav, Logo, Typography } from './common';
-import { styled } from '@root/stitches.config';
+import Logo from './Logo';
+import { MENUS } from '../constants';
 
 function NavBar() {
   return (
-    <Wrapper align="center" justify="between">
-      <Link href="/">
+    <Wrapper justify="space-between">
+      <LinkWrapper href="/">
         <StyledLogo width={80} height={80} />
-      </Link>
-      <SubNavBar justify="end" gap="40">
-        <Link href="/login">
-          <Typography type="body3" color="white">
-            Login
-          </Typography>
-        </Link>
-        <Link href="/login">
-          <Typography type="body3" color="white">
-            Login
-          </Typography>
-        </Link>
-        <Link href="/login">
-          <Typography type="body3" color="white">
-            Login
-          </Typography>
-        </Link>
-        <Link href="/login">
-          <Typography type="body3" color="white">
-            Login
-          </Typography>
-        </Link>
-      </SubNavBar>
+      </LinkWrapper>
+      <HStack justify="end" gap="40">
+        <LinkWrapper href="/book">
+          <Text variant="lg" color="white">
+            영화 예매
+          </Text>
+        </LinkWrapper>
+        <LinkWrapper href="/login">
+          <Text variant="lg" color="white">
+            상영작
+          </Text>
+        </LinkWrapper>
+        <LinkWrapper href="/login">
+          <Text variant="lg" color="white">
+            로그인
+          </Text>
+        </LinkWrapper>
+      </HStack>
     </Wrapper>
   );
 }
 
-const Wrapper = styled(FlexDiv, {
-  width: '100%',
-  height: '80px',
-  maxHeight: '80px',
-  position: 'fixed',
-  margin: '0 auto',
-  zIndex: '9999',
-  paddingLeft: 40,
+const Wrapper = styled(HStack)`
+  padding-left: 32px;
+  padding-right: 80px;
+  z-index: 100;
+`;
 
-  '@bp2': {
-    paddingLeft: 24,
-  },
-});
+const LinkWrapper = styled(Link)`
+  z-index: 100;
+`;
 
-const StyledLogo = styled(Logo, {
-  maxWidth: 300,
-});
-
-const SubNavBar = styled(FlexNav, {
-  paddingRight: 140,
-
-  '& > a': {
-    textDecoration: 'none',
-  },
-  '& > a:hover': {
-    color: '$red',
-  },
-
-  '@bp2': {
-    paddingRight: 80,
-  },
-});
+const StyledLogo = styled(Logo)`
+  max-width: 300px;
+  z-index: 100;
+`;
 
 export default NavBar;

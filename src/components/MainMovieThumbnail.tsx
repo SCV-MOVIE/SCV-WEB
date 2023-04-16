@@ -1,8 +1,9 @@
-import { styled } from '@root/stitches.config';
+import { Heading, HStack, Stack, Text } from '@chakra-ui/react';
+import { useTheme } from '@emotion/react';
+import styled from '@emotion/styled';
 import Image from 'next/image';
 
 import { Movie } from '../@types';
-import { FlexDiv, Typography } from './common';
 import MovieRating from './MovieRating';
 
 interface Props {
@@ -10,57 +11,48 @@ interface Props {
 }
 
 function MainMovieThumbnail({ movie }: Props) {
+  const theme = useTheme();
+
   return (
-    <Wrapper align="end">
-      <MovieDescription direction="column" gap={8} justify="center">
-        <Typography type="h1" color="white">
+    <>
+      <MovieDescription spacing={8} marginTop={196}>
+        <Heading as="h1" size="md" color="white">
           {movie.title}
-        </Typography>
+        </Heading>
         <MovieRating rating={movie.rating} />
-        <Typography type="h4" color="blue">
+        <Heading as="h3" size="3xl" color={theme.colors.coreBlue}>
           Overview
-        </Typography>
-        <FlexDiv gap={4}>
-          <Typography type="body4" color="white">
+        </Heading>
+        <HStack gap={4}>
+          <Text fontSize="md" color="white">
             Genres:
-          </Typography>
-          {movie.genres.map((genre) => (
-            <Typography type="body4" key={genre}>
-              {genre}
-            </Typography>
-          ))}
-        </FlexDiv>
-        <Typography type="body4" style={{ whiteSpace: 'pre-line' }}>
+          </Text>
+          <HStack>
+            {movie.genres.map((genre) => (
+              <Text fontSize="md" key={genre} color="white">
+                {genre}
+              </Text>
+            ))}
+          </HStack>
+        </HStack>
+        <Text fontSize="md" style={{ whiteSpace: 'pre-line' }} color="white">
           {movie.description}
-        </Typography>
+        </Text>
       </MovieDescription>
       <MainThumbnail fill src="/movie.jpeg" alt="main-movie thumbnail" />
-    </Wrapper>
+    </>
   );
 }
 
-const Wrapper = styled(FlexDiv, {
-  width: '100%',
-  height: '100vh',
-  position: 'relative',
-  top: -80,
-  zIndex: 100,
-});
+const MainThumbnail = styled(Image)`
+  zindex: 50;
+  opacity: 0.5;
+`;
 
-const MainThumbnail = styled(Image, {
-  zIndex: 50,
-  opacity: 0.6,
-});
-
-const MovieDescription = styled(FlexDiv, {
-  position: 'relative',
-  zIndex: 100,
-  paddingInline: 40,
-  paddingBottom: 176,
-
-  '@bp2': {
-    paddingInline: 24,
-  },
-});
+const MovieDescription = styled(Stack)`
+  position: relative;
+  z-index: 100;
+  padding-inline: 40px;
+`;
 
 export default MainMovieThumbnail;
