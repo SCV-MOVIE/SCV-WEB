@@ -1,22 +1,12 @@
 import React from 'react';
 import Image from 'next/image';
+import styled from '@emotion/styled';
 import { AnimatePresence, motion } from 'framer-motion';
+import { HStack, Stack, Text, Heading } from '@chakra-ui/react';
 
 import { Movie } from '../@types';
-import { FlexDiv, FlexMotionDiv, Typography } from './common';
-import { styled } from '@root/stitches.config';
-import { Play, Star, HalfStar } from '@root/public/icons';
 import MovieRating from './MovieRating';
-
-type FontLargeSize = {
-  title: 'h1';
-  description: 'body1';
-};
-type FontSmallSize = {
-  title: 'h3';
-  description: 'body3';
-};
-type FontSize = FontLargeSize | FontSmallSize;
+import { Play } from '@root/public/icons';
 
 interface Props {
   src: string;
@@ -26,22 +16,8 @@ interface Props {
 }
 
 function ThumbnailCard({ src, movie, size = 'small', alt = 'movie-thumbnail' }: Props) {
-  const fontSizes = React.useMemo<FontSize>(
-    () =>
-      size === 'small'
-        ? {
-            description: 'body3',
-            title: 'h3',
-          }
-        : {
-            description: 'body1',
-            title: 'h1',
-          },
-    [size],
-  );
-
   return (
-    <Wrapper size={size} justify="center">
+    <Wrapper justify="center">
       <ThumbnailImage fill alt={alt} src={src} />
       <AnimatePresence>
         <OverlayLayout
@@ -50,89 +26,65 @@ function ThumbnailCard({ src, movie, size = 'small', alt = 'movie-thumbnail' }: 
           transition={{
             duration: 0.2,
           }}
-          justify="end"
-          direction="column"
-          gap={4}
         >
-          <PlayIcon size={size} />
-          <MovieRating rating={movie.rating} />
-          <motion.div>
-            <Typography type={fontSizes.title} color="white">
+          <Stack justify="end" spacing={8} height="95%" paddingLeft={12}>
+            <PlayIcon size={size} />
+            <MovieRating rating={movie.rating} />
+            <Heading as="h1" size="2xl" color="white">
               {movie.title}
-            </Typography>
-            <Typography type={fontSizes.description} color="white">
+            </Heading>
+            <Text variant="lg" color="white">
               {movie.date}
-            </Typography>
-            <Typography type={fontSizes.description} color="white">
+            </Text>
+            <Text variant="lg" color="white">
               {movie.genres.map((genre) => genre).join(', ')}
-            </Typography>
-          </motion.div>
+            </Text>
+          </Stack>
         </OverlayLayout>
       </AnimatePresence>
     </Wrapper>
   );
 }
 
-const Wrapper = styled(FlexMotionDiv, {
-  position: 'relative',
-  borderRadius: '$large',
-  overflow: 'hidden',
-  cursor: 'pointer',
+type StyleProps = Pick<Props, 'size'>;
+const Wrapper = styled(HStack)<StyleProps>`
+  position: relative;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  min-width: ${({ size }) => (size === 'small' ? '240px' : '380px')};
+  height: ${({ size }) => (size === 'small' ? '320px' : '512px')};
 
-  variants: {
-    size: {
-      small: {
-        minWidth: 240,
-        height: 320,
-      },
-      large: {
-        minWidth: 380,
-        height: 512,
-      },
-    },
-  },
+  &:hover {
+    img {
+      scale: 1.1;
+      opacity: 0.5;
+    }
+  }
+`;
 
-  '&:hover': {
-    img: {
-      scale: 1.1,
-      opacity: 0.5,
-    },
-  },
-});
+const ThumbnailImage = styled(Image)`
+  border-radius: 10px;
+  transition: all 0.2s ease;
+  zindex: 95;
+  backface-visibility: hidden;
+`;
 
-const ThumbnailImage = styled(Image, {
-  borderRadius: '$large',
-  transition: 'all 0.2s ease',
-  zIndex: 95,
-  backfaceVisibility: 'hidden',
-});
+const OverlayLayout = styled(motion.div)`
+  width: 100%;
+  height: 100%;
+  padding-left: 24;
+  padding-bottom: 16;
+  z-index: 99;
+`;
 
-const OverlayLayout = styled(FlexMotionDiv, {
-  width: '100%',
-  height: '100%',
-  paddingLeft: 24,
-  paddingBottom: 16,
-  zIndex: 99,
-});
-
-const PlayIcon = styled(Play, {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-
-  variants: {
-    size: {
-      small: {
-        width: 64,
-        height: 64,
-      },
-      large: {
-        width: 120,
-        height: 120,
-      },
-    },
-  },
-});
+const PlayIcon = styled(Play)<StyleProps>`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: ${({ size }) => (size === 'small' ? '64px' : '64px')};
+  height: ${({ size }) => (size === 'small' ? '120px' : '120px')};
+`;
 
 export default ThumbnailCard;

@@ -1,4 +1,4 @@
-export * from './common';
+export { default as Logo } from './Logo';
 export { default as NavBar } from './NavBar';
 export { default as Bottom } from './Bottom';
 export { default as MainLayout } from './MainLayout';

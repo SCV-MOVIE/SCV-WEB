@@ -1,7 +1,8 @@
 import Head from 'next/head';
 
-import { styled } from '@root/stitches.config';
 import { Bottom, LinedTitle, MainMovieThumbnail, ThumbnailCard } from '@/components';
+import styled from '@emotion/styled';
+import { HStack } from '@chakra-ui/react';
 
 const DUMMY_MOVIE = {
   title: 'Joker',
@@ -25,7 +26,7 @@ export default function Home() {
       <MainMovieThumbnail movie={DUMMY_MOVIE} />
       <Content>
         <LinedTitle title={'Trending Movies'} />
-        <FeatureSection>
+        <FeatureSection gap={56} marginTop={12}>
           <MovieCard src="/thumbnail.jpeg" movie={DUMMY_MOVIE} />
           <MovieCard src="/thumbnail.jpeg" movie={DUMMY_MOVIE} />
           <MovieCard src="/thumbnail.jpeg" movie={DUMMY_MOVIE} />
@@ -33,41 +34,35 @@ export default function Home() {
           <MovieCard src="/thumbnail.jpeg" movie={DUMMY_MOVIE} />
         </FeatureSection>
       </Content>
-      <StyledBottom />
+      <Bottom />
     </>
   );
 }
 
-const Content = styled('div', {
-  paddingInline: 40,
-  zIndex: 105,
-  position: 'relative',
-  top: '-256px',
+const Content = styled.div`
+  padding-inline: 40px;
+  z-index: 1-5;
+  position: relative;
+  top: 0px;
 
-  '@bp2': {
-    paddingInline: 24,
-  },
-});
+  ${({ theme }) =>
+    `@media (max-width: ${theme.bp.mobile}) {
+      padding-inline: 24px;
+    }`}
+`;
 
-const FeatureSection = styled('div', {
-  width: '100%',
-  display: 'flex',
-  gap: 56,
-  marginTop: 40,
-  overflow: 'scroll',
-  '&::-webkit-scrollbar': {
-    width: 0,
-  },
-  '&::-webkit-scrollbar-thumb': {
-    height: 0,
-  },
-});
+const FeatureSection = styled(HStack)`
+  overflow: scroll;
 
-const MovieCard = styled(ThumbnailCard, {
-  objectFit: 'cover',
-});
+  &::-webkit-scrollbar {
+    width: 0px;
+  }
 
-const StyledBottom = styled(Bottom, {
-  position: 'relative',
-  top: -100,
-});
+  &::-webkit-scrollbar-thumb {
+    height: 0px;
+  }
+`;
+
+const MovieCard = styled(ThumbnailCard)`
+  object-fit: cover;
+`;

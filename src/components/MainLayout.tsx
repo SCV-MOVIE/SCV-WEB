@@ -1,28 +1,30 @@
 import React from 'react';
 import localFont from 'next/font/local';
-import { styled } from 'stitches.config';
 
 import NavBar from './NavBar';
+import styled from '@emotion/styled';
+
+// const prefix = window.process.env.NODE_MODE === 'development' ? '../../public' : '/';
 
 const pretandard = localFont({
   src: [
     {
-      path: '../../public/fonts/Pretendard-Bold.woff',
+      path: '../../public/fonts/pretendard-bold.woff',
       weight: '700',
       style: 'bold',
     },
     {
-      path: '../../public/fonts/Pretendard-Semibold.woff',
+      path: '../../public/fonts/pretendard-SemiBold.woff',
       weight: '600',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/Pretendard-Medium.woff',
+      path: '../../public/fonts/pretendard-Medium.woff',
       weight: '500',
       style: 'normal',
     },
     {
-      path: '../../public/fonts/Pretendard-Regular.woff',
+      path: '../../public/fonts/pretendard-Regular.woff',
       weight: '400',
       style: 'normal',
     },
@@ -40,30 +42,26 @@ function MainLayout({ children }: React.PropsWithChildren<unknown>) {
   );
 }
 
-const Wrapper = styled('div', {
-  maxWidth: '1920px',
-  margin: '0 auto',
-  height: '100%',
-});
+const Wrapper = styled.div`
+  max-width: 1920px;
+  margin: 0 auto;
+  height: 100%;
+  z-index: 50;
+`;
 
-const Main = styled('main', {
-  width: '100%',
-  height: '100%',
-  display: 'flex',
-  flexDirection: 'column',
-  justifyContent: 'flex-start',
-  alignItems: 'center',
+const Main = styled.main`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 40;
+`;
 
-  '@bp1': {},
-  '@bp2': {},
-  '@bp3': {},
-  '@bp4': {},
-});
-
-const Content = styled('div', {
-  width: '100%',
-  height: '100%',
-  marginTop: '80px',
-});
+const Content = styled.div`
+  width: 100%;
+  height: 100%;
+`;
 
 export default MainLayout;
