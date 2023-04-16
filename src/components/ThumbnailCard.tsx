@@ -29,15 +29,14 @@ function ThumbnailCard({ src, movie, size = 'small', alt = 'movie-thumbnail' }: 
         >
           <Stack justify="end" spacing={8} height="95%" paddingLeft={12}>
             <PlayIcon size={size} />
-            <MovieRating rating={movie.rating} />
+            <Text variant="lg" color="white">
+              {movie.rating}
+            </Text>
             <Heading as="h1" size="2xl" color="white">
-              {movie.title}
+              {movie.name}
             </Heading>
             <Text variant="lg" color="white">
-              {movie.date}
-            </Text>
-            <Text variant="lg" color="white">
-              {movie.genres.map((genre) => genre).join(', ')}
+              {movie.genres.map((genre) => genre.value).join(', ')}
             </Text>
           </Stack>
         </OverlayLayout>

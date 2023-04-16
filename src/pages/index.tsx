@@ -1,18 +1,9 @@
 import Head from 'next/head';
-
-import { Bottom, LinedTitle, MainMovieThumbnail, ThumbnailCard } from '@/components';
 import styled from '@emotion/styled';
 import { HStack } from '@chakra-ui/react';
 
-const DUMMY_MOVIE = {
-  title: 'Joker',
-  description:
-    'In 1970s London amidst the punk rock revolution, a young grifter named Estella is determined to make a name for herself with her designs.\n She befriends a pair of young thieves who appreciate her appetite for mischief, and together they are able to build a life for themselves on the London streets.',
-  date: '2021',
-  rating: 4.5,
-  genres: ['Drama', 'Comedy', 'Adventure'],
-  image: '/thumbnail.png',
-};
+import { DUMMY_MOVIE } from '@/constants/dummy';
+import { Bottom, LinedTitle, MainMovieThumbnail, ThumbnailCard } from '@/components';
 
 export default function Home() {
   return (

@@ -3,8 +3,7 @@ import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
 
-import { Movie } from '../@types';
-import MovieRating from './MovieRating';
+import { Movie } from '@/@types';
 
 interface Props {
   movie: Movie;
@@ -15,29 +14,35 @@ function MainMovieThumbnail({ movie }: Props) {
 
   return (
     <>
-      <MovieDescription spacing={8} marginTop={196}>
+      <MovieDescription spacing={8} marginTop={320}>
         <Heading as="h1" size="md" color="white">
-          {movie.title}
+          {movie.name}
         </Heading>
-        <MovieRating rating={movie.rating} />
-        <Heading as="h3" size="3xl" color={theme.colors.coreBlue}>
-          Overview
-        </Heading>
-        <HStack gap={4}>
-          <Text fontSize="md" color="white">
-            Genres:
-          </Text>
-          <HStack>
-            {movie.genres.map((genre) => (
-              <Text fontSize="md" key={genre} color="white">
-                {genre}
-              </Text>
-            ))}
+        <Stack gap={8}>
+          <Heading as="h3" size="3xl" color={theme.colors.coreBlue}>
+            Overview
+          </Heading>
+          <HStack gap={4}>
+            <Text variant="lg" color="white">
+              관람 등급:
+            </Text>
+            <Text variant="lg" color={theme.colors.white}>
+              {movie.rating}
+            </Text>
           </HStack>
-        </HStack>
-        <Text fontSize="md" style={{ whiteSpace: 'pre-line' }} color="white">
-          {movie.description}
-        </Text>
+          <HStack gap={4} pb={12}>
+            <Text variant="md" color="white">
+              장르:
+            </Text>
+            <HStack>
+              {movie.genres.map((genre) => (
+                <Text variant="md" key={genre.id} color="white">
+                  {genre.value}
+                </Text>
+              ))}
+            </HStack>
+          </HStack>
+        </Stack>
       </MovieDescription>
       <MainThumbnail fill src="/movie.jpeg" alt="main-movie thumbnail" />
     </>
