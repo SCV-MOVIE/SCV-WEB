@@ -32,25 +32,28 @@ export default function BookPage() {
           <Text color="white" fontSize={'28px'}>
             안녕하세요 SCV-MOVIE입니다.
           </Text>
-          <Text color="white" fontSize={'28px'} fontWeight={100}>
+          <Text color="white" fontSize={'28px'}>
             오늘도 영화처럼
           </Text>
           <Text color="white" fontSize={'28px'}>
             좋은 하루 되세요!
           </Text>
         </Stack>
-        <Center mt={40}>
+        <Center mt={12} width="100%">
           <HStack width="100%" margin="auto" spacing={0} justifyContent="space-between">
             <BookButton
-              rightIcon={<Icon as={Film} boxSize={28} />}
+              rightIcon={<Icon as={Film} boxSize={6} />}
               flex={1}
               cursor="pointer"
               borderLeftRadius={8}
-              px={80}
+              borderRightRadius={0}
+              px={8}
+              py={8}
+              boxSizing="border-box"
               justifyContent="space-between"
               onClick={onBookOpen}
             >
-              <Heading as="h2" py={24} fontSize={24}>
+              <Heading as="h2" fontSize={24}>
                 예매하기
               </Heading>
             </BookButton>
@@ -58,11 +61,13 @@ export default function BookPage() {
               <Divider orientation="vertical" />
             </Center>
             <BookButton
-              rightIcon={<Icon as={Printer} boxSize={28} />}
+              rightIcon={<Icon as={Printer} boxSize={6} />}
               flex={1}
               cursor="pointer"
+              borderLeftRadius={0}
               borderRightRadius={8}
-              px={80}
+              px={8}
+              py={8}
               justifyContent="space-between"
             >
               <Heading as="h2" py={24} fontSize={24}>
