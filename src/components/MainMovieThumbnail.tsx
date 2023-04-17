@@ -1,7 +1,7 @@
-import { Heading, HStack, Stack, Text } from '@chakra-ui/react';
-import { useTheme } from '@emotion/react';
-import styled from '@emotion/styled';
 import Image from 'next/image';
+import styled from '@emotion/styled';
+import { useTheme } from '@emotion/react';
+import { Heading, HStack, Stack, Text } from '@chakra-ui/react';
 
 import { Movie } from '@/@types';
 
@@ -44,7 +44,7 @@ function MainMovieThumbnail({ movie }: Props) {
           </HStack>
         </Stack>
       </MovieDescription>
-      <MainThumbnail fill src="/movie.jpeg" alt="main-movie thumbnail" />
+      <MainThumbnail fill src={movie.imgUrl} alt="main-movie thumbnail" />
     </>
   );
 }

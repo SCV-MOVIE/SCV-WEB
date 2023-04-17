@@ -1,4 +1,5 @@
 export interface Movie {
+  id: number;
   name: string;
   length: string;
   rating: 'All' | '12+' | '15+' | '18+';

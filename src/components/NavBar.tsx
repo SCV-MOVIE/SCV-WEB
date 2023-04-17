@@ -13,21 +13,13 @@ function NavBar() {
         <StyledLogo width={80} height={80} />
       </LinkWrapper>
       <HStack justify="end" gap="40">
-        <LinkWrapper href="/book">
-          <Text variant="lg" color="white">
-            영화 예매
-          </Text>
-        </LinkWrapper>
-        <LinkWrapper href="/login">
-          <Text variant="lg" color="white">
-            상영작
-          </Text>
-        </LinkWrapper>
-        <LinkWrapper href="/login">
-          <Text variant="lg" color="white">
-            로그인
-          </Text>
-        </LinkWrapper>
+        {MENUS.map((menu) => (
+          <LinkWrapper href={menu.href} key={menu.href}>
+            <Text variant="lg" color="white">
+              {menu.title}
+            </Text>
+          </LinkWrapper>
+        ))}
       </HStack>
     </Wrapper>
   );
