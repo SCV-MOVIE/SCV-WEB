@@ -12,6 +12,15 @@ const globalStyles = css`
     border: none;
   }
 
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  p {
+    margin: 0;
+  }
+
   body {
     width: 100%;
     height: 100vh;
