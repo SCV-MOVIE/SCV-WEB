@@ -27,7 +27,7 @@ function ThumbnailCard({ src, movie, size = 'small', alt = 'movie-thumbnail' }: 
             duration: 0.2,
           }}
         >
-          <Stack justify="end" spacing={8} height="95%" paddingLeft={12}>
+          <Stack justify="end" spacing={4} height="95%" paddingLeft={4}>
             <PlayIcon size={size} />
             <Text variant="lg" color="white">
               {movie.rating}

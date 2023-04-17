@@ -16,7 +16,7 @@ export default function ShowPage() {
       </Head>
       <Content>
         <LinedTitle title={'현재 상영작'} />
-        <Grid templateColumns="repeat(4, 1fr)" rowGap={80} columnGap={32} mt={16}>
+        <Grid templateColumns="repeat(4, 1fr)" rowGap={24} columnGap={8} mt={8}>
           {[...Array(12)].fill(DUMMY_MOVIE).map((movie, idx) => (
             <MovieCard movie={movie} key={idx} />
           ))}

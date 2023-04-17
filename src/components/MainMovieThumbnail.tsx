@@ -14,12 +14,12 @@ function MainMovieThumbnail({ movie }: Props) {
 
   return (
     <>
-      <MovieDescription spacing={8} marginTop={320}>
-        <Heading as="h1" size="md" color="white">
+      <MovieDescription spacing={4} marginTop={240}>
+        <Heading as="h1" size="2xl" color="white">
           {movie.name}
         </Heading>
-        <Stack gap={8}>
-          <Heading as="h3" size="3xl" color={theme.colors.coreBlue}>
+        <Stack gap={2}>
+          <Heading as="h3" size="lg" color={theme.colors.coreBlue}>
             Overview
           </Heading>
           <HStack gap={4}>
@@ -30,7 +30,7 @@ function MainMovieThumbnail({ movie }: Props) {
               {movie.rating}
             </Text>
           </HStack>
-          <HStack gap={4} pb={12}>
+          <HStack gap={4} pb={10}>
             <Text variant="md" color="white">
               장르:
             </Text>

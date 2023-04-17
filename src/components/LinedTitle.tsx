@@ -8,7 +8,7 @@ interface Props {
 function LinedTitle({ title }: Props) {
   return (
     <>
-      <Heading as="h1" size="3xl" color="white" marginBottom={4}>
+      <Heading as="h3" size="lg" color="white" mb={2}>
         {title}
       </Heading>
       <Line />

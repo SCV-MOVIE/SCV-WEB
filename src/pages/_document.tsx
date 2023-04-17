@@ -22,13 +22,6 @@ const globalStyles = css`
   }
 
   body {
-    width: 100%;
-    height: 100vh;
-    margin: 0;
-    padding: 0;
-    background-color: #0d0d0d;
-    overscroll-behavior-block: none;
-
     &::-webkit-scrollbar {
       width: 0;
     }

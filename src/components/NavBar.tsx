@@ -12,7 +12,7 @@ function NavBar() {
       <LinkWrapper href="/">
         <StyledLogo width={80} height={80} />
       </LinkWrapper>
-      <HStack justify="end" gap="40">
+      <HStack justify="end" gap={12}>
         {MENUS.map((menu) => (
           <LinkWrapper href={menu.href} key={menu.href}>
             <Text variant="lg" color="white">

@@ -7,9 +7,9 @@ function Bottom() {
   const theme = useTheme();
 
   return (
-    <Center gap={24} marginBlock={40}>
+    <Center gap={4} pt={120} pb={24}>
       <Logo width={100} height={100} />
-      <Stack direction="column" gap={4}>
+      <Stack direction="column">
         <Text color={theme.colors.gray100} fontSize="md">
           서울시립대학교 데이터베이스 설계
         </Text>

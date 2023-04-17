@@ -27,38 +27,53 @@ export default function Login() {
           <Center>
             <Logo width={100} height={100} />
           </Center>
-          <Stack px={32}>
-            <label htmlFor="id">아이디</label>
-            <Input id="id" placeholder="아이디" {...register('email')} padding={8} />
-            <label htmlFor="password">아이디</label>
+          <Stack px={8}>
+            <label htmlFor="id" style={{ color: theme.colors.gray100 }}>
+              아이디
+            </label>
+            <Input
+              id="id"
+              placeholder="아이디"
+              {...register('email')}
+              padding={4}
+              color={theme.colors.gray100}
+            />
+            <label htmlFor="password" style={{ color: theme.colors.gray100 }}>
+              비밀번호
+            </label>
             <Input
               id="password"
               placeholder="비밀번호"
               type="password"
               {...register('password')}
-              padding={8}
+              padding={4}
+              color={theme.colors.gray100}
             />
           </Stack>
-          <HStack px={32} mt={2} justifyContent="space-between">
-            <Text variant="md" color={theme.colors.coreBlue}>
+          <HStack px={8} mt={4} justifyContent="space-between">
+            <Text size="md" color={theme.colors.coreBlue}>
               아이디 찾기
             </Text>
-            <Text variant="md" color={theme.colors.coreBlue}>
+            <Text size="md" color={theme.colors.coreBlue}>
               비밀번호 찾기
             </Text>
-            <Text variant="md" color={theme.colors.coreBlue}>
+            <Text size="md" color={theme.colors.coreBlue}>
               회원가입
             </Text>
           </HStack>
-          <Center px={32} mt={32}>
+          <Center px={8} mt={12}>
             <Button
               width="100%"
               py={2}
               type="submit"
               variant="solid"
-              bgColor={theme.colors.coreBlue}
+              bgColor={theme.colors.blue600}
               cursor={'pointer'}
               borderRadius={8}
+              transition="all 0.2s ease-in"
+              _hover={{
+                bgColor: theme.colors.coreBlue,
+              }}
             >
               <Text color={theme.colors.white} fontSize="16px">
                 로그인
@@ -83,7 +98,7 @@ const LoginForm = styled('form')`
   margin: 0 auto;
   padding: 32;
   box-sizing: border-box;
-  background-color: #e3e3e3;
+  background-color: ${({ theme }) => theme.colors.gray500};
   border-radius: 12px;
 
   '@bp2': {

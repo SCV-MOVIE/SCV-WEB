@@ -16,8 +16,8 @@ export default function Home() {
       </Head>
       <MainMovieThumbnail movie={DUMMY_MOVIE} />
       <Content>
-        <LinedTitle title={'Trending Movies'} />
-        <FeatureSection gap={56} marginTop={12}>
+        <LinedTitle title={'현재 인기 영화'} />
+        <FeatureSection gap={12} marginTop={4}>
           <MovieCard src="/thumbnail.jpeg" movie={DUMMY_MOVIE} />
           <MovieCard src="/thumbnail.jpeg" movie={DUMMY_MOVIE} />
           <MovieCard src="/thumbnail.jpeg" movie={DUMMY_MOVIE} />
