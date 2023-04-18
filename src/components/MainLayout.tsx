@@ -1,39 +1,11 @@
 import React from 'react';
-import localFont from 'next/font/local';
 
 import NavBar from './NavBar';
 import styled from '@emotion/styled';
 
-// const prefix = window.process.env.NODE_MODE === 'development' ? '../../public' : '/';
-
-const pretandard = localFont({
-  src: [
-    {
-      path: '../../public/fonts/pretendard-bold.woff',
-      weight: '700',
-      style: 'bold',
-    },
-    {
-      path: '../../public/fonts/pretendard-SemiBold.woff',
-      weight: '600',
-      style: 'normal',
-    },
-    {
-      path: '../../public/fonts/pretendard-Medium.woff',
-      weight: '500',
-      style: 'normal',
-    },
-    {
-      path: '../../public/fonts/pretendard-Regular.woff',
-      weight: '400',
-      style: 'normal',
-    },
-  ],
-});
-
 function MainLayout({ children }: React.PropsWithChildren<unknown>) {
   return (
-    <Wrapper className={pretandard.className}>
+    <Wrapper>
       <NavBar />
       <Main>
         <Content>{children}</Content>
