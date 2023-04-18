@@ -7,6 +7,7 @@ import { Movie } from '@root/src/@types';
 import { ShowTime } from '@root/src/@types/theater';
 import React from 'react';
 import MovieRating from '../MovieRating';
+import SelectedTicketInfomation from './SelectedTicketInfomation';
 
 function SelectMovieBox() {
   const [movies, setMovies] = React.useState<Movie[] | null>(null);
@@ -22,7 +23,7 @@ function SelectMovieBox() {
   }, []);
 
   return (
-    <HStack width="100%">
+    <HStack width="100%" alignItems="start">
       <Stack w="240px">
         <Center>
           <Heading size="md">영화</Heading>
@@ -97,40 +98,7 @@ function SelectMovieBox() {
         </ColumnContent>
       </Stack>
       <Divider orientation="vertical" />
-      <Stack textAlign="center" w="120px">
-        <Heading size="md">구매내역</Heading>
-        {selectedMovie && (
-          <Stack textAlign="center">
-            <Image width={120} height={140} src={selectedMovie.imgUrl} alt="image-thumbnail" />
-            <Heading as="h3" size="md">
-              {selectedMovie.name}
-            </Heading>
-            <Divider />
-            <HStack alignItems="center">
-              <Heading size="sm" fontSize={12}>
-                상영관:
-              </Heading>
-              <Text size="sm" fontSize={12}>
-                1관
-              </Text>
-            </HStack>
-            <HStack alignItems="center">
-              <Heading fontSize={12}>상영등급: </Heading>
-              <Text fontSize={12}>{selectedMovie.rating}</Text>
-            </HStack>
-            <HStack alignItems="center">
-              <Heading fontSize={12}>날짜: </Heading>
-              <Text fontSize={12}>
-                {new Date().getMonth()}월 {new Date().getDay()}일
-              </Text>
-            </HStack>
-            <HStack alignItems="center">
-              <Heading fontSize={12}>상영시간: </Heading>
-              <Text fontSize={12}>17:10 ~ 19:53</Text>
-            </HStack>
-          </Stack>
-        )}
-      </Stack>
+      <SelectedTicketInfomation selectedMovie={selectedMovie} />
     </HStack>
   );
 }

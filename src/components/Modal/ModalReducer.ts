@@ -1,6 +1,7 @@
 import React from 'react';
 import SelectInfomationBox from './SelectInfomationBox';
 import SelectMovieBox from './SelectMovieBox';
+import SelectSeatBox from './SelectSeatBox';
 
 export const enum BookStep {
   MOVIE = 1,
@@ -49,6 +50,6 @@ export type BookStepDispatcher = React.Dispatch<{
 export const BookStepContent = {
   [BookStep.MOVIE]: SelectMovieBox,
   [BookStep.INFOMATION]: SelectInfomationBox,
-  [BookStep.SEAT]: SelectMovieBox,
+  [BookStep.SEAT]: SelectSeatBox,
   [BookStep.PAY]: SelectMovieBox,
 } as const;
