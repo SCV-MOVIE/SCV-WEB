@@ -1,4 +1,5 @@
 import React from 'react';
+import SelectInfomationBox from './SelectInfomationBox';
 import SelectMovieBox from './SelectMovieBox';
 
 export const enum BookStep {
@@ -8,15 +9,34 @@ export const enum BookStep {
   PAY,
 }
 
-export const BookStepReducer: React.Reducer<BookStep, { direction: 'prev' | 'next' }> = (
+export interface BookStepType {
+  step: BookStep;
+  title: string;
+}
+
+export const BookStepTitle = {
+  [BookStep.MOVIE]: '영화 예매',
+  [BookStep.INFOMATION]: '예매자 정보',
+  [BookStep.SEAT]: '좌석 선택',
+  [BookStep.PAY]: '결제',
+} as const;
+
+export const InitialValue = {
+  step: BookStep.MOVIE,
+  title: BookStepTitle[BookStep.MOVIE],
+} as const;
+
+export const BookStepReducer: React.Reducer<BookStepType, { direction: 'prev' | 'next' }> = (
   state,
   action,
 ) => {
   switch (action.direction) {
     case 'prev':
-      return Math.max(state - 1, BookStep.MOVIE);
+      const prevStep: BookStep = Math.max(state.step - 1, BookStep.MOVIE);
+      return { step: prevStep, title: BookStepTitle[prevStep] };
     case 'next':
-      return Math.min(state + 1, BookStep.PAY);
+      const nextStep: BookStep = Math.min(state.step + 1, BookStep.PAY);
+      return { step: nextStep, title: BookStepTitle[nextStep] };
     default:
       return state;
   }
@@ -28,7 +48,7 @@ export type BookStepDispatcher = React.Dispatch<{
 
 export const BookStepContent = {
   [BookStep.MOVIE]: SelectMovieBox,
-  [BookStep.INFOMATION]: SelectMovieBox,
+  [BookStep.INFOMATION]: SelectInfomationBox,
   [BookStep.SEAT]: SelectMovieBox,
   [BookStep.PAY]: SelectMovieBox,
 } as const;

@@ -17,7 +17,7 @@ function SelectMovieBox() {
   React.useEffect(() => {
     const nextMovies = [...Array(24)].map((_, idx) => ({ ...DUMMY_MOVIE, id: idx }));
     setMovies(nextMovies);
-    const nextShowTimes = [...Array(8)].map((_, idx) => ({ ...DUMMY_SHOWTIME, id: idx }));
+    const nextShowTimes = [...Array(12)].map((_, idx) => ({ ...DUMMY_SHOWTIME, id: idx }));
     setShowTimes(nextShowTimes);
   }, []);
 

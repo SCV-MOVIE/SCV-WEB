@@ -14,7 +14,7 @@ import {
 } from '@chakra-ui/react';
 
 import { RefreshRight } from '@root/public/icons';
-import { BookStep, BookStepContent, BookStepReducer } from './ModalReducer';
+import { BookStep, BookStepContent, BookStepReducer, InitialValue } from './ModalReducer';
 
 interface Props {
   isOpen: boolean;
@@ -22,8 +22,8 @@ interface Props {
 }
 
 function BookModal({ isOpen, onClose }: Props) {
-  const [step, dispatch] = React.useReducer(BookStepReducer, BookStep.MOVIE);
-  const ModalStepContent = BookStepContent[step];
+  const [state, dispatch] = React.useReducer(BookStepReducer, InitialValue);
+  const ModalStepContent = BookStepContent[state.step];
 
   const onClickPrev = () => dispatch({ direction: 'prev' });
   const onClickNext = () => dispatch({ direction: 'next' });
@@ -46,7 +46,7 @@ function BookModal({ isOpen, onClose }: Props) {
                 예매 다시하기
               </Text>
             </HStack>
-            <Text>영화 예매하기</Text>
+            <Text>{state.title}</Text>
           </HStack>
         </ModalHeader>
         <ModalCloseButton />
@@ -55,8 +55,8 @@ function BookModal({ isOpen, onClose }: Props) {
           <ModalStepContent />
         </ModalBody>
         {/* </BookContextProvider> */}
-        <ModalFooter justifyContent={step !== BookStep.MOVIE ? 'space-between' : 'end'}>
-          {step !== BookStep.MOVIE && (
+        <ModalFooter justifyContent={state.step !== BookStep.MOVIE ? 'space-between' : 'end'}>
+          {state.step !== BookStep.MOVIE && (
             <Button colorScheme="gray" onClick={onClickPrev} borderRadius={0}>
               이전 단계
             </Button>
