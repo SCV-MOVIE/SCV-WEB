@@ -26,7 +26,7 @@ function MainMovieThumbnail({ movie }: Props) {
             <Text variant="lg" color="white">
               관람 등급:
             </Text>
-            <Text variant="lg" color={theme.colors.white}>
+            <Text variant="lg" color={theme.colors.offwhite}>
               {movie.rating}
             </Text>
           </HStack>

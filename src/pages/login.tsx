@@ -75,7 +75,7 @@ export default function Login() {
                 bgColor: theme.colors.coreBlue,
               }}
             >
-              <Text color={theme.colors.white} fontSize="16px">
+              <Text color={theme.colors.offwhite} fontSize="16px">
                 로그인
               </Text>
             </Button>

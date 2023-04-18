@@ -47,6 +47,7 @@ const Wrapper = styled.div`
   margin: 0 auto;
   height: 100%;
   z-index: 50;
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const Main = styled.main`
