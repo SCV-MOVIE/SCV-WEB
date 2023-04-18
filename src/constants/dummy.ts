@@ -1,4 +1,5 @@
 import { Movie } from '@/@types';
+import { ShowTime } from '../@types/theater';
 
 export const DUMMY_MOVIE: Movie = {
   id: 1,
@@ -16,3 +17,11 @@ export const DUMMY_MOVIE: Movie = {
   actors: [],
   staff: [],
 };
+
+export const DUMMY_SHOWTIME: ShowTime = {
+  id: 1,
+  round: 1,
+  date: new Date().toISOString(),
+  isPublic: true,
+  startTime: new Date().toDateString()
+}
