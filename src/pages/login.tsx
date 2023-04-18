@@ -100,9 +100,4 @@ const LoginForm = styled('form')`
   box-sizing: border-box;
   background-color: ${({ theme }) => theme.colors.gray500};
   border-radius: 12px;
-
-  '@bp2': {
-    max-width: 320px;
-    padding-inline: 24px;
-  },
 `;
