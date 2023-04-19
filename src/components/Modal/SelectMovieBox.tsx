@@ -1,19 +1,18 @@
-import Image from 'next/image';
-import { Button, Center, Divider, Flex, Heading, HStack, Stack, Text } from '@chakra-ui/react';
+import React from 'react';
 import styled from '@emotion/styled';
+import { Button, Center, Divider, Flex, Heading, HStack, Stack, Text } from '@chakra-ui/react';
+
+import MovieRating from '../MovieRating';
+import { Movie } from '@root/src/@types';
+import { useBookContext } from './BookContext';
+import { ShowTime } from '@root/src/@types/theater';
+import SelectedTicketInfomation from './SelectedTicketInfomation';
 import { DUMMY_MOVIE, DUMMY_SHOWTIME } from '@root/src/constants/dummy';
 
-import { Movie } from '@root/src/@types';
-import { ShowTime } from '@root/src/@types/theater';
-import React from 'react';
-import MovieRating from '../MovieRating';
-import SelectedTicketInfomation from './SelectedTicketInfomation';
-
 function SelectMovieBox() {
-  const [movies, setMovies] = React.useState<Movie[] | null>(null);
-  const [selectedMovie, setSelectedMovie] = React.useState<Movie | null>(null);
-  const [showTimes, setShowTimes] = React.useState<ShowTime[] | null>(null);
-  const [selectedShowTime, setSelectedShowTime] = React.useState<ShowTime | null>(null);
+  const [movies, setMovies] = React.useState<Movie[]>([]);
+  const [showTimes, setShowTimes] = React.useState<ShowTime[]>([]);
+  const { value, onChange } = useBookContext();
 
   React.useEffect(() => {
     const nextMovies = [...Array(24)].map((_, idx) => ({ ...DUMMY_MOVIE, id: idx }));
@@ -36,8 +35,8 @@ function SelectMovieBox() {
               py={6}
               pl={12}
               justifyContent="start"
-              onClick={() => setSelectedMovie(movie)}
-              colorScheme={movie === selectedMovie ? 'teal' : 'gray'}
+              onClick={() => onChange((prev) => ({ ...prev, movie }))}
+              colorScheme={movie === value?.movie ? 'teal' : 'gray'}
             >
               <HStack justifyContent="start">
                 <Text as={'span'}>
@@ -64,9 +63,9 @@ function SelectMovieBox() {
               py={6}
               pl={12}
               justifyContent="start"
-              onClick={() => setSelectedShowTime(showTime)}
-              colorScheme={showTime === selectedShowTime ? 'teal' : 'gray'}
-              disabled={selectedMovie == null}
+              disabled={!value?.showTime}
+              onClick={() => onChange((prev) => ({ ...prev, showTime }))}
+              colorScheme={showTime === value?.showTime ? 'teal' : 'gray'}
             >
               <HStack>
                 <Text>{showTime.startTime}</Text>
@@ -88,9 +87,9 @@ function SelectMovieBox() {
               py={6}
               pl={12}
               justifyContent="start"
-              onClick={() => setSelectedShowTime(showTime)}
-              colorScheme={showTime === selectedShowTime ? 'teal' : 'gray'}
-              disabled={selectedMovie == null}
+              onClick={() => onChange((prev) => ({ ...prev, showTime }))}
+              colorScheme={showTime === value?.showTime ? 'teal' : 'gray'}
+              disabled={!value?.showTime}
             >
               <Text>{showTime.date}</Text>
             </Button>
@@ -98,7 +97,7 @@ function SelectMovieBox() {
         </ColumnContent>
       </Stack>
       <Divider orientation="vertical" />
-      <SelectedTicketInfomation selectedMovie={selectedMovie} />
+      <SelectedTicketInfomation selectedMovie={value?.movie} />
     </HStack>
   );
 }

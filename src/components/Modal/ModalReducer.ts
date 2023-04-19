@@ -22,12 +22,12 @@ export const BookStepTitle = {
   [BookStep.PAY]: '결제',
 } as const;
 
-export const InitialValue = {
+export const InitialStepValue = {
   step: BookStep.MOVIE,
   title: BookStepTitle[BookStep.MOVIE],
 } as const;
 
-export const BookStepReducer: React.Reducer<BookStepType, { direction: 'prev' | 'next' }> = (
+export const BookStepReducer: React.Reducer<BookStepType, { direction: 'prev' | 'next' | 'reset' }> = (
   state,
   action,
 ) => {
@@ -38,13 +38,16 @@ export const BookStepReducer: React.Reducer<BookStepType, { direction: 'prev' | 
     case 'next':
       const nextStep: BookStep = Math.min(state.step + 1, BookStep.PAY);
       return { step: nextStep, title: BookStepTitle[nextStep] };
+    case 'reset':
+      const resetStep = BookStep.MOVIE;
+      return { step: resetStep, title: BookStepTitle[resetStep] };
     default:
       return state;
   }
 };
 
 export type BookStepDispatcher = React.Dispatch<{
-  direction: 'next' | 'prev';
+  direction: 'next' | 'prev' | 'reset';
 }>;
 
 export const BookStepContent = {
