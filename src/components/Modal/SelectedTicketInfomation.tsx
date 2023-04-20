@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { Divider, Grid, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 
 import { SelectedMovie } from './BookContext';
-import { getSeatName, salesTotalPrice, totalPrice } from '@root/src/utils';
+import { dateFormatter, getSeatName, salesTotalPrice, totalPrice } from '@root/src/utils';
 
 interface Props {
   selectedMovie: SelectedMovie;
@@ -47,12 +47,16 @@ function SelectedTicketInfomation({ selectedMovie }: Props) {
           <HStack alignItems="center">
             <Heading fontSize={12}>날짜: </Heading>
             <Text fontSize={12}>
-              {new Date().getMonth()}월 {new Date().getDay()}일
+              {dateFormatter.format(selectedMovie.showTime.startDate).split('/')[0]}월{' '}
+              {dateFormatter.format(selectedMovie.showTime.startDate).split('/')[1]}일
             </Text>
           </HStack>
           <HStack alignItems="center">
             <Heading fontSize={12}>상영시간: </Heading>
-            <Text fontSize={12}>17:10 ~ 19:53</Text>
+            <Text fontSize={12}>
+              {dateFormatter.format(selectedMovie.showTime.startDate).split(', ')[1]} ~{' '}
+              {dateFormatter.format(selectedMovie.showTime.startDate).split(', ')[1]}
+            </Text>
           </HStack>
         </>
       )}
@@ -75,7 +79,7 @@ function SelectedTicketInfomation({ selectedMovie }: Props) {
       {selectedMovie.payment.method && (
         <>
           <HStack alignItems="center">
-            <Heading fontSize={12}>총금액: </Heading>
+            <Heading fontSize={12}>총 금액: </Heading>
             <Text fontSize={12}>{totalPrice(selectedMovie.headCount).toLocaleString()}</Text>
           </HStack>
           {selectedMovie.payment.partner?.name && (

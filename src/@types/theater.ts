@@ -1,8 +1,7 @@
 export interface ShowTime {
   id: number;
-  date: string;
   round: number;
-  startTime: string;
+  startDate: Date;
   isPublic: boolean;
 }
 

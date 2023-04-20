@@ -21,7 +21,6 @@ export const DUMMY_MOVIE: Movie = {
 export const DUMMY_SHOWTIME: ShowTime = {
   id: 1,
   round: 1,
-  date: new Date().toISOString(),
+  startDate: new Date(),
   isPublic: true,
-  startTime: new Date().toDateString()
 }

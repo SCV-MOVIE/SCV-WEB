@@ -36,8 +36,7 @@ export const initialSelectedMovieValue: SelectedMovie = {
   },
   showTime: {
     id: -1,
-    date: '',
-    startTime: '',
+    startDate: new Date(),
     round: 1,
     isPublic: true,
   },

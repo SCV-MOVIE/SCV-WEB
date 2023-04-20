@@ -1,6 +1,16 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { Button, Center, Divider, Flex, Heading, HStack, Stack, Text } from '@chakra-ui/react';
+import {
+  Button,
+  Center,
+  Divider,
+  Flex,
+  Grid,
+  Heading,
+  HStack,
+  Stack,
+  Text,
+} from '@chakra-ui/react';
 
 import MovieRating from '../MovieRating';
 import { Movie } from '@root/src/@types';
@@ -8,14 +18,11 @@ import { useBookContext } from './BookContext';
 import { ShowTime } from '@root/src/@types/theater';
 import SelectedTicketInfomation from './SelectedTicketInfomation';
 import { DUMMY_MOVIE, DUMMY_SHOWTIME } from '@root/src/constants/dummy';
-import { korDay, colorDay } from '@root/src/utils';
+import { korDay, colorDay, dateFormatter } from '@root/src/utils';
 
-const formatter = new Intl.DateTimeFormat('en-GB', {
-  year: 'numeric',
-  month: '2-digit',
-  day: '2-digit',
-});
-const date = formatter.format(new Date()).split('/');
+const currentDate = dateFormatter.format(new Date()).split(', ');
+const formatedDate = currentDate[0].split('/');
+const theaters = ['1관', 'IMAX관'];
 
 function SelectMovieBox() {
   const [movies, setMovies] = React.useState<Movie[]>([]);
@@ -64,10 +71,10 @@ function SelectMovieBox() {
           <Heading size="md">날짜</Heading>
         </Center>
         <Heading fontSize={24} textAlign="center" pt={4}>
-          {date[1] ?? '06'}
+          {formatedDate[0] ?? '06'}
         </Heading>
         <Heading fontSize={14} textAlign="center">
-          {date[2] ?? '2023'}
+          {formatedDate[2] ?? '2023'}
         </Heading>
         <ColumnContent>
           {showTimes?.map((showTime) => (
@@ -86,20 +93,20 @@ function SelectMovieBox() {
                   color={
                     showTime === value?.showTime
                       ? 'white'
-                      : colorDay(new Date(showTime.date).getDay()).kor
+                      : colorDay(showTime.startDate.getDay()).kor
                   }
                 >
-                  {korDay(new Date(showTime.date).getDay())}
+                  {korDay(showTime.startDate.getDay())}
                 </Text>
                 <Text
                   fontSize={18}
                   color={
                     showTime === value?.showTime
                       ? 'white'
-                      : colorDay(new Date(showTime.date).getDay()).day
+                      : colorDay(showTime.startDate.getDay()).day
                   }
                 >
-                  {date[0]}
+                  {formatedDate[1]}
                 </Text>
               </HStack>
             </Button>
@@ -111,22 +118,35 @@ function SelectMovieBox() {
         <Center>
           <Heading size="md">상영시간</Heading>
         </Center>
-        <ColumnContent>
-          {showTimes?.map((showTime) => (
-            <Button
-              key={showTime.id}
-              flexShrink={0}
-              py={6}
-              pl={12}
-              justifyContent="start"
-              onClick={() => setValue((prev) => ({ ...prev, showTime }))}
-              colorScheme={showTime === value?.showTime ? 'teal' : 'gray'}
-              disabled={!value?.showTime}
-            >
-              <Text>{showTime.date}</Text>
-            </Button>
-          ))}
-        </ColumnContent>
+        {theaters.map((theater) => (
+          <Stack key={theater}>
+            <Text>{theater}</Text>
+            <Grid templateColumns={`repeat(3, 1fr)`} columnGap={2} rowGap={2}>
+              {showTimes?.map((showTime) => (
+                <Button
+                  key={showTime.id}
+                  flexShrink={0}
+                  py={'48px'}
+                  justifyContent="center"
+                  onClick={() => setValue((prev) => ({ ...prev, showTime }))}
+                  colorScheme={showTime === value?.showTime ? 'teal' : 'gray'}
+                  disabled={!value?.showTime}
+                >
+                  <Stack spacing={0} gap={'4px'}>
+                    <Text>{currentDate[1]}</Text>
+                    <Text fontSize={12} color={showTime === value?.showTime ? 'white' : 'gray.600'}>
+                      {currentDate[1]}
+                    </Text>
+                    <Divider />
+                    <Text fontSize={10} color={showTime === value?.showTime ? 'white' : 'gray.400'}>
+                      23/36
+                    </Text>
+                  </Stack>
+                </Button>
+              ))}
+            </Grid>
+          </Stack>
+        ))}
       </Stack>
       <Divider orientation="vertical" />
       <SelectedTicketInfomation selectedMovie={value} />

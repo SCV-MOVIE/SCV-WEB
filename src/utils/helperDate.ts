@@ -22,3 +22,12 @@ export const colorDay = (day: number) => {
   }
   return { kor: 'gray.500', day: 'black' };
 };
+
+export const dateFormatter = new Intl.DateTimeFormat('en-US', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  minute: '2-digit',
+  hour12: false,
+});

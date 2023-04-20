@@ -25,7 +25,7 @@ interface Props {
 
 const isCompleteCurrentStep = (step: BookStep, value: SelectedMovie) => {
   if (step === BookStep.MOVIE) {
-    return value.movie.name !== '' && value.showTime.date !== '';
+    return value.movie.name !== '' && value.showTime.id !== -1;
   } else if (step === BookStep.INFOMATION) {
     // FIXME: 추후에 비회원시 입력할 인풋 정의하고, 수정 예정
     return true;
