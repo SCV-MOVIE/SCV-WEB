@@ -1,4 +1,4 @@
-import { HeadCount } from '@/components/Modal/BookContext';
+import { HeadCount, SelectedMovie } from '@/components/Modal/BookContext';
 
 const ADULT_PRICE = 10000;
 const CHILD_PRICE = 7000;
@@ -16,4 +16,15 @@ export const salesTotalPrice = (totalPrice: number, discount: number | undefined
     return totalPrice;
   }
   return Math.max(totalPrice - discount, 0);
+}
+
+export const pointFor = (inputPoint: number, value: SelectedMovie, maxPoint: number) => {
+  let point = inputPoint;
+  const salePrice = salesTotalPrice(totalPrice(value.headCount), value.payment.partner?.discount);
+  if (isNaN(point)) {
+    point = 0;
+  } else if (point > Math.min(salePrice, maxPoint)) {
+    point = Math.min(salePrice, maxPoint);
+  }
+  return point;
 }

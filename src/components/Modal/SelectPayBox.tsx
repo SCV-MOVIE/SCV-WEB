@@ -1,6 +1,7 @@
 import { Center, Divider, Heading, HStack, Input, Stack, Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { Partner, Payment } from '@root/src/@types';
+import { pointFor, salesTotalPrice, totalPrice } from '@root/src/utils';
 import React from 'react';
 
 import { useBookContext } from './BookContext';
@@ -19,7 +20,7 @@ const CARD_PARTNERS = [
   { discount: 1000, name: 'SCV-CARD4' },
 ] as const;
 
-const MAX_POINT = 7320;
+const MAX_POINT = 73220;
 
 function SelectPayBox() {
   const { value, setValue } = useBookContext();
@@ -46,7 +47,17 @@ function SelectPayBox() {
           payment: { ...prev.payment, partner: { name: '', discount: 0 } },
         }));
       } else {
-        setValue((prev) => ({ ...prev, payment: { ...prev.payment, partner } }));
+        setValue((prev) => ({
+          ...prev,
+          payment: {
+            ...prev.payment,
+            partner,
+            usedPoint: Math.min(
+              prev.payment.usedPoint,
+              salesTotalPrice(totalPrice(prev.headCount), partner.discount),
+            ),
+          },
+        }));
       }
     },
     [setValue, value.payment.partner?.name],
@@ -54,18 +65,15 @@ function SelectPayBox() {
 
   const handleChangeInput = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      let point = Number(e.target.value ?? 0);
-      if (isNaN(point)) {
-        point = 0;
-      } else if (point > MAX_POINT) {
-        point = MAX_POINT;
-      }
       setValue((prev) => ({
         ...prev,
-        payment: { ...prev.payment, usedPoint: point },
+        payment: {
+          ...prev.payment,
+          usedPoint: pointFor(Number(e.target.value ?? 0), value, MAX_POINT),
+        },
       }));
     },
-    [setValue],
+    [setValue, value],
   );
 
   return (
