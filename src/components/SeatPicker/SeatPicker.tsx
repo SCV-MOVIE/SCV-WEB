@@ -29,7 +29,7 @@ function SeatPicker({
     id: idx + 1,
     occupied: occupied.includes(idx + 1),
     selected: selected.includes(idx + 1),
-    name: getSeatName(row, idx + 1),
+    name: getSeatName(column, idx + 1),
   }));
 
   const onClickSeatBox = React.useCallback(
