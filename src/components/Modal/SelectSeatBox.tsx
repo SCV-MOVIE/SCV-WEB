@@ -1,17 +1,39 @@
 import React from 'react';
-import { Divider, Heading, HStack, Stack } from '@chakra-ui/react';
+import { Center, Divider, Heading, HStack, Stack } from '@chakra-ui/react';
 
-import { HeadCount, SelectedMovie, useBookContext } from './BookContext';
-import { NumberInputBox } from '@/components';
+import { HeadCount, useBookContext } from './BookContext';
+import { NumberInputBox, SeatPicker } from '@/components';
 import SelectedTicketInfomation from './SelectedTicketInfomation';
 
 function SelectSeatBox() {
   const { value, onChange } = useBookContext();
+  const maxReservableSeats =
+    Number(value.headCount.child ?? 0) + Number(value.headCount.adult ?? 0);
 
-  const handleChangeNumberInput = React.useCallback((value: string, type: keyof HeadCount) => {
-    const numberValue = Number(value);
-    onChange((prev) => ({ ...prev, headCount: { ...prev.headCount, [type]: numberValue } }));
-  }, []);
+  const handleChangeNumberInput = React.useCallback(
+    (value: string, type: keyof HeadCount) => {
+      const numberValue = Number(value);
+      onChange((prev) => ({ ...prev, headCount: { ...prev.headCount, [type]: numberValue } }));
+    },
+    [onChange],
+  );
+
+  const cancelSeat = React.useCallback(
+    (seatId: number) => {
+      onChange((prev) => ({
+        ...prev,
+        selectedSeats: value.selectedSeats.filter((seat) => seat !== seatId),
+      }));
+    },
+    [onChange, value.selectedSeats],
+  );
+
+  const addSeat = React.useCallback(
+    (seatId: number) => {
+      onChange((prev) => ({ ...prev, selectedSeats: [...value.selectedSeats, seatId] }));
+    },
+    [value.selectedSeats, onChange],
+  );
 
   return (
     <HStack spacing={2} alignItems="start">
@@ -21,12 +43,12 @@ function SelectSeatBox() {
         </Heading>
         <NumberInputBox
           label="성인"
-          value={Number(value?.headCount?.adult ?? 0)}
+          value={Number(value.headCount.adult ?? 0)}
           onChange={(value) => handleChangeNumberInput(value, 'adult')}
         />
         <NumberInputBox
           label="유아/청소년"
-          value={Number(value?.headCount?.child ?? 0)}
+          value={Number(value.headCount.child ?? 0)}
           onChange={(value) => handleChangeNumberInput(value, 'child')}
         />
       </Stack>
@@ -35,10 +57,21 @@ function SelectSeatBox() {
         <Heading size="md" textAlign="center">
           Screen
         </Heading>
+        <Center>
+          <SeatPicker
+            row={20}
+            column={12}
+            occupied={[4, 12, 17, 30, 50, 1]}
+            selected={value.selectedSeats}
+            maxReservableSeats={maxReservableSeats}
+            addSeat={addSeat}
+            cancelSeat={cancelSeat}
+          />
+        </Center>
       </Stack>
       <Divider orientation="vertical" height={240} color="gray.400" alignSelf="center" />
       <Stack spacing={4}>
-        <SelectedTicketInfomation selectedMovie={value?.movie} />
+        <SelectedTicketInfomation selectedMovie={value} />
       </Stack>
     </HStack>
   );

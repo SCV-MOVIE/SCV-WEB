@@ -97,7 +97,7 @@ function SelectMovieBox() {
         </ColumnContent>
       </Stack>
       <Divider orientation="vertical" />
-      <SelectedTicketInfomation selectedMovie={value?.movie} />
+      <SelectedTicketInfomation selectedMovie={value} />
     </HStack>
   );
 }

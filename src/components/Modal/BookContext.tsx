@@ -12,6 +12,7 @@ export interface SelectedMovie {
   movie: Movie;
   showTime: ShowTime;
   headCount: HeadCount;
+  selectedSeats: number[];
 }
 
 interface BookContextType {
@@ -43,6 +44,7 @@ export const initialSelectedMovieValue: SelectedMovie = {
     adult: 0,
     child: 0,
   },
+  selectedSeats: [],
 };
 
 export const BookContext = React.createContext<BookContextType>({

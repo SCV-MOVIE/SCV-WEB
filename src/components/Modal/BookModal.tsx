@@ -37,7 +37,7 @@ function BookModal({ isOpen, onClose }: Props) {
   return (
     <Modal isOpen={isOpen} onClose={onClickClose} size="5xl">
       <ModalOverlay />
-      <ModalContent>
+      <ModalContent overflow="scroll">
         <ModalHeader>
           <HStack justifyContent="center" position="relative">
             <HStack
