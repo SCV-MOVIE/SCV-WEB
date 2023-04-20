@@ -23,13 +23,32 @@ interface Props {
   onClose: VoidFunction;
 }
 
+const isCompleteCurrentStep = (step: BookStep, value: SelectedMovie) => {
+  if (step === BookStep.MOVIE) {
+    return value.movie.name !== '' && value.showTime.date !== '';
+  } else if (step === BookStep.INFOMATION) {
+    // FIXME: 추후에 비회원시 입력할 인풋 정의하고, 수정 예정
+    return true;
+  } else if (step === BookStep.SEAT) {
+    return (
+      !(value.headCount.adult === 0 && value.headCount.child === 0) &&
+      value.selectedSeats.length === value.headCount.adult + value.headCount.child
+    );
+  }
+  return typeof value.payment.method !== 'undefined';
+};
+
 function BookModal({ isOpen, onClose }: Props) {
   const [value, setValue] = React.useState<SelectedMovie>(initialSelectedMovieValue);
   const [state, dispatch] = React.useReducer(BookStepReducer, InitialStepValue);
   const ModalStepContent = BookStepContent[state.step];
 
   const onClickPrev = React.useCallback(() => dispatch({ direction: 'prev' }), []);
-  const onClickNext = React.useCallback(() => dispatch({ direction: 'next' }), []);
+  const onClickNext = React.useCallback(() => {
+    if (isCompleteCurrentStep(state.step, value)) {
+      dispatch({ direction: 'next' });
+    }
+  }, [state.step, value]);
   const onClickClose = React.useCallback(() => {
     dispatch({ direction: 'reset' });
     onClose();
