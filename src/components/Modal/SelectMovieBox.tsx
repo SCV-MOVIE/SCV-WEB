@@ -8,6 +8,14 @@ import { useBookContext } from './BookContext';
 import { ShowTime } from '@root/src/@types/theater';
 import SelectedTicketInfomation from './SelectedTicketInfomation';
 import { DUMMY_MOVIE, DUMMY_SHOWTIME } from '@root/src/constants/dummy';
+import { korDay, colorDay } from '@root/src/utils';
+
+const formatter = new Intl.DateTimeFormat('en-GB', {
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+});
+const date = formatter.format(new Date()).split('/');
 
 function SelectMovieBox() {
   const [movies, setMovies] = React.useState<Movie[]>([]);
@@ -55,20 +63,44 @@ function SelectMovieBox() {
         <Center>
           <Heading size="md">날짜</Heading>
         </Center>
+        <Heading fontSize={24} textAlign="center" pt={4}>
+          {date[1] ?? '06'}
+        </Heading>
+        <Heading fontSize={14} textAlign="center">
+          {date[2] ?? '2023'}
+        </Heading>
         <ColumnContent>
           {showTimes?.map((showTime) => (
             <Button
               key={showTime.id}
               flexShrink={0}
               py={6}
-              pl={12}
-              justifyContent="start"
+              justifyContent="center"
               disabled={!value?.showTime}
               onClick={() => setValue((prev) => ({ ...prev, showTime }))}
               colorScheme={showTime === value?.showTime ? 'teal' : 'gray'}
             >
-              <HStack>
-                <Text>{showTime.startTime}</Text>
+              <HStack spacing={0} gap={'6px'}>
+                <Text
+                  fontSize={14}
+                  color={
+                    showTime === value?.showTime
+                      ? 'white'
+                      : colorDay(new Date(showTime.date).getDay()).kor
+                  }
+                >
+                  {korDay(new Date(showTime.date).getDay())}
+                </Text>
+                <Text
+                  fontSize={18}
+                  color={
+                    showTime === value?.showTime
+                      ? 'white'
+                      : colorDay(new Date(showTime.date).getDay()).day
+                  }
+                >
+                  {date[0]}
+                </Text>
               </HStack>
             </Button>
           ))}
