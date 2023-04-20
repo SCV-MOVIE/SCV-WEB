@@ -21,7 +21,7 @@ const Wrapper = styled.div`
   z-index: 50;
 `;
 
-const Main = styled.main`
+const Main = styled.div`
   width: 100%;
   height: 100%;
   display: flex;

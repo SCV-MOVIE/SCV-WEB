@@ -9,7 +9,7 @@ import { MainLayout } from '../components';
 
 const queryClient = new QueryClient();
 
-const pretandard = localFont({
+export const pretendard = localFont({
   src: [
     {
       path: '../../public/fonts/pretendard-bold.woff',
@@ -38,14 +38,11 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
-        <MainLayout>
-          <style jsx global>{`
-            html {
-              font-family: ${pretandard.style.fontFamily};
-            }
-          `}</style>
-          <Component {...pageProps} />
-        </MainLayout>
+        <main className={pretendard.className}>
+          <MainLayout>
+            <Component {...pageProps} />
+          </MainLayout>
+        </main>
         <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       </QueryClientProvider>
     </ChakraProvider>

@@ -16,6 +16,7 @@ import {
 import { RefreshRight } from '@root/public/icons';
 import { BookStep, BookStepContent, BookStepReducer, InitialStepValue } from './ModalReducer';
 import { BookContextProvider, initialSelectedMovieValue, SelectedMovie } from './BookContext';
+import { pretendard } from '@root/src/pages/_app';
 
 interface Props {
   isOpen: boolean;
@@ -42,7 +43,7 @@ function BookModal({ isOpen, onClose }: Props) {
   return (
     <Modal isOpen={isOpen} onClose={onClickClose} size="5xl">
       <ModalOverlay />
-      <ModalContent overflow="scroll" minH={620}>
+      <ModalContent overflow="scroll" minH={620} className={pretendard.className}>
         <ModalHeader>
           <HStack justifyContent="center" position="relative">
             <HStack
