@@ -101,7 +101,8 @@ function SelectedTicketInfomation({ selectedMovie }: Props) {
             <Text fontSize={12} color="red.400" fontWeight={800}>
               {salesTotalPrice(
                 totalPrice(selectedMovie.headCount),
-                selectedMovie.payment.partner?.discount,
+                Number(selectedMovie.payment.partner?.discount ?? 0) +
+                  selectedMovie.payment.usedPoint,
               ).toLocaleString()}
             </Text>
           </HStack>

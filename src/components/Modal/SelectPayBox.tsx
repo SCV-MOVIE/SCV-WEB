@@ -24,19 +24,24 @@ const MAX_POINT = 73220;
 
 function SelectPayBox() {
   const { value, setValue } = useBookContext();
+  const totalTicketPrice = React.useMemo(() => totalPrice(value.headCount), [value.headCount]);
 
   const handleClickPaymentMethod = React.useCallback(
     (method: Payment['method']) => {
-      if (method === 'CARD') {
-        setValue((prev) => ({ ...prev, payment: { ...prev.payment, method } }));
-      } else {
-        setValue((prev) => ({
-          ...prev,
-          payment: { ...prev.payment, method, partner: { name: '', discount: 0 } },
-        }));
+      if (method === 'POINT' && totalTicketPrice >= MAX_POINT) {
+        return;
       }
+      setValue((prev) => ({
+        ...prev,
+        payment: {
+          ...prev.payment,
+          method,
+          usedPoint: method === 'POINT' ? totalTicketPrice : 0,
+          partner: { name: '', discount: 0 },
+        },
+      }));
     },
-    [setValue],
+    [setValue, totalTicketPrice],
   );
 
   const handleClickPartner = React.useCallback(
@@ -128,6 +133,7 @@ function SelectPayBox() {
           placeholder={'0 원'}
           value={value.payment.usedPoint}
           onChange={handleChangeInput}
+          disabled={value.payment.method === 'POINT'}
         />
         <Text fontSize={12} textAlign="end">
           사용가능한 포인트: {MAX_POINT.toLocaleString()}
