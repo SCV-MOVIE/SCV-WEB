@@ -1,7 +1,7 @@
 import { HeadCount } from '@/components/Modal/BookContext';
 
 const ADULT_PRICE = 10000;
-const CHILD_PRICE = 10000;
+const CHILD_PRICE = 7000;
 
 export const totalPrice = (headCount: HeadCount) => {
   let sum;
