@@ -12,7 +12,7 @@ import { DUMMY_MOVIE, DUMMY_SHOWTIME } from '@root/src/constants/dummy';
 function SelectMovieBox() {
   const [movies, setMovies] = React.useState<Movie[]>([]);
   const [showTimes, setShowTimes] = React.useState<ShowTime[]>([]);
-  const { value, onChange } = useBookContext();
+  const { value, setValue } = useBookContext();
 
   React.useEffect(() => {
     const nextMovies = [...Array(24)].map((_, idx) => ({ ...DUMMY_MOVIE, id: idx }));
@@ -35,7 +35,7 @@ function SelectMovieBox() {
               py={6}
               pl={12}
               justifyContent="start"
-              onClick={() => onChange((prev) => ({ ...prev, movie }))}
+              onClick={() => setValue((prev) => ({ ...prev, movie }))}
               colorScheme={movie === value?.movie ? 'teal' : 'gray'}
             >
               <HStack justifyContent="start">
@@ -64,7 +64,7 @@ function SelectMovieBox() {
               pl={12}
               justifyContent="start"
               disabled={!value?.showTime}
-              onClick={() => onChange((prev) => ({ ...prev, showTime }))}
+              onClick={() => setValue((prev) => ({ ...prev, showTime }))}
               colorScheme={showTime === value?.showTime ? 'teal' : 'gray'}
             >
               <HStack>
@@ -87,7 +87,7 @@ function SelectMovieBox() {
               py={6}
               pl={12}
               justifyContent="start"
-              onClick={() => onChange((prev) => ({ ...prev, showTime }))}
+              onClick={() => setValue((prev) => ({ ...prev, showTime }))}
               colorScheme={showTime === value?.showTime ? 'teal' : 'gray'}
               disabled={!value?.showTime}
             >

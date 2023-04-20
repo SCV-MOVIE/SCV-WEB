@@ -18,7 +18,7 @@ export interface SelectedMovie {
 
 interface BookContextType {
   value: SelectedMovie;
-  onChange: React.Dispatch<React.SetStateAction<SelectedMovie>>;
+  setValue: React.Dispatch<React.SetStateAction<SelectedMovie>>;
 }
 
 export const initialSelectedMovieValue: SelectedMovie = {
@@ -58,7 +58,7 @@ export const initialSelectedMovieValue: SelectedMovie = {
 
 export const BookContext = React.createContext<BookContextType>({
   value: initialSelectedMovieValue,
-  onChange: () => {},
+  setValue: () => {},
 });
 
 function createGenericUseContext<T>(context: React.Context<T>): () => NonNullable<T> {
@@ -72,8 +72,8 @@ function createGenericUseContext<T>(context: React.Context<T>): () => NonNullabl
 export const useBookContext = createGenericUseContext<BookContextType>(BookContext);
 export function BookContextProvider({
   value,
-  onChange,
+  setValue,
   children,
 }: React.PropsWithChildren<BookContextType>) {
-  return <BookContext.Provider value={{ value, onChange }}>{children}</BookContext.Provider>;
+  return <BookContext.Provider value={{ value, setValue }}>{children}</BookContext.Provider>;
 }

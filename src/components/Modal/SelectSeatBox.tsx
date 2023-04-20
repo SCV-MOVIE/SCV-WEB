@@ -6,33 +6,33 @@ import { NumberInputBox, SeatPicker } from '@/components';
 import SelectedTicketInfomation from './SelectedTicketInfomation';
 
 function SelectSeatBox() {
-  const { value, onChange } = useBookContext();
+  const { value, setValue } = useBookContext();
   const maxReservableSeats =
     Number(value.headCount.child ?? 0) + Number(value.headCount.adult ?? 0);
 
   const handleChangeNumberInput = React.useCallback(
     (value: string, type: keyof HeadCount) => {
       const numberValue = Number(value);
-      onChange((prev) => ({ ...prev, headCount: { ...prev.headCount, [type]: numberValue } }));
+      setValue((prev) => ({ ...prev, headCount: { ...prev.headCount, [type]: numberValue } }));
     },
-    [onChange],
+    [setValue],
   );
 
   const cancelSeat = React.useCallback(
     (seatId: number) => {
-      onChange((prev) => ({
+      setValue((prev) => ({
         ...prev,
         selectedSeats: value.selectedSeats.filter((seat) => seat !== seatId),
       }));
     },
-    [onChange, value.selectedSeats],
+    [setValue, value.selectedSeats],
   );
 
   const addSeat = React.useCallback(
     (seatId: number) => {
-      onChange((prev) => ({ ...prev, selectedSeats: [...value.selectedSeats, seatId] }));
+      setValue((prev) => ({ ...prev, selectedSeats: [...value.selectedSeats, seatId] }));
     },
-    [value.selectedSeats, onChange],
+    [value.selectedSeats, setValue],
   );
 
   return (

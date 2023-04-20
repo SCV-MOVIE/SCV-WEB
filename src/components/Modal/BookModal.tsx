@@ -62,7 +62,7 @@ function BookModal({ isOpen, onClose }: Props) {
           </HStack>
         </ModalHeader>
         <ModalCloseButton />
-        <BookContextProvider value={value} onChange={setValue}>
+        <BookContextProvider value={value} setValue={setValue}>
           <ModalBody>
             <ModalStepContent />
           </ModalBody>

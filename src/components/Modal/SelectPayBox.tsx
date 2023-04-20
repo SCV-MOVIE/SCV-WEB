@@ -22,34 +22,34 @@ const CARD_PARTNERS = [
 const MAX_POINT = 7320;
 
 function SelectPayBox() {
-  const { value, onChange } = useBookContext();
+  const { value, setValue } = useBookContext();
 
   const handleClickPaymentMethod = React.useCallback(
     (method: Payment['method']) => {
       if (method === 'CARD') {
-        onChange((prev) => ({ ...prev, payment: { ...prev.payment, method } }));
+        setValue((prev) => ({ ...prev, payment: { ...prev.payment, method } }));
       } else {
-        onChange((prev) => ({
+        setValue((prev) => ({
           ...prev,
           payment: { ...prev.payment, method, partner: { name: '', discount: 0 } },
         }));
       }
     },
-    [onChange],
+    [setValue],
   );
 
   const handleClickPartner = React.useCallback(
     (partner: Partner) => {
       if (value.payment.partner?.name === partner.name) {
-        onChange((prev) => ({
+        setValue((prev) => ({
           ...prev,
           payment: { ...prev.payment, partner: { name: '', discount: 0 } },
         }));
       } else {
-        onChange((prev) => ({ ...prev, payment: { ...prev.payment, partner } }));
+        setValue((prev) => ({ ...prev, payment: { ...prev.payment, partner } }));
       }
     },
-    [onChange, value.payment.partner?.name],
+    [setValue, value.payment.partner?.name],
   );
 
   const handleChangeInput = React.useCallback(
@@ -60,12 +60,12 @@ function SelectPayBox() {
       } else if (point > MAX_POINT) {
         point = MAX_POINT;
       }
-      onChange((prev) => ({
+      setValue((prev) => ({
         ...prev,
         payment: { ...prev.payment, usedPoint: point },
       }));
     },
-    [onChange],
+    [setValue],
   );
 
   return (
