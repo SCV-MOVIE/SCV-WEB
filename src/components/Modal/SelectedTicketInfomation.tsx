@@ -1,8 +1,8 @@
 import Image from 'next/image';
-import { Divider, Flex, Grid, Heading, HStack, Stack, Text, Wrap } from '@chakra-ui/react';
+import { Divider, Grid, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 
 import { SelectedMovie } from './BookContext';
-import { getSeatName } from '@root/src/utils';
+import { getSeatName, salesTotalPrice, totalPrice } from '@root/src/utils';
 
 interface Props {
   selectedMovie: SelectedMovie;
@@ -69,6 +69,41 @@ function SelectedTicketInfomation({ selectedMovie }: Props) {
                 </Text>
               ))}
             </Grid>
+          </HStack>
+        </>
+      )}
+      {selectedMovie.payment.method && (
+        <>
+          <HStack alignItems="center">
+            <Heading fontSize={12}>총금액: </Heading>
+            <Text fontSize={12}>{totalPrice(selectedMovie.headCount).toLocaleString()}</Text>
+          </HStack>
+          {selectedMovie.payment.partner?.name && (
+            <HStack alignItems="center">
+              <Heading fontSize={12}>할인 금액:</Heading>
+              <Text fontSize={12} color="green.400">
+                {selectedMovie.payment.partner.discount.toLocaleString()}
+              </Text>
+            </HStack>
+          )}
+          {selectedMovie.payment.usedPoint > 0 && (
+            <HStack alignItems="center">
+              <Heading fontSize={12}>포인트 사용 금액:</Heading>
+              <Text fontSize={12} color="green.400">
+                {selectedMovie.payment.usedPoint.toLocaleString()}
+              </Text>
+            </HStack>
+          )}
+          <HStack alignItems="center">
+            <Heading fontSize={12} fontWeight={800}>
+              결제 금액:
+            </Heading>
+            <Text fontSize={12} color="red.400" fontWeight={800}>
+              {salesTotalPrice(
+                totalPrice(selectedMovie.headCount),
+                selectedMovie.payment.partner?.discount,
+              ).toLocaleString()}
+            </Text>
           </HStack>
         </>
       )}

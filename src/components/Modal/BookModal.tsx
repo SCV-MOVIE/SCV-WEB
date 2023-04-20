@@ -27,17 +27,22 @@ function BookModal({ isOpen, onClose }: Props) {
   const [state, dispatch] = React.useReducer(BookStepReducer, InitialStepValue);
   const ModalStepContent = BookStepContent[state.step];
 
-  const onClickPrev = () => dispatch({ direction: 'prev' });
-  const onClickNext = () => dispatch({ direction: 'next' });
-  const onClickClose = () => {
+  const onClickPrev = React.useCallback(() => dispatch({ direction: 'prev' }), []);
+  const onClickNext = React.useCallback(() => dispatch({ direction: 'next' }), []);
+  const onClickClose = React.useCallback(() => {
     dispatch({ direction: 'reset' });
     onClose();
-  };
+  }, [onClose]);
+
+  const onReset = React.useCallback(() => {
+    dispatch({ direction: 'reset' });
+    setValue(initialSelectedMovieValue);
+  }, []);
 
   return (
     <Modal isOpen={isOpen} onClose={onClickClose} size="5xl">
       <ModalOverlay />
-      <ModalContent overflow="scroll">
+      <ModalContent overflow="scroll" minH={620}>
         <ModalHeader>
           <HStack justifyContent="center" position="relative">
             <HStack
@@ -46,6 +51,7 @@ function BookModal({ isOpen, onClose }: Props) {
               cursor="pointer"
               alignItems="center"
               _hover={{ color: 'black', fontWeight: 800 }}
+              onClick={onReset}
             >
               <Icon as={RefreshRight} />
               <Text fontSize={8} transition="all 0.2s">
@@ -67,9 +73,15 @@ function BookModal({ isOpen, onClose }: Props) {
               이전 단계
             </Button>
           )}
-          <Button colorScheme="blue" onClick={onClickNext} borderRadius={0}>
-            다음 단계
-          </Button>
+          {state.step !== BookStep.PAY ? (
+            <Button colorScheme="blue" onClick={onClickNext} borderRadius={0}>
+              다음 단계
+            </Button>
+          ) : (
+            <Button colorScheme="red" onClick={onClickNext} borderRadius={0}>
+              결제
+            </Button>
+          )}
         </ModalFooter>
       </ModalContent>
     </Modal>

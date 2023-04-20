@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { Movie } from '@root/src/@types';
-import { ShowTime } from '@root/src/@types/theater';
+import { Movie, Partner, Payment } from '@root/src/@types';
+import { ShowTime, Ticket } from '@root/src/@types/theater';
 
 export interface HeadCount {
   adult: number;
@@ -13,6 +13,7 @@ export interface SelectedMovie {
   showTime: ShowTime;
   headCount: HeadCount;
   selectedSeats: number[];
+  payment: Pick<Payment, 'method'> & Pick<Ticket, 'usedPoint'> & { partner?: Partner };
 }
 
 interface BookContextType {
@@ -45,6 +46,14 @@ export const initialSelectedMovieValue: SelectedMovie = {
     child: 0,
   },
   selectedSeats: [],
+  payment: {
+    method: undefined,
+    usedPoint: 0,
+    partner: {
+      name: '',
+      discount: 0,
+    },
+  },
 };
 
 export const BookContext = React.createContext<BookContextType>({

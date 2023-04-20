@@ -1,6 +1,7 @@
 import React from 'react';
 import SelectInfomationBox from './SelectInfomationBox';
 import SelectMovieBox from './SelectMovieBox';
+import SelectPayBox from './SelectPayBox';
 import SelectSeatBox from './SelectSeatBox';
 
 export const enum BookStep {
@@ -19,7 +20,7 @@ export const BookStepTitle = {
   [BookStep.MOVIE]: '영화 예매',
   [BookStep.INFOMATION]: '예매자 정보',
   [BookStep.SEAT]: '좌석 선택',
-  [BookStep.PAY]: '결제',
+  [BookStep.PAY]: '결제 선택',
 } as const;
 
 export const InitialStepValue = {
@@ -54,5 +55,5 @@ export const BookStepContent = {
   [BookStep.MOVIE]: SelectMovieBox,
   [BookStep.INFOMATION]: SelectInfomationBox,
   [BookStep.SEAT]: SelectSeatBox,
-  [BookStep.PAY]: SelectMovieBox,
+  [BookStep.PAY]: SelectPayBox,
 } as const;
