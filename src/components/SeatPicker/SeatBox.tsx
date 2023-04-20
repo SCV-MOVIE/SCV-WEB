@@ -15,7 +15,7 @@ function SeatBox(props: Props) {
 
   return (
     <Wrapper
-      occupied={occupied}
+      occupied={`${occupied}`}
       disabled={occupied}
       selected={selected}
       aria-disabled={occupied}
@@ -30,7 +30,7 @@ function SeatBox(props: Props) {
   );
 }
 
-type StyleProps = Pick<Props, 'occupied' | 'selected'>;
+type StyleProps = Pick<Props, 'selected'> & { occupied: `${boolean}` };
 const Wrapper = styled(Button)<StyleProps>`
   display: inline-block;
   width: 40px;
