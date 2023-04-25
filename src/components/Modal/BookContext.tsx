@@ -14,6 +14,13 @@ export interface SelectedMovie {
   headCount: HeadCount;
   selectedSeats: number[];
   payment: Pick<Payment, 'method'> & Pick<Ticket, 'usedPoint'> & { partner?: Partner };
+  information: {
+    name: string;
+    phoneNumber: string;
+    securityFrontNumber: string;
+    securityBackNumber: string;
+    agree: boolean;
+  };
 }
 
 interface BookContextType {
@@ -52,6 +59,13 @@ export const initialSelectedMovieValue: SelectedMovie = {
       name: '',
       discount: 0,
     },
+  },
+  information: {
+    name: '',
+    phoneNumber: '',
+    securityFrontNumber: '',
+    securityBackNumber: '',
+    agree: false,
   },
 };
 

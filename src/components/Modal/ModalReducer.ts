@@ -1,12 +1,12 @@
 import React from 'react';
-import SelectInfomationBox from './SelectInfomationBox';
+import SelectInformationBox from './SelectInformationBox';
 import SelectMovieBox from './SelectMovieBox';
 import SelectPayBox from './SelectPayBox';
 import SelectSeatBox from './SelectSeatBox';
 
 export const enum BookStep {
   MOVIE = 1,
-  INFOMATION,
+  INFORMATION,
   SEAT,
   PAY,
 }
@@ -18,7 +18,7 @@ export interface BookStepType {
 
 export const BookStepTitle = {
   [BookStep.MOVIE]: '영화 예매',
-  [BookStep.INFOMATION]: '예매자 정보',
+  [BookStep.INFORMATION]: '예매자 정보',
   [BookStep.SEAT]: '좌석 선택',
   [BookStep.PAY]: '결제 선택',
 } as const;
@@ -53,7 +53,7 @@ export type BookStepDispatcher = React.Dispatch<{
 
 export const BookStepContent = {
   [BookStep.MOVIE]: SelectMovieBox,
-  [BookStep.INFOMATION]: SelectInfomationBox,
+  [BookStep.INFORMATION]: SelectInformationBox,
   [BookStep.SEAT]: SelectSeatBox,
   [BookStep.PAY]: SelectPayBox,
 } as const;
