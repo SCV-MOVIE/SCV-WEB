@@ -3,7 +3,7 @@ import { Center, Divider, Heading, HStack, Stack } from '@chakra-ui/react';
 
 import { HeadCount, useBookContext } from './BookContext';
 import { NumberInputBox, SeatPicker } from '@/components';
-import SelectedTicketInfomation from './SelectedTicketInfomation';
+import SelectedTicketInformation from './SelectedTicketInformation';
 
 function SelectSeatBox() {
   const { value, setValue } = useBookContext();
@@ -71,7 +71,7 @@ function SelectSeatBox() {
       </Stack>
       <Divider orientation="vertical" height={240} color="gray.400" alignSelf="center" />
       <Stack spacing={4}>
-        <SelectedTicketInfomation selectedMovie={value} />
+        <SelectedTicketInformation selectedMovie={value} />
       </Stack>
     </HStack>
   );

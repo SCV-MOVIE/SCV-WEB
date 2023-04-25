@@ -8,7 +8,7 @@ interface Props {
   selectedMovie: SelectedMovie;
 }
 
-function SelectedTicketInfomation({ selectedMovie }: Props) {
+function SelectedTicketInformation({ selectedMovie }: Props) {
   return (
     <Stack
       justifyContent="center"
@@ -116,4 +116,4 @@ function SelectedTicketInfomation({ selectedMovie }: Props) {
   );
 }
 
-export default SelectedTicketInfomation;
+export default SelectedTicketInformation;

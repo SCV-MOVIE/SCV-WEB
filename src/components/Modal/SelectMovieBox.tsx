@@ -16,7 +16,7 @@ import MovieRating from '../MovieRating';
 import { Movie } from '@root/src/@types';
 import { useBookContext } from './BookContext';
 import { ShowTime } from '@root/src/@types/theater';
-import SelectedTicketInfomation from './SelectedTicketInfomation';
+import SelectedTicketInfomation from './SelectedTicketInformation';
 import { DUMMY_MOVIE, DUMMY_SHOWTIME } from '@root/src/constants/dummy';
 import { korDay, colorDay, dateFormatter } from '@root/src/utils';
 

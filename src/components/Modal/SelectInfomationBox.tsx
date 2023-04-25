@@ -14,7 +14,7 @@ import {
 import styled from '@emotion/styled';
 import React from 'react';
 
-function SelectInfomationBox() {
+function SelectInformationBox() {
   const [check, setCheck] = React.useState(false);
 
   return (
@@ -103,4 +103,4 @@ const ColorCheckBox = styled(Checkbox)`
   }
 `;
 
-export default SelectInfomationBox;
+export default SelectInformationBox;
