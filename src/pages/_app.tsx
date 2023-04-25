@@ -1,3 +1,4 @@
+import localFont from 'next/font/local';
 import type { AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import { ReactQueryDevtools } from 'react-query/devtools';
@@ -8,13 +9,40 @@ import { MainLayout } from '../components';
 
 const queryClient = new QueryClient();
 
+export const pretendard = localFont({
+  src: [
+    {
+      path: '../../public/fonts/pretendard-bold.woff',
+      weight: '700',
+      style: 'bold',
+    },
+    {
+      path: '../../public/fonts/pretendard-SemiBold.woff',
+      weight: '600',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/pretendard-Medium.woff',
+      weight: '500',
+      style: 'normal',
+    },
+    {
+      path: '../../public/fonts/pretendard-Regular.woff',
+      weight: '400',
+      style: 'normal',
+    },
+  ],
+});
+
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
-        <MainLayout>
-          <Component {...pageProps} />
-        </MainLayout>
+        <main className={pretendard.className}>
+          <MainLayout>
+            <Component {...pageProps} />
+          </MainLayout>
+        </main>
         <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       </QueryClientProvider>
     </ChakraProvider>
