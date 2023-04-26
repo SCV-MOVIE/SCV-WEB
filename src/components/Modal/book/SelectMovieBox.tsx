@@ -12,11 +12,11 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-import MovieRating from '../MovieRating';
 import { Movie } from '@root/src/@types';
 import { useBookContext } from './BookContext';
 import { ShowTime } from '@root/src/@types/theater';
-import SelectedTicketInfomation from './SelectedTicketInformation';
+import MovieRating from '@root/src/components/MovieRating';
+import SelectedTicketInformation from './SelectedTicketInformation';
 import { DUMMY_MOVIE, DUMMY_SHOWTIME } from '@root/src/constants/dummy';
 import { korDay, colorDay, dateFormatter } from '@root/src/utils';
 
@@ -149,7 +149,7 @@ function SelectMovieBox() {
         ))}
       </Stack>
       <Divider orientation="vertical" />
-      <SelectedTicketInfomation selectedMovie={value} />
+      <SelectedTicketInformation selectedMovie={value} />
     </HStack>
   );
 }

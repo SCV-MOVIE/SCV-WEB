@@ -74,7 +74,7 @@ export const BookContext = React.createContext<BookContextType>({
   setValue: () => {},
 });
 
-function createGenericUseContext<T>(context: React.Context<T>): () => NonNullable<T> {
+export function createGenericUseContext<T>(context: React.Context<T>): () => NonNullable<T> {
   return (): NonNullable<T> => {
     const value: T = React.useContext<T>(context);
 

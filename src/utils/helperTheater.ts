@@ -1,4 +1,4 @@
-import { HeadCount, SelectedMovie } from '@/components/Modal/BookContext';
+import { HeadCount, SelectedMovie } from '@root/src/components/Modal/book/BookContext';
 
 const ADULT_PRICE = 10000;
 const CHILD_PRICE = 7000;
