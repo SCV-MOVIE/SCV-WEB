@@ -6,6 +6,9 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 
 import { theme } from '../theme';
 import { MainLayout } from '../components';
+import { initialUserValue, UserContext, UserContextProvider } from '../components/Modal/user';
+import React from 'react';
+import { User } from '../@types';
 
 const queryClient = new QueryClient();
 
@@ -35,14 +38,18 @@ export const pretendard = localFont({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
+  const [user, setUser] = React.useState<User>(initialUserValue);
+
   return (
     <ChakraProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
-        <main className={pretendard.className}>
-          <MainLayout>
-            <Component {...pageProps} />
-          </MainLayout>
-        </main>
+        <UserContextProvider user={user} setUser={setUser}>
+          <main className={pretendard.className}>
+            <MainLayout>
+              <Component {...pageProps} />
+            </MainLayout>
+          </main>
+        </UserContextProvider>
         <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       </QueryClientProvider>
     </ChakraProvider>
