@@ -1,3 +1,5 @@
+import { Movie } from './movie';
+
 export interface ShowTime {
   id: number;
   round: number;
@@ -32,3 +34,8 @@ export interface Ticket {
   showTimeId: number;
   userId: number;
 }
+
+export type CheckTicket = Ticket & {
+  movie: Movie;
+  showTime: ShowTime;
+};

@@ -13,6 +13,7 @@ import { pretendard } from '@root/src/pages/_app';
 import type { Information, Ticket } from '@root/src/@types';
 import CheckTicketInformationBox from './CheckTicketInformationBox';
 import PayedTicketInformationBox from './PayedTicketInformationBox';
+import { DUMMY_CHECK_TICKET } from '@root/src/constants/dummy';
 
 interface Props {
   isOpen: boolean;
@@ -50,10 +51,12 @@ function CheckModal({ isOpen, onClose }: Props) {
     console.log(data);
     //TODO: 백엔드 데이터 조회
     setStep('complete');
+    setTicketInformation(DUMMY_CHECK_TICKET);
   };
   const onTicketSubmit: SubmitHandler<Pick<Ticket, 'reserveNumber'>> = async (data) => {
     console.log(data);
     setStep('complete');
+    setTicketInformation(DUMMY_CHECK_TICKET);
   };
 
   return (
