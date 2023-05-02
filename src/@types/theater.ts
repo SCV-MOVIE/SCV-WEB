@@ -14,7 +14,7 @@ export interface Theater {
 
 export interface TheaterType {
   id: number;
-  value: 'NORMAL' | 'PREMIUM' | '3D'
+  value: 'NORMAL' | 'PREMIUM' | '3D';
 }
 
 export interface Seat {
@@ -26,6 +26,9 @@ export interface Ticket {
   id: number;
   price: number;
   paymentDate: string;
-  status: 'STANDBY' | 'PAYED' | 'PRINTED' | 'CANCELLED' | 'REJECTED'
+  status: 'STANDBY' | 'PAYED' | 'PRINTED' | 'CANCELLED' | 'REJECTED';
   usedPoint: number;
+  reserveNumber: string;
+  showTimeId: number;
+  userId: number;
 }

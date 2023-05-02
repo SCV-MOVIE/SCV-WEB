@@ -9,3 +9,10 @@ export interface Partner {
   name: string;
   discount: number;
 }
+
+export interface Information {
+  name: string;
+  phoneNumber: string;
+  securityFrontNumber: string;
+  securityBackNumber: string;
+}

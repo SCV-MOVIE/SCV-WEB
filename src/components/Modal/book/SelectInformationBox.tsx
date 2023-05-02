@@ -11,17 +11,12 @@ import {
   Text,
   Tr,
 } from '@chakra-ui/react';
-import styled from '@emotion/styled';
 import React from 'react';
+import styled from '@emotion/styled';
 import { Controller, useForm } from 'react-hook-form';
-import { SelectedMovie, useBookContext } from './BookContext';
 
-interface Information {
-  name: string;
-  phoneNumber: string;
-  securityFrontNumber: string;
-  securityBackNumber: string;
-}
+import type { Information } from '@root/src/@types';
+import { SelectedMovie, useBookContext } from './BookContext';
 
 function SelectInformationBox() {
   const { value, setValue } = useBookContext();
