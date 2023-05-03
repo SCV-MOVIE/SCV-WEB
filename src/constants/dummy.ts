@@ -1,5 +1,5 @@
 import type { Movie } from '@/@types';
-import type { CheckTicket, ShowTime } from '../@types/theater';
+import type { CheckTicket, ShowTime, Ticket } from '../@types/theater';
 
 export const DUMMY_MOVIE: Movie = {
   id: 1,
@@ -27,7 +27,7 @@ export const DUMMY_SHOWTIME: ShowTime = {
   isPublic: true,
 };
 
-export const DUMMY_CHECK_TICKET: CheckTicket = {
+const DUMMY_TICKET: Ticket = {
   id: 1,
   price: 35000,
   paymentDate: new Date().toUTCString(),
@@ -36,6 +36,29 @@ export const DUMMY_CHECK_TICKET: CheckTicket = {
   reserveNumber: 'AD30BD30AC20DA20',
   showTimeId: 1,
   userId: 1,
-  movie: DUMMY_MOVIE,
-  showTime: DUMMY_SHOWTIME,
+};
+
+export const DUMMY_CHECK_TICKET: CheckTicket = {
+  ticket: {
+    price: DUMMY_TICKET.price,
+    paymentDate: DUMMY_TICKET.paymentDate,
+  },
+  movie: {
+    name: DUMMY_MOVIE.name,
+    imgUrl: DUMMY_MOVIE.imgUrl,
+    length: DUMMY_MOVIE.length,
+  },
+  showTime: {
+    startDate: DUMMY_SHOWTIME.startDate,
+  },
+  seat: [
+    { id: 1, seatNm: 1 },
+    { id: 2, seatNm: 2 },
+  ],
+  theater: {
+    name: '3D',
+  },
+  payment: {
+    method: 'CARD',
+  },
 };

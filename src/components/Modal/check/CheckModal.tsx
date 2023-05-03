@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 
 import { pretendard } from '@root/src/pages/_app';
-import type { Information, Ticket } from '@root/src/@types';
+import type { CheckTicket, Information, Ticket } from '@root/src/@types';
 import CheckTicketInformationBox from './CheckTicketInformationBox';
 import PayedTicketInformationBox from './PayedTicketInformationBox';
 import { DUMMY_CHECK_TICKET } from '@root/src/constants/dummy';
@@ -26,7 +26,7 @@ const ModalContents: Record<
 > = {
   complete: {
     header: '예매 정보 확인',
-    body: <PayedTicketInformationBox ticket={null} />,
+    body: <PayedTicketInformationBox payedTicket={null} />,
   },
   information: {
     header: '예매 정보 입력',
@@ -45,7 +45,7 @@ const ModalContents: Record<
 
 function CheckModal({ isOpen, onClose }: Props) {
   const [step, setStep] = React.useState<keyof typeof ModalContents>('information');
-  const [ticketInformation, setTicketInformation] = React.useState<Ticket | null>(null);
+  const [ticketInformation, setTicketInformation] = React.useState<CheckTicket | null>(null);
 
   const onInfoSubmit: SubmitHandler<Information> = async (data) => {
     console.log(data);
@@ -67,7 +67,7 @@ function CheckModal({ isOpen, onClose }: Props) {
         <ModalCloseButton />
         <ModalBody>
           {React.cloneElement(ModalContents[step].body, {
-            ticket: ticketInformation,
+            payedTicket: ticketInformation,
             onInfoSubmit,
             onTicketSubmit,
           })}

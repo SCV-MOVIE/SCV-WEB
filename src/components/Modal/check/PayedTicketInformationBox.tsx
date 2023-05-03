@@ -1,66 +1,42 @@
 import React from 'react';
 import Image from 'next/image';
-import { Button, Divider, Heading, HStack, Input, Stack, Text } from '@chakra-ui/react';
+import { Button, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 
 import type { CheckTicket } from '@root/src/@types';
-import MovieRating from '../../MovieRating';
 
 interface Props {
-  ticket: CheckTicket | null;
+  payedTicket: CheckTicket | null;
 }
 
-function PayedTicketInformationBox({ ticket }: Props) {
+function PayedTicketInformationBox({ payedTicket }: Props) {
   return (
     <HStack spacing={12} alignItems="start">
-      <Stack maxW={200}>
-        <Image width={160} height={160} src={ticket?.movie.imgUrl ?? ''} alt="image-thumbnail" />
-        <Heading as="h3" size="md">
-          {ticket?.movie.name}
-        </Heading>
-        <Text size="sm" fontSize={12}>
-          {ticket?.movie.introduction}
-        </Text>
+      <Stack maxW={240}>
+        <Image
+          width={240}
+          height={500}
+          src={payedTicket?.movie.imgUrl ?? ''}
+          alt="image-thumbnail"
+        />
       </Stack>
       <Stack flex={1} gap={4}>
         <Heading size="md">영화 정보</Heading>
         <HStack alignItems="center">
-          <Heading fontSize={12}>상영등급: </Heading>
-          <MovieRating size={'md'} rating={ticket?.movie.rating ?? 'All'} />
+          <Heading fontSize={12}>제목: </Heading>
+          <Text size="sm" fontSize={12}>
+            {payedTicket?.movie.name}
+          </Text>
         </HStack>
         <HStack alignItems="center">
           <Heading fontSize={12}>러닝타임: </Heading>
           <Text size="sm" fontSize={12}>
-            {ticket?.movie.length}
+            {payedTicket?.movie.length}
           </Text>
         </HStack>
         <HStack alignItems="center">
-          <Heading fontSize={12}>장르: </Heading>
+          <Heading fontSize={12}>시작시간: </Heading>
           <Text size="sm" fontSize={12}>
-            {ticket?.movie.genres.map((genre) => genre.value).join(', ')}
-          </Text>
-        </HStack>
-        <HStack alignItems="center">
-          <Heading fontSize={12}>감독: </Heading>
-          <Text size="sm" fontSize={12}>
-            {ticket?.movie.director}
-          </Text>
-        </HStack>
-        <HStack alignItems="center">
-          <Heading fontSize={12}>배급사: </Heading>
-          <Text size="sm" fontSize={12}>
-            {ticket?.movie.distributor}
-          </Text>
-        </HStack>
-        <HStack alignItems="center">
-          <Heading fontSize={12}>배우: </Heading>
-          <Text size="sm" fontSize={12}>
-            {ticket?.movie.actors}
-          </Text>
-        </HStack>
-        <HStack alignItems="center">
-          <Heading fontSize={12}>제작진: </Heading>
-          <Text size="sm" fontSize={12}>
-            {ticket?.movie.staff}
+            {payedTicket?.showTime.startDate.getUTCDate()}
           </Text>
         </HStack>
       </Stack>
@@ -71,7 +47,15 @@ function PayedTicketInformationBox({ ticket }: Props) {
             가격:
           </Heading>
           <Text size="sm" fontSize={12}>
-            {ticket?.price.toLocaleString()}
+            {payedTicket?.ticket.price.toLocaleString()}
+          </Text>
+        </HStack>
+        <HStack alignItems="center">
+          <Heading size="sm" fontSize={12}>
+            결제 방법:
+          </Heading>
+          <Text size="sm" fontSize={12}>
+            {payedTicket?.payment.method}
           </Text>
         </HStack>
         <HStack alignItems="center">
@@ -79,31 +63,31 @@ function PayedTicketInformationBox({ ticket }: Props) {
             결제일:
           </Heading>
           <Text size="sm" fontSize={12}>
-            {ticket?.paymentDate}
+            {payedTicket?.ticket.paymentDate}
           </Text>
         </HStack>
         <HStack alignItems="center">
           <Heading size="sm" fontSize={12}>
-            사용 포인트:
+            영화관:
           </Heading>
           <Text size="sm" fontSize={12}>
-            {ticket?.usedPoint.toLocaleString()}
+            {payedTicket?.theater.name}
           </Text>
         </HStack>
         <HStack alignItems="center">
           <Heading size="sm" fontSize={12}>
-            예약 번호:
+            인원:
           </Heading>
           <Text size="sm" fontSize={12}>
-            {ticket?.reserveNumber}
+            {payedTicket?.seat.length} 명
           </Text>
         </HStack>
         <HStack alignItems="center">
           <Heading size="sm" fontSize={12}>
-            상태:
+            좌석:
           </Heading>
           <Text size="sm" fontSize={12}>
-            {ticket?.status}
+            {payedTicket?.seat.map((seat) => seat.seatNm).join(', ')}
           </Text>
         </HStack>
         <Button colorScheme="red">예매 취소</Button>

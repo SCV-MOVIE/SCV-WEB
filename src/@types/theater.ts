@@ -1,4 +1,5 @@
 import { Movie } from './movie';
+import { Payment } from './payment';
 
 export interface ShowTime {
   id: number;
@@ -35,7 +36,11 @@ export interface Ticket {
   userId: number;
 }
 
-export type CheckTicket = Ticket & {
-  movie: Movie;
-  showTime: ShowTime;
+export type CheckTicket = {
+  ticket: Pick<Ticket, 'price' | 'paymentDate'>;
+  movie: Pick<Movie, 'imgUrl' | 'name' | 'length'>;
+  showTime: Pick<ShowTime, 'startDate'>;
+  theater: Pick<Theater, 'name'>;
+  seat: Seat[];
+  payment: Pick<Payment, 'method'>;
 };
