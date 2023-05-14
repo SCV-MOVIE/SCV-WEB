@@ -3463,6 +3463,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@tanstack/react-table@npm:^8.9.0":
+  version: 8.9.0
+  resolution: "@tanstack/react-table@npm:8.9.0"
+  dependencies:
+    "@tanstack/table-core": 8.9.0
+  peerDependencies:
+    react: ">=16"
+    react-dom: ">=16"
+  checksum: bb126dc2711df3d6be5d739d0c1605bfbccece042bd2d04efb7abadf7b0d03afe285973b0f9955431fbd93e6dd9e0a2117d1c9e035b5fabb91c62dda68e57719
+  languageName: node
+  linkType: hard
+
+"@tanstack/table-core@npm:8.9.0":
+  version: 8.9.0
+  resolution: "@tanstack/table-core@npm:8.9.0"
+  checksum: 67c7c65bd1ac58a33999de1ad4cbb095ed373925fd03bf8547261cf8f8a1bb835a5e3484f683de3923a183e416e68bb1cf0a9ad311963fd7c159a45ddb020fe3
+  languageName: node
+  linkType: hard
+
 "@tootallnate/once@npm:2":
   version: 2.0.0
   resolution: "@tootallnate/once@npm:2.0.0"
@@ -8181,6 +8200,7 @@ __metadata:
     "@emotion/styled": ^11.10.6
     "@netlify/plugin-nextjs": ^4.34.0
     "@svgr/webpack": ^6.5.1
+    "@tanstack/react-table": ^8.9.0
     "@types/node": 18.14.4
     "@types/react": 18.0.28
     "@types/react-dom": 18.0.11
