@@ -52,6 +52,10 @@ const colors = {
 
   // oragne
   orange: '#FF6B00',
+
+  // approve, reject
+  approve: '#0085FF',
+  reject: '#F2426F',
 } as const;
 
 const breakPoiints = {
