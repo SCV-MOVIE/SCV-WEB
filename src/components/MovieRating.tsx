@@ -1,19 +1,30 @@
-import { HStack } from '@chakra-ui/react';
-import { HalfStar, Star } from '@root/public/icons';
+import { Tag } from '@chakra-ui/react';
+import type { TagProps } from '@chakra-ui/react';
+import { Movie } from '../@types';
+import React from 'react';
 
 interface Props {
-  rating: number;
+  size: TagProps['size'];
+  rating: Movie['rating'];
 }
 
 function MovieRating({ rating }: Props) {
-  return (
-    <HStack spacing={0}>
-      {[...Array(Math.floor(rating))].map((_, idx) => (
-        <Star key={idx} />
-      ))}
-      {Math.round(rating % 1) && <HalfStar />}{' '}
-    </HStack>
-  );
+  const colorScheme = React.useMemo(() => {
+    switch (rating) {
+      case 'All':
+        return 'teal';
+      case '12+':
+        return 'yellow';
+      case '15+':
+        return 'green';
+      case 'All':
+        return 'red';
+      default:
+        return 'teal';
+    }
+  }, [rating]);
+
+  return <Tag colorScheme={colorScheme}>{rating}</Tag>;
 }
 
 export default MovieRating;

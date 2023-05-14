@@ -1,11 +1,13 @@
+import React from 'react';
 import Head from 'next/head';
 import styled from '@emotion/styled';
 import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
-import { Button, Input, Stack, Text, Box, Center, HStack } from '@chakra-ui/react';
+import { Button, Input, Stack, Text, Box, Center, HStack, useDisclosure } from '@chakra-ui/react';
 
 import { Bottom, Logo } from '@/components';
 import { useTheme } from '@emotion/react';
+import { UserUtilModal } from '../components/Modal/user';
 
 interface LoginType {
   email: string;
@@ -14,6 +16,18 @@ interface LoginType {
 
 export default function Login() {
   const theme = useTheme();
+  const [utilModalType, setUtilModalType] = React.useState<'findID' | 'findPW' | 'signUp'>(
+    'findID',
+  );
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const handleClickModalOpen = React.useCallback(
+    (type: 'findID' | 'findPW' | 'signUp') => {
+      setUtilModalType(type);
+      onOpen();
+    },
+    [onOpen],
+  );
+
   const { register, handleSubmit } = useForm<LoginType>();
   const onSubmit: SubmitHandler<LoginType> = (data) => console.log(data);
 
@@ -51,13 +65,28 @@ export default function Login() {
             />
           </Stack>
           <HStack px={8} mt={4} justifyContent="space-between">
-            <Text size="md" color={theme.colors.coreBlue}>
+            <Text
+              size="md"
+              color={theme.colors.coreBlue}
+              cursor="pointer"
+              onClick={() => handleClickModalOpen('findID')}
+            >
               아이디 찾기
             </Text>
-            <Text size="md" color={theme.colors.coreBlue}>
+            <Text
+              size="md"
+              color={theme.colors.coreBlue}
+              cursor="pointer"
+              onClick={() => handleClickModalOpen('findPW')}
+            >
               비밀번호 찾기
             </Text>
-            <Text size="md" color={theme.colors.coreBlue}>
+            <Text
+              size="md"
+              color={theme.colors.coreBlue}
+              cursor="pointer"
+              onClick={() => handleClickModalOpen('signUp')}
+            >
               회원가입
             </Text>
           </HStack>
@@ -82,6 +111,7 @@ export default function Login() {
           </Center>
         </Box>
       </LoginForm>
+      <UserUtilModal type={utilModalType} isOpen={isOpen} onClose={onClose} />
       <Bottom />
     </>
   );
@@ -100,9 +130,4 @@ const LoginForm = styled('form')`
   box-sizing: border-box;
   background-color: ${({ theme }) => theme.colors.gray500};
   border-radius: 12px;
-
-  '@bp2': {
-    max-width: 320px;
-    padding-inline: 24px;
-  },
 `;

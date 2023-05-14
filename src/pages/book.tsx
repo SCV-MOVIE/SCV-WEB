@@ -12,12 +12,16 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-import { BookModal, Bottom } from '@/components';
+import { BookModal, Bottom, CheckModal } from '@/components';
 import { Film, Printer } from '@root/public/icons';
 
 export default function BookPage() {
   const { isOpen: isBookOpen, onOpen: onBookOpen, onClose: onBookClose } = useDisclosure();
-  const { isOpen: isConfirmOpen, onOpen: onConfirmOpen, onClose: onConfirmClose } = useDisclosure();
+  const {
+    isOpen: isCheckingBookOpen,
+    onOpen: onCheckingBookOpen,
+    onClose: onCheckingBookClose,
+  } = useDisclosure();
 
   return (
     <>
@@ -69,6 +73,7 @@ export default function BookPage() {
               px={8}
               py={8}
               justifyContent="space-between"
+              onClick={onCheckingBookOpen}
             >
               <Heading as="h2" py={24} fontSize={24}>
                 예매확인/취소
@@ -79,6 +84,7 @@ export default function BookPage() {
       </Content>
       <Bottom />
       <BookModal isOpen={isBookOpen} onClose={onBookClose} />
+      <CheckModal isOpen={isCheckingBookOpen} onClose={onCheckingBookClose} />
     </>
   );
 }
