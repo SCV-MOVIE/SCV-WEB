@@ -9,6 +9,7 @@ import { MainLayout } from '../components';
 import { initialUserValue, UserContext, UserContextProvider } from '../components/Modal/user';
 import React from 'react';
 import { User } from '../@types';
+import BankLayout from '../components/bank/BankLayout';
 
 const queryClient = new QueryClient();
 
@@ -43,13 +44,20 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <ChakraProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
-        <UserContextProvider user={user} setUser={setUser}>
-          <main className={pretendard.className}>
-            <MainLayout>
-              <Component {...pageProps} />
-            </MainLayout>
-          </main>
-        </UserContextProvider>
+        {pageProps.layout === 'bank' ? (
+          <BankLayout title={pageProps.title}>
+            <Component {...pageProps} />
+          </BankLayout>
+        ) : (
+          <UserContextProvider user={user} setUser={setUser}>
+            <main className={pretendard.className}>
+              <MainLayout>
+                <Component {...pageProps} />
+              </MainLayout>
+            </main>
+          </UserContextProvider>
+        )}
+
         <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       </QueryClientProvider>
     </ChakraProvider>

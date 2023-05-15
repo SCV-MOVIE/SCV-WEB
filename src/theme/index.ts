@@ -2,7 +2,8 @@ import { extendTheme, StyleFunctionProps } from '@chakra-ui/react';
 
 const colors = {
   // Gray Scale
-  white: '#F8FAF9',
+  white: '#FFFFFF',
+  offwhite: '#F8FAF9',
   gray100: '#E5E8EB',
   gray200: '#D1D6DB',
   gray300: '#8B95A1',
@@ -51,6 +52,10 @@ const colors = {
 
   // oragne
   orange: '#FF6B00',
+
+  // approve, reject
+  approve: '#0085FF',
+  reject: '#F2426F',
 } as const;
 
 const breakPoiints = {
@@ -68,7 +73,6 @@ export const theme = extendTheme({
         height: '100vh',
         margin: '0',
         padding: '0',
-        bg: '#0d0d0d',
         overscrollBehaviorBlock: 'none',
       },
       a: {

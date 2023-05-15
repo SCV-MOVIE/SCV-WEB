@@ -48,18 +48,12 @@ const Wrapper = styled.div`
 
 const MovieImage = styled(Image)`
   max-width: 100%;
-<<<<<<< Updated upstream
-=======
   max-height: 320px;
->>>>>>> Stashed changes
 `;
 
 const BookingButton = styled(Button)`
   transition: all 0.2s ease-in;
-<<<<<<< Updated upstream
-=======
-  background-color: ${({ theme }) => theme.colors.white};
->>>>>>> Stashed changes
+  background-color: ${({ theme }) => theme.colors.offwhite};
 
   &,
   & > span svg path,
