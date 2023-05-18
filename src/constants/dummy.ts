@@ -5,7 +5,7 @@ export const DUMMY_MOVIE: Movie = {
   id: 1,
   name: 'Joker',
   length: '1800',
-  rating: '15+',
+  rating: '18+',
   genres: [
     { id: 1, value: 'Drama' },
     { id: 2, value: 'Comedy' },

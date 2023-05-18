@@ -17,6 +17,7 @@ import { RefreshRight } from '@root/public/icons';
 import { BookStep, BookStepContent, BookStepReducer, InitialStepValue } from './ModalReducer';
 import { BookContextProvider, initialSelectedMovieValue, SelectedMovie } from './BookContext';
 import { pretendard } from '@root/src/pages/_app';
+import { getAge } from '@root/src/utils';
 
 interface Props {
   isOpen: boolean;
@@ -27,6 +28,11 @@ const isCompleteCurrentStep = (step: BookStep, value: SelectedMovie) => {
   if (step === BookStep.MOVIE) {
     return value.movie.name !== '' && value.showTime.id !== -1;
   } else if (step === BookStep.INFORMATION) {
+    const age = getAge(value.information.securityFrontNumber);
+    if (age < 15) {
+      alert('법정 대리인이 예매해야 합니다.');
+      return false;
+    }
     return (
       value.information.name !== '' &&
       value.information.phoneNumber !== '' &&
