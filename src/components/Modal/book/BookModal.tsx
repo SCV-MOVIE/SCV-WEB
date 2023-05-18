@@ -33,6 +33,10 @@ const isCompleteCurrentStep = (step: BookStep, value: SelectedMovie) => {
       alert('법정 대리인이 예매해야 합니다.');
       return false;
     }
+    if (value.movie.rating === '18+' && age < 20) {
+      alert('성인이 아닙니다.');
+      return false;
+    }
     return (
       value.information.name !== '' &&
       value.information.phoneNumber !== '' &&
