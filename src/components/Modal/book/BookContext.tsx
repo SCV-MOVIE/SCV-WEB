@@ -13,7 +13,8 @@ export interface SelectedMovie {
   showTime: ShowTime;
   headCount: HeadCount;
   selectedSeats: number[];
-  payment: Pick<Payment, 'method'> & Pick<Ticket, 'usedPoint'> & { partner?: Partner };
+  payment: Pick<Payment, 'method'> &
+    Pick<Ticket, 'usedPoint'> & { partner?: Partner; account?: string };
   information: {
     name: string;
     phoneNumber: string;
@@ -60,6 +61,7 @@ export const initialSelectedMovieValue: SelectedMovie = {
       name: '',
       discount: 0,
     },
+    account: '',
   },
   information: {
     name: '',

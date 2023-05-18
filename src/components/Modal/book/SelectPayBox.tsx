@@ -33,6 +33,7 @@ function SelectPayBox() {
           ...prev.payment,
           method,
           partner: { name: '', discount: 0 },
+          account: '',
         },
       }));
     },
@@ -94,7 +95,7 @@ function SelectPayBox() {
 
   return (
     <HStack width="100%" alignItems="start">
-      <Stack w="320px">
+      <Stack w="200px">
         <Center>
           <Heading size="md">포인트 사용</Heading>
         </Center>
@@ -116,7 +117,7 @@ function SelectPayBox() {
         </Text>
       </Stack>
       <Divider orientation="vertical" h={320} alignSelf="center" color="gray.500" />
-      <Stack w="240px">
+      <Stack w="200px">
         <Center>
           <Heading size="md">결제 수단</Heading>
         </Center>
@@ -161,6 +162,25 @@ function SelectPayBox() {
                 )}
               </ColorText>
             ))}
+        </DividerStack>
+      </Stack>
+      <Divider orientation="vertical" h={320} alignSelf="center" color="gray.500" />
+      <Stack w="200px">
+        <Center>
+          <Heading size="md">결제 정보</Heading>
+        </Center>
+        <DividerStack spacing={0} pt={'16px'}>
+          <Input
+            value={value.payment.account ?? ''}
+            placeholder="카드/계좌 번호"
+            disabled={typeof value.payment.method === 'undefined'}
+            onChange={(e) =>
+              setValue((prev) => ({
+                ...prev,
+                payment: { ...prev.payment, account: e.target.value },
+              }))
+            }
+          />
         </DividerStack>
       </Stack>
       <Divider orientation="vertical" h={320} alignSelf="center" color="gray.500" />
