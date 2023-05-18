@@ -25,7 +25,13 @@ interface Props {
 }
 
 const isCompleteCurrentStep = (step: BookStep, value: SelectedMovie) => {
+  // TODO: 유저 조회 api 연동
+  const userAge = 20;
   if (step === BookStep.MOVIE) {
+    if (value.movie?.rating === '18+' && userAge < 20) {
+      alert('성인이 아닙니다.');
+      return false;
+    }
     return value.movie.name !== '' && value.showTime.id !== -1;
   } else if (step === BookStep.INFORMATION) {
     const age = getAge(value.information.securityFrontNumber);
