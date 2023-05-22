@@ -1,6 +1,7 @@
+import React from 'react';
 import { Button, HStack, Input, Stack } from '@chakra-ui/react';
-import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
+import type { SubmitHandler } from 'react-hook-form';
 
 interface SignUp {
   name: string;
@@ -13,7 +14,7 @@ interface SignUp {
 }
 
 function SignUpBox() {
-  const { register, handleSubmit } = useForm<SignUp>();
+  const { watch, register, handleSubmit } = useForm<SignUp>();
   const onSubmit: SubmitHandler<SignUp> = async (data) => {
     if (data.password !== data.passwordCheck) {
       alert('비밀번호가 서로 다릅니다.');
@@ -22,6 +23,11 @@ function SignUpBox() {
     console.log(data);
   };
 
+  const handleClickCheckEmailButton = React.useCallback(() => {
+    const loginId = watch('loginId');
+    console.log(loginId);
+  }, [watch]);
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Stack padding={8}>
@@ -29,7 +35,12 @@ function SignUpBox() {
           <label htmlFor="name">이름</label>
           <Input placeholder="이름" {...register('name')} />
           <label htmlFor="id">아이디</label>
-          <Input id="id" placeholder="아이디" {...register('loginId')} padding={4} />
+          <HStack>
+            <Input id="id" placeholder="아이디" {...register('loginId')} padding={4} />
+            <Button type="button" onClick={handleClickCheckEmailButton}>
+              중복 확인
+            </Button>
+          </HStack>
           <label htmlFor="password">비밀번호</label>
           <Input
             id="password"
