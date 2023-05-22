@@ -17,8 +17,8 @@ function MainLayout({ children }: React.PropsWithChildren<unknown>) {
 const Wrapper = styled.div`
   max-width: 1920px;
   margin: 0 auto;
-  height: 100%;
   z-index: 50;
+  min-height: 100%;
   background-color: ${({ theme }) => theme.colors.background};
 `;
 
