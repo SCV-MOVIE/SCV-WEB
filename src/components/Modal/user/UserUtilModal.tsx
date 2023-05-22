@@ -1,6 +1,7 @@
 import { Modal, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 import { pretendard } from '@root/src/pages/_app';
 import React from 'react';
+import FindIdBox from './FindIDBox';
 import SignUpBox from './SignUpBox';
 
 interface Props {
@@ -12,7 +13,7 @@ interface Props {
 const ModalContents: Record<Props['type'], { header: string; body: React.ReactElement }> = {
   findID: {
     header: '아이디 찾기',
-    body: <SignUpBox />,
+    body: <FindIdBox />,
   },
   findPW: {
     header: '비밀번호 찾기',
