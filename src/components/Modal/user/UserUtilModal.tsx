@@ -1,12 +1,13 @@
 import { Modal, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 import { pretendard } from '@root/src/pages/_app';
 import React from 'react';
+import ChangePWBox from './ChangePWBox';
 import FindIdBox from './FindIDBox';
 import FindPWBox from './FindPWBox';
 import SignUpBox from './SignUpBox';
 
 interface Props {
-  type: 'findID' | 'findPW' | 'signUp';
+  type: 'findID' | 'findPW' | 'signUp' | 'changePW';
   isOpen: boolean;
   onClose: VoidFunction;
 }
@@ -23,6 +24,10 @@ const ModalContents: Record<Props['type'], { header: string; body: React.ReactEl
   signUp: {
     header: '회원가입',
     body: <SignUpBox />,
+  },
+  changePW: {
+    header: '비밀번호 변경',
+    body: <ChangePWBox />,
   },
 };
 
