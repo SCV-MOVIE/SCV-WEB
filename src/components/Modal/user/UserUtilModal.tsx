@@ -2,6 +2,7 @@ import { Modal, ModalCloseButton, ModalContent, ModalHeader, ModalOverlay } from
 import { pretendard } from '@root/src/pages/_app';
 import React from 'react';
 import FindIdBox from './FindIDBox';
+import FindPWBox from './FindPWBox';
 import SignUpBox from './SignUpBox';
 
 interface Props {
@@ -17,7 +18,7 @@ const ModalContents: Record<Props['type'], { header: string; body: React.ReactEl
   },
   findPW: {
     header: '비밀번호 찾기',
-    body: <SignUpBox />,
+    body: <FindPWBox />,
   },
   signUp: {
     header: '회원가입',
