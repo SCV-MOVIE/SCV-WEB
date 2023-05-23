@@ -50,7 +50,7 @@ export default function App({ Component, pageProps }: AppProps) {
           </BankLayout>
         ) : (
           <UserContextProvider user={user} setUser={setUser}>
-            <main className={pretendard.className}>
+            <main className={pretendard.className} style={{ height: '100%' }}>
               <MainLayout>
                 <Component {...pageProps} />
               </MainLayout>
