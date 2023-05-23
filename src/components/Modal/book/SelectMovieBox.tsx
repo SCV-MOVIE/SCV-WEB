@@ -93,17 +93,17 @@ function SelectMovieBox() {
                   color={
                     showTime === value?.showTime
                       ? 'white'
-                      : colorDay(showTime.startDate.getDay()).kor
+                      : colorDay(new Date(showTime.startDate).getDay()).kor
                   }
                 >
-                  {korDay(showTime.startDate.getDay())}
+                  {korDay(new Date(showTime.startDate).getDay())}
                 </Text>
                 <Text
                   fontSize={18}
                   color={
                     showTime === value?.showTime
                       ? 'white'
-                      : colorDay(showTime.startDate.getDay()).day
+                      : colorDay(new Date(showTime.startDate).getDay()).day
                   }
                 >
                   {formatedDate[1]}

@@ -46,17 +46,11 @@ function SelectedTicketInformation({ selectedMovie }: Props) {
         <>
           <HStack alignItems="center">
             <Heading fontSize={12}>날짜: </Heading>
-            <Text fontSize={12}>
-              {dateFormatter.format(selectedMovie.showTime.startDate).split('/')[0]}월{' '}
-              {dateFormatter.format(selectedMovie.showTime.startDate).split('/')[1]}일
-            </Text>
+            <Text fontSize={12}>{selectedMovie.showTime.startDate}</Text>
           </HStack>
           <HStack alignItems="center">
             <Heading fontSize={12}>상영시간: </Heading>
-            <Text fontSize={12}>
-              {dateFormatter.format(selectedMovie.showTime.startDate).split(', ')[1]} ~{' '}
-              {dateFormatter.format(selectedMovie.showTime.startDate).split(', ')[1]}
-            </Text>
+            <Text fontSize={12}>{selectedMovie.showTime.startDate}</Text>
           </HStack>
         </>
       )}

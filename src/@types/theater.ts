@@ -4,7 +4,7 @@ import { Payment } from './payment';
 export interface ShowTime {
   id: number;
   round: number;
-  startDate: Date;
+  startDate: string; // yyyy-mm-dd hh:mm
   isPublic: boolean;
 }
 
