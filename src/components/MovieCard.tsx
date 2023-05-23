@@ -1,23 +1,32 @@
 import Image from 'next/image';
 import styled from '@emotion/styled';
 import { useTheme } from '@emotion/react';
-import { Button, Heading, Stack, Text } from '@chakra-ui/react';
+import { Button, Heading, Stack, Text, useDisclosure } from '@chakra-ui/react';
 
 import { Movie } from '@/@types';
 import { Calendar } from '@root/public/icons';
 import { useRouter } from 'next/router';
+import { MovieModal } from './Modal';
 
 interface Props {
   movie: Movie;
 }
 
 function MovieCard({ movie }: Props) {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const theme = useTheme();
   const router = useRouter();
 
   return (
     <Wrapper>
-      <Stack spacing={8} bg={theme.colors.gray500}>
+      <Stack
+        spacing={8}
+        onClick={onOpen}
+        cursor="pointer"
+        backgroundColor="black"
+        transition={'all 0.1s ease-in'}
+        _hover={{ bgColor: 'blackAlpha.300' }}
+      >
         <MovieImage priority width={360} height={320} src={movie.imgUrl} alt="movie-image" />
         <Stack paddingInline={4} boxSizing="border-box">
           <Heading color={theme.colors.gray100}>{movie.name}</Heading>
@@ -30,7 +39,11 @@ function MovieCard({ movie }: Props) {
           py={8}
           alignItems="center"
           cursor="pointer"
-          onClick={() => router.push(`/book?id=${movie.id}`)}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            router.push(`/book?id=${movie.id}`);
+          }}
           borderRadius={0}
         >
           <Heading size="md" as="h4" color={theme.colors.coreRed}>
@@ -38,6 +51,7 @@ function MovieCard({ movie }: Props) {
           </Heading>
         </BookingButton>
       </Stack>
+      <MovieModal movie={movie} isOpen={isOpen} onClose={onClose} />
     </Wrapper>
   );
 }
