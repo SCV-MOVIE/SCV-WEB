@@ -23,7 +23,7 @@ export const DUMMY_MOVIE: Movie = {
 export const DUMMY_SHOWTIME: ShowTime = {
   id: 1,
   round: 1,
-  startDate: new Date(),
+  startDate: '2022-05-23 14:05',
   isPublic: true,
 };
 
