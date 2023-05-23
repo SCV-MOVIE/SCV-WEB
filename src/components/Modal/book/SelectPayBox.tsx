@@ -157,7 +157,7 @@ function SelectPayBox() {
                 {partner.name}
                 {partner.discount > 0 && (
                   <Text as="span" color="red.400" ml={2}>
-                    ({partner.discount.toLocaleString()} 할인)
+                    (최대 {partner.discount.toLocaleString()} 할인)
                   </Text>
                 )}
               </ColorText>
