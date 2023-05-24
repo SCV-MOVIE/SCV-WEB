@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Movie, Partner, Payment } from '@root/src/@types';
 import { ShowTime, Ticket } from '@root/src/@types/theater';
+import { DUMMY_MOVIE } from '@root/src/constants/dummy';
 
 export interface HeadCount {
   adult: number;
@@ -48,6 +49,10 @@ export const initialSelectedMovieValue: SelectedMovie = {
     startDate: '2022-05-23 14:12',
     round: 1,
     isPublic: true,
+    movie: DUMMY_MOVIE,
+    remainSeatNm: 23,
+    theaterName: '3D',
+    theaterSize: 30,
   },
   headCount: {
     adult: 0,

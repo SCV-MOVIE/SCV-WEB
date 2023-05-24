@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { Divider, Grid, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 
 import { SelectedMovie } from './BookContext';
-import { dateFormatter, getSeatName, salesTotalPrice, totalPrice } from '@root/src/utils';
+import { getSeatName, salesTotalPrice, totalPrice } from '@root/src/utils';
 
 interface Props {
   selectedMovie: SelectedMovie;
@@ -46,11 +46,11 @@ function SelectedTicketInformation({ selectedMovie }: Props) {
         <>
           <HStack alignItems="center">
             <Heading fontSize={12}>날짜: </Heading>
-            <Text fontSize={12}>{selectedMovie.showTime.startDate}</Text>
+            <Text fontSize={12}>{selectedMovie.showTime.startDate.split(' ')[0]}</Text>
           </HStack>
           <HStack alignItems="center">
             <Heading fontSize={12}>상영시간: </Heading>
-            <Text fontSize={12}>{selectedMovie.showTime.startDate}</Text>
+            <Text fontSize={12}>{selectedMovie.showTime.startDate.split(' ')[1]}</Text>
           </HStack>
         </>
       )}

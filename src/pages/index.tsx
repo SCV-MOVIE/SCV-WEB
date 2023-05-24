@@ -2,7 +2,7 @@ import Head from 'next/head';
 import styled from '@emotion/styled';
 import { Grid } from '@chakra-ui/react';
 
-import { DUMMY_MOVIE } from '@/constants/dummy';
+import { DUMMY_MOVIES } from '@/constants/dummy';
 import { Bottom, LinedTitle, MovieCard } from '@/components';
 
 export default function ShowPage() {
@@ -17,7 +17,7 @@ export default function ShowPage() {
       <Content>
         <LinedTitle title={'현재 상영작'} />
         <Grid templateColumns="repeat(4, 1fr)" rowGap={24} columnGap={8} mt={8}>
-          {[...Array(12)].fill(DUMMY_MOVIE).map((movie, idx) => (
+          {DUMMY_MOVIES.map((movie, idx) => (
             <MovieCard movie={movie} key={idx} />
           ))}
         </Grid>
