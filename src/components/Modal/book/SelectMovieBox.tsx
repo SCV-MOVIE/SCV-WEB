@@ -26,11 +26,13 @@ import {
   moviesFromShowTimes,
   formattedShowTimes,
 } from '@root/src/utils';
+import { useRouter } from 'next/router';
 
 const currentDate = dateFormatter.format(new Date()).split(', ');
 const formattedDate = currentDate[0].split('/');
 
 function SelectMovieBox() {
+  const { query } = useRouter();
   const [movies, setMovies] = React.useState<Movie[]>([]);
   const [showTimesByDay, setShowTimeByDay] = React.useState<Record<string, ShowTime[]>>({});
   const [selectedDay, setSelectedDay] = React.useState<keyof (typeof showTimesByDay)[string]>(
@@ -49,7 +51,15 @@ function SelectMovieBox() {
         value.showTime.startDate.slice(8, 10) as keyof (typeof showTimesByDay)[string],
       );
     }
-  }, [value.showTime.id, value.showTime.startDate]);
+    // id가 있으면 해당 영화를 선택한다.
+    if (query.id) {
+      const targetMovie = nextMovies.find((movie) => movie.id === Number(query.id));
+      setValue((prev) => ({
+        ...prev,
+        movie: targetMovie ? targetMovie : initialSelectedMovieValue.movie,
+      }));
+    }
+  }, [query.id, setValue, value.showTime.id, value.showTime.startDate]);
 
   return (
     <HStack width="100%" alignItems="start">
