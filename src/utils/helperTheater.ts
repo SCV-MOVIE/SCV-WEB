@@ -72,29 +72,16 @@ export const formattedShowTimes = (showTimes: ShowTime[]) => {
         const day = showTime.startDate.split(' ')[0].slice(8, 10) as string;
         const theaterName = showTime.theaterName;
 
-        if (day in acc[showTime.movie.name as keyof typeof acc]) {
-          return {
-            ...acc,
-            [showTime.movie.name]: {
-              ...(acc[showTime.movie.name as keyof typeof acc] as object),
-
-              [day]: {
-                ...((acc[showTime.movie.name as keyof typeof acc][day] as object) ?? []),
-                [theaterName]: [
-                  ...(acc[showTime.movie.name as keyof typeof acc][day][theaterName] ?? []),
-                  showTime,
-                ],
-              },
-            },
-          };
-        }
         return {
           ...acc,
           [showTime.movie.name]: {
             ...(acc[showTime.movie.name as keyof typeof acc] as object),
             [day]: {
               ...((acc[showTime.movie.name as keyof typeof acc][day] as object) ?? []),
-              [theaterName]: [showTime],
+              [theaterName]: [
+                ...(acc[showTime.movie.name as keyof typeof acc][day]?.[theaterName] ?? []),
+                showTime,
+              ],
             },
           },
         };
