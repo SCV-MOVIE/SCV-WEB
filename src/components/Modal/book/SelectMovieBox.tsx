@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 
 import { Movie } from '@root/src/@types';
-import { useBookContext } from './BookContext';
+import { initialSelectedMovieValue, useBookContext } from './BookContext';
 import { ShowTime } from '@root/src/@types/theater';
 import MovieRating from '@root/src/components/MovieRating';
 import SelectedTicketInformation from './SelectedTicketInformation';
@@ -65,7 +65,13 @@ function SelectMovieBox() {
               py={6}
               pl={12}
               justifyContent="start"
-              onClick={() => setValue((prev) => ({ ...prev, movie }))}
+              onClick={() =>
+                setValue((prev) => ({
+                  ...prev,
+                  movie,
+                  showTime: initialSelectedMovieValue.showTime,
+                }))
+              }
               colorScheme={movie.id === value.movie.id ? 'teal' : 'gray'}
             >
               <HStack justifyContent="start">
