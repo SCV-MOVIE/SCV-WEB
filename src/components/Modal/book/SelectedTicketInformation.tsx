@@ -3,12 +3,14 @@ import { Divider, Grid, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 
 import { SelectedMovie } from './BookContext';
 import { getSeatName, MemberShipPriceRate, salesTotalPrice, totalPrice } from '@root/src/utils';
+import { TheaterType } from '@root/src/@types';
 
 interface Props {
   selectedMovie: SelectedMovie;
+  theaterType: TheaterType['value'];
 }
 
-function SelectedTicketInformation({ selectedMovie }: Props) {
+function SelectedTicketInformation({ selectedMovie, theaterType }: Props) {
   return (
     <Stack
       justifyContent="center"
@@ -74,7 +76,12 @@ function SelectedTicketInformation({ selectedMovie }: Props) {
         <>
           <HStack alignItems="center">
             <Heading fontSize={12}>총 금액: </Heading>
-            <Text fontSize={12}>{totalPrice(selectedMovie.headCount).toLocaleString()}</Text>
+            <Text fontSize={12}>
+              {totalPrice(
+                selectedMovie.headCount,
+                selectedMovie.showTime.theaterType,
+              ).toLocaleString()}
+            </Text>
           </HStack>
           {selectedMovie.payment.partner?.name && (
             <HStack alignItems="center">
@@ -88,7 +95,7 @@ function SelectedTicketInformation({ selectedMovie }: Props) {
             <HStack alignItems="center">
               <Heading fontSize={12}>등급 할인 금액:</Heading>
               <Text fontSize={12} color="green.400">
-                {(totalPrice(selectedMovie.headCount) *
+                {(totalPrice(selectedMovie.headCount, theaterType) *
                   MemberShipPriceRate[selectedMovie.payment.membership]) /
                   100}
               </Text>
@@ -108,7 +115,7 @@ function SelectedTicketInformation({ selectedMovie }: Props) {
             </Heading>
             <Text fontSize={12} color="red.400" fontWeight={800}>
               {salesTotalPrice(
-                totalPrice(selectedMovie.headCount),
+                totalPrice(selectedMovie.headCount, theaterType),
                 Number(selectedMovie.payment.partner?.discount ?? 0) +
                   selectedMovie.payment.usedPoint,
                 selectedMovie.payment.membership,

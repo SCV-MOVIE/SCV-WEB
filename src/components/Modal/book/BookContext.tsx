@@ -52,7 +52,8 @@ export const initialSelectedMovieValue: SelectedMovie = {
     isPublic: true,
     movie: DUMMY_MOVIE,
     remainSeatNm: 23,
-    theaterName: '3D',
+    theaterName: '1관',
+    theaterType: '3D',
     theaterSize: 30,
   },
   headCount: {

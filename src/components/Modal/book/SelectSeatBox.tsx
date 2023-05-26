@@ -71,7 +71,7 @@ function SelectSeatBox() {
       </Stack>
       <Divider orientation="vertical" height={240} color="gray.400" alignSelf="center" />
       <Stack spacing={4}>
-        <SelectedTicketInformation selectedMovie={value} />
+        <SelectedTicketInformation selectedMovie={value} theaterType={value.showTime.theaterType} />
       </Stack>
     </HStack>
   );

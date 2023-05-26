@@ -1,5 +1,5 @@
 import type { Movie } from '@/@types';
-import type { CheckTicket, ShowTime, Ticket } from '../@types/theater';
+import type { CheckTicket, ShowTime, TheaterType, Ticket } from '../@types/theater';
 
 export const DUMMY_MOVIE: Movie = {
   id: 1,
@@ -111,21 +111,28 @@ export const DUMMY_SHOWTIME: ShowTime = {
   isPublic: true,
   movie: DUMMY_MOVIE,
   remainSeatNm: 23,
-  theaterName: '3D',
+  theaterName: '1관',
+  theaterType: '3D',
   theaterSize: 30,
 };
-const createShowTime = (movie: Movie, startDate: string, id: number, theaterName: string) => ({
+const createShowTime = (
+  movie: Movie,
+  startDate: string,
+  id: number,
+  theaterType: TheaterType['value'],
+): ShowTime => ({
   id,
   round: 1,
   startDate,
   isPublic: true,
   movie,
   remainSeatNm: 23,
-  theaterName,
+  theaterName: '1관',
+  theaterType,
   theaterSize: 30,
 });
 
-export const DUMMY_SHOWTIMES = [
+export const DUMMY_SHOWTIMES: ShowTime[] = [
   createShowTime(DUMMY_MOVIE, '2023-05-25 09:05', 1, '3D'),
   createShowTime(DUMMY_MOVIE, '2023-05-24 14:05', 2, 'NORMAL'),
   createShowTime(DUMMY_MOVIE, '2023-05-23 16:42', 3, 'NORMAL'),

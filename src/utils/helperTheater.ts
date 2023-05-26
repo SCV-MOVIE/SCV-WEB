@@ -1,19 +1,35 @@
 import { HeadCount, SelectedMovie } from '@root/src/components/Modal/book/BookContext';
-import { ShowTime, User } from '../@types';
+import { ShowTime, TheaterType, User } from '../@types';
 
-const ADULT_PRICE = 10000;
-const CHILD_PRICE = 7000;
+const PRICE = {
+  NORMAL: {
+    ADULT: 10000,
+    CHILD: 7000,
+  },
+  '3D': {
+    ADULT: 11000,
+    CHILD: 8000,
+  },
+  PREMIUM: {
+    ADULT: 12000,
+    CHILD: 9000,
+  },
+};
 
-export const totalPrice = (headCount: HeadCount) => {
+export const totalPrice = (headCount: HeadCount, theaterType: TheaterType['value']) => {
   let sum;
 
-  sum = headCount.adult * ADULT_PRICE;
-  sum += headCount.child * CHILD_PRICE;
+  sum = headCount.adult * PRICE[theaterType].ADULT;
+  sum += headCount.child * PRICE[theaterType].CHILD;
   return sum;
 };
 
-export const membershipTotalPrice = (headCount: HeadCount, membership: User['membership']) => {
-  const price = totalPrice(headCount);
+export const membershipTotalPrice = (
+  headCount: HeadCount,
+  membership: User['membership'],
+  theaterType: TheaterType['value'],
+) => {
+  const price = totalPrice(headCount, theaterType);
   if (!membership) {
     return price;
   }
@@ -45,10 +61,11 @@ export const pointFor = (
   value: SelectedMovie,
   maxPoint: number,
   membership: User['membership'],
+  theaterType: TheaterType['value'],
 ) => {
   let point = inputPoint;
   const salePrice = salesTotalPrice(
-    totalPrice(value.headCount),
+    totalPrice(value.headCount, theaterType),
     value.payment.partner?.discount,
     membership,
   );

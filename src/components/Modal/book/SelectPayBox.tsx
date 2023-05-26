@@ -24,8 +24,9 @@ const MAX_POINT = 73212;
 function SelectPayBox() {
   const { value, setValue } = useBookContext();
   const totalTicketPrice = React.useMemo(
-    () => membershipTotalPrice(value.headCount, value.payment.membership),
-    [value.headCount, value.payment.membership],
+    () =>
+      membershipTotalPrice(value.headCount, value.payment.membership, value.showTime.theaterType),
+    [value.headCount, value.payment.membership, value.showTime.theaterType],
   );
 
   const handleClickPaymentMethod = React.useCallback(
@@ -88,6 +89,7 @@ function SelectPayBox() {
         value,
         MAX_POINT,
         value.payment.membership,
+        value.showTime.theaterType,
       );
       setValue((prev) => ({
         ...prev,
@@ -194,7 +196,7 @@ function SelectPayBox() {
         </DividerStack>
       </Stack>
       <Divider orientation="vertical" h={320} alignSelf="center" color="gray.500" />
-      <SelectedTicketInformation selectedMovie={value} />
+      <SelectedTicketInformation selectedMovie={value} theaterType={value.showTime.theaterType} />
     </HStack>
   );
 }

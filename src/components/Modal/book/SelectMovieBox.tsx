@@ -193,7 +193,7 @@ function SelectMovieBox() {
         )}
       </Stack>
       <Divider orientation="vertical" />
-      <SelectedTicketInformation selectedMovie={value} />
+      <SelectedTicketInformation selectedMovie={value} theaterType={value.showTime.theaterType} />
     </HStack>
   );
 }
