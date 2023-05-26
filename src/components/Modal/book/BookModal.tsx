@@ -60,7 +60,7 @@ const isCompleteCurrentStep = (step: BookStep, value: SelectedMovie) => {
 };
 
 function BookModal({ isOpen, onClose }: Props) {
-  const isLogin = false;
+  const isLogin = true;
   const [value, setValue] = React.useState<SelectedMovie>(initialSelectedMovieValue);
   const [state, dispatch] = React.useReducer(BookStepReducer, InitialStepValue);
   const ModalStepContent = BookStepContent[state.step];

@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { Divider, Grid, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 
 import { SelectedMovie } from './BookContext';
-import { getSeatName, salesTotalPrice, totalPrice } from '@root/src/utils';
+import { getSeatName, MemberShipPriceRate, salesTotalPrice, totalPrice } from '@root/src/utils';
 
 interface Props {
   selectedMovie: SelectedMovie;
@@ -84,6 +84,16 @@ function SelectedTicketInformation({ selectedMovie }: Props) {
               </Text>
             </HStack>
           )}
+          {selectedMovie.payment.membership && selectedMovie.payment.membership !== 'COMMON' && (
+            <HStack alignItems="center">
+              <Heading fontSize={12}>등급 할인 금액:</Heading>
+              <Text fontSize={12} color="green.400">
+                {(totalPrice(selectedMovie.headCount) *
+                  MemberShipPriceRate[selectedMovie.payment.membership]) /
+                  100}
+              </Text>
+            </HStack>
+          )}
           {selectedMovie.payment.usedPoint > 0 && (
             <HStack alignItems="center">
               <Heading fontSize={12}>포인트 사용 금액:</Heading>
@@ -101,6 +111,7 @@ function SelectedTicketInformation({ selectedMovie }: Props) {
                 totalPrice(selectedMovie.headCount),
                 Number(selectedMovie.payment.partner?.discount ?? 0) +
                   selectedMovie.payment.usedPoint,
+                selectedMovie.payment.membership,
               ).toLocaleString()}
             </Text>
           </HStack>

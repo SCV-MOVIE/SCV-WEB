@@ -1,7 +1,7 @@
 import { Center, Divider, Heading, HStack, Input, Stack, Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 import { Partner, Payment } from '@root/src/@types';
-import { pointFor, salesTotalPrice, totalPrice } from '@root/src/utils';
+import { membershipTotalPrice, pointFor, salesTotalPrice, totalPrice } from '@root/src/utils';
 import React from 'react';
 
 import { useBookContext } from './BookContext';
@@ -23,7 +23,10 @@ const MAX_POINT = 73212;
 
 function SelectPayBox() {
   const { value, setValue } = useBookContext();
-  const totalTicketPrice = React.useMemo(() => totalPrice(value.headCount), [value.headCount]);
+  const totalTicketPrice = React.useMemo(
+    () => membershipTotalPrice(value.headCount, value.payment.membership),
+    [value.headCount, value.payment.membership],
+  );
 
   const handleClickPaymentMethod = React.useCallback(
     (method: Payment['method']) => {
@@ -73,14 +76,19 @@ function SelectPayBox() {
       payment: {
         ...prev.payment,
         method: usedPoint === totalTicketPrice ? 'POINT' : prev.payment.method,
-        usedPoint: usedPoint,
+        usedPoint,
       },
     }));
   }, [setValue, totalTicketPrice]);
 
   const handleChangeInput = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
-      const usedPoint = pointFor(Number(e.target.value ?? 0), value, MAX_POINT);
+      const usedPoint = pointFor(
+        Number(e.target.value ?? 0),
+        value,
+        MAX_POINT,
+        value.payment.membership,
+      );
       setValue((prev) => ({
         ...prev,
         payment: {
@@ -173,7 +181,9 @@ function SelectPayBox() {
           <Input
             value={value.payment.account ?? ''}
             placeholder="카드/계좌 번호"
-            disabled={typeof value.payment.method === 'undefined'}
+            disabled={
+              typeof value.payment.method === 'undefined' || value.payment.method === 'POINT'
+            }
             onChange={(e) =>
               setValue((prev) => ({
                 ...prev,

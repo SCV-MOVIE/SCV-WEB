@@ -1,5 +1,5 @@
 import { HeadCount, SelectedMovie } from '@root/src/components/Modal/book/BookContext';
-import { ShowTime } from '../@types';
+import { ShowTime, User } from '../@types';
 
 const ADULT_PRICE = 10000;
 const CHILD_PRICE = 7000;
@@ -12,16 +12,46 @@ export const totalPrice = (headCount: HeadCount) => {
   return sum;
 };
 
-export const salesTotalPrice = (totalPrice: number, discount: number | undefined) => {
+export const membershipTotalPrice = (headCount: HeadCount, membership: User['membership']) => {
+  const price = totalPrice(headCount);
+  if (!membership) {
+    return price;
+  }
+  return (price * (100 - MemberShipPriceRate[membership])) / 100;
+};
+
+export const MemberShipPriceRate = {
+  COMMON: 0,
+  VIP: 5,
+  VVIP: 10,
+} as const;
+
+export const salesTotalPrice = (
+  totalPrice: number,
+  discount: number | undefined,
+  membership: User['membership'],
+) => {
+  if (membership == 'VIP' || membership == 'VVIP') {
+    totalPrice = (totalPrice * (100 - MemberShipPriceRate[membership])) / 100;
+  }
   if (typeof discount === 'undefined') {
     return totalPrice;
   }
   return Math.max(totalPrice - discount, 0);
 };
 
-export const pointFor = (inputPoint: number, value: SelectedMovie, maxPoint: number) => {
+export const pointFor = (
+  inputPoint: number,
+  value: SelectedMovie,
+  maxPoint: number,
+  membership: User['membership'],
+) => {
   let point = inputPoint;
-  const salePrice = salesTotalPrice(totalPrice(value.headCount), value.payment.partner?.discount);
+  const salePrice = salesTotalPrice(
+    totalPrice(value.headCount),
+    value.payment.partner?.discount,
+    membership,
+  );
   if (isNaN(point)) {
     point = 0;
   } else if (point > Math.min(salePrice, maxPoint)) {
