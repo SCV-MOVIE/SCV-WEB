@@ -8,9 +8,10 @@ import { Button, Input, Stack, Text, Box, Center, HStack, useDisclosure } from '
 import { Bottom, Logo } from '@/components';
 import { useTheme } from '@emotion/react';
 import { UserUtilModal } from '../components/Modal/user';
+import { api } from '../api';
 
 interface LoginType {
-  email: string;
+  loginId: string;
   password: string;
 }
 
@@ -29,7 +30,16 @@ export default function Login() {
   );
 
   const { register, handleSubmit } = useForm<LoginType>();
-  const onSubmit: SubmitHandler<LoginType> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<LoginType> = async (data) => {
+    try {
+      const result = await api.post('/api/member/login', data);
+      if (result.status === 200) {
+        alert('로그인에 성공했습니다.');
+      }
+    } catch (err) {
+      alert(err);
+    }
+  };
 
   return (
     <>
@@ -48,7 +58,7 @@ export default function Login() {
             <Input
               id="id"
               placeholder="아이디"
-              {...register('email')}
+              {...register('loginId')}
               padding={4}
               color={theme.colors.gray100}
             />
