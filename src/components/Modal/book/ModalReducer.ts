@@ -28,16 +28,22 @@ export const InitialStepValue = {
   title: BookStepTitle[BookStep.MOVIE],
 } as const;
 
-export const BookStepReducer: React.Reducer<BookStepType, { direction: 'prev' | 'next' | 'reset' }> = (
-  state,
-  action,
-) => {
+export const BookStepReducer: React.Reducer<
+  BookStepType,
+  { direction: 'prev' | 'next' | 'reset'; isLogin: boolean }
+> = (state, action) => {
   switch (action.direction) {
     case 'prev':
       const prevStep: BookStep = Math.max(state.step - 1, BookStep.MOVIE);
+      if (action.isLogin && prevStep === BookStep.INFORMATION) {
+        return { step: BookStep.MOVIE, title: BookStepTitle[BookStep.MOVIE] };
+      }
       return { step: prevStep, title: BookStepTitle[prevStep] };
     case 'next':
       const nextStep: BookStep = Math.min(state.step + 1, BookStep.PAY);
+      if (action.isLogin && nextStep === BookStep.INFORMATION) {
+        return { step: BookStep.SEAT, title: BookStepTitle[BookStep.SEAT] };
+      }
       return { step: nextStep, title: BookStepTitle[nextStep] };
     case 'reset':
       const resetStep = BookStep.MOVIE;

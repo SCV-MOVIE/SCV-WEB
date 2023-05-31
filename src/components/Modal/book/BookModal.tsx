@@ -60,25 +60,26 @@ const isCompleteCurrentStep = (step: BookStep, value: SelectedMovie) => {
 };
 
 function BookModal({ isOpen, onClose }: Props) {
+  const isLogin = false;
   const [value, setValue] = React.useState<SelectedMovie>(initialSelectedMovieValue);
   const [state, dispatch] = React.useReducer(BookStepReducer, InitialStepValue);
   const ModalStepContent = BookStepContent[state.step];
 
-  const onClickPrev = React.useCallback(() => dispatch({ direction: 'prev' }), []);
+  const onClickPrev = React.useCallback(() => dispatch({ direction: 'prev', isLogin }), [isLogin]);
   const onClickNext = React.useCallback(() => {
     if (isCompleteCurrentStep(state.step, value)) {
-      dispatch({ direction: 'next' });
+      dispatch({ direction: 'next', isLogin });
     }
-  }, [state.step, value]);
+  }, [isLogin, state.step, value]);
   const onClickClose = React.useCallback(() => {
-    dispatch({ direction: 'reset' });
+    dispatch({ direction: 'reset', isLogin });
     onClose();
-  }, [onClose]);
+  }, [isLogin, onClose]);
 
   const onReset = React.useCallback(() => {
-    dispatch({ direction: 'reset' });
+    dispatch({ direction: 'reset', isLogin });
     setValue(initialSelectedMovieValue);
-  }, []);
+  }, [isLogin]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClickClose} size="5xl">

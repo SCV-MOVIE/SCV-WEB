@@ -1,11 +1,11 @@
 import Head from 'next/head';
 import styled from '@emotion/styled';
-import { HStack } from '@chakra-ui/react';
+import { Grid } from '@chakra-ui/react';
 
-import { DUMMY_MOVIE } from '@/constants/dummy';
-import { Bottom, LinedTitle, MainMovieThumbnail, ThumbnailCard } from '@/components';
+import { DUMMY_MOVIES } from '@/constants/dummy';
+import { Bottom, LinedTitle, MovieCard } from '@/components';
 
-export default function Home() {
+export default function ShowPage() {
   return (
     <>
       <Head>
@@ -14,46 +14,26 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <MainMovieThumbnail movie={DUMMY_MOVIE} />
       <Content>
-        <LinedTitle title={'현재 인기 영화'} />
-        <FeatureSection gap={12} marginTop={4}>
-          <MovieCard src="/thumbnail.jpeg" movie={DUMMY_MOVIE} />
-          <MovieCard src="/thumbnail.jpeg" movie={DUMMY_MOVIE} />
-          <MovieCard src="/thumbnail.jpeg" movie={DUMMY_MOVIE} />
-          <MovieCard src="/thumbnail.jpeg" movie={DUMMY_MOVIE} />
-          <MovieCard src="/thumbnail.jpeg" movie={DUMMY_MOVIE} />
-        </FeatureSection>
+        <LinedTitle title={'현재 상영작'} />
+        <Grid templateColumns="repeat(4, 1fr)" rowGap={24} columnGap={8} mt={8}>
+          {DUMMY_MOVIES.map((movie, idx) => (
+            <MovieCard movie={movie} key={idx} />
+          ))}
+        </Grid>
       </Content>
+
       <Bottom />
     </>
   );
 }
 
 const Content = styled.div`
+  display: block;
   padding-inline: 40px;
-  z-index: 1-5;
-  position: relative;
-  top: 0px;
 
   ${({ theme }) =>
     `@media (max-width: ${theme.bp.mobile}) {
       padding-inline: 24px;
     }`}
-`;
-
-const FeatureSection = styled(HStack)`
-  overflow: scroll;
-
-  &::-webkit-scrollbar {
-    width: 0px;
-  }
-
-  &::-webkit-scrollbar-thumb {
-    height: 0px;
-  }
-`;
-
-const MovieCard = styled(ThumbnailCard)`
-  object-fit: cover;
 `;

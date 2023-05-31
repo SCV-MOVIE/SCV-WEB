@@ -17,7 +17,7 @@ function MovieRating({ rating }: Props) {
         return 'yellow';
       case '15+':
         return 'green';
-      case 'All':
+      case '18+':
         return 'red';
       default:
         return 'teal';

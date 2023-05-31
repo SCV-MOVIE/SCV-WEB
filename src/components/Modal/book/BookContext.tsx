@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Movie, Partner, Payment } from '@root/src/@types';
+import { Movie, Partner, Payment, User } from '@root/src/@types';
 import { ShowTime, Ticket } from '@root/src/@types/theater';
+import { DUMMY_MOVIE } from '@root/src/constants/dummy';
 
 export interface HeadCount {
   adult: number;
@@ -14,7 +15,8 @@ export interface SelectedMovie {
   headCount: HeadCount;
   selectedSeats: number[];
   payment: Pick<Payment, 'method'> &
-    Pick<Ticket, 'usedPoint'> & { partner?: Partner; account?: string };
+    Pick<Ticket, 'usedPoint'> &
+    Pick<User, 'membership'> & { partner?: Partner; account?: string };
   information: {
     name: string;
     phoneNumber: string;
@@ -45,9 +47,14 @@ export const initialSelectedMovieValue: SelectedMovie = {
   },
   showTime: {
     id: -1,
-    startDate: new Date(),
+    startDate: '2022-05-23 14:12',
     round: 1,
     isPublic: true,
+    movie: DUMMY_MOVIE,
+    remainSeatNm: 23,
+    theaterName: '1관',
+    theaterType: '3D',
+    theaterSize: 30,
   },
   headCount: {
     adult: 0,
@@ -62,6 +69,7 @@ export const initialSelectedMovieValue: SelectedMovie = {
       discount: 0,
     },
     account: '',
+    membership: 'VVIP',
   },
   information: {
     name: '',

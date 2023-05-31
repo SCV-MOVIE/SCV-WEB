@@ -36,7 +36,7 @@ function PayedTicketInformationBox({ payedTicket }: Props) {
         <HStack alignItems="center">
           <Heading fontSize={12}>시작시간: </Heading>
           <Text size="sm" fontSize={12}>
-            {payedTicket?.showTime.startDate.getUTCDate()}
+            {payedTicket?.showTime.startDate}
           </Text>
         </HStack>
       </Stack>

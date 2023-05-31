@@ -8,7 +8,7 @@ export const initialUserValue: User = {
   point: 0,
   name: '',
   phoneNumber: '',
-  level: 'COMMON',
+  membership: 'VVIP',
 };
 
 interface UserContextType {

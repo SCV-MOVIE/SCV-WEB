@@ -64,44 +64,38 @@ export default function Login() {
               color={theme.colors.gray100}
             />
           </Stack>
-          <HStack px={8} mt={4} justifyContent="space-between">
-            <Text
-              size="md"
-              color={theme.colors.coreBlue}
-              cursor="pointer"
-              onClick={() => handleClickModalOpen('findID')}
-            >
-              아이디 찾기
-            </Text>
-            <Text
-              size="md"
-              color={theme.colors.coreBlue}
-              cursor="pointer"
-              onClick={() => handleClickModalOpen('findPW')}
-            >
-              비밀번호 찾기
-            </Text>
-            <Text
-              size="md"
-              color={theme.colors.coreBlue}
-              cursor="pointer"
-              onClick={() => handleClickModalOpen('signUp')}
-            >
-              회원가입
-            </Text>
-          </HStack>
           <Center px={8} mt={12}>
             <Button
               width="100%"
               py={2}
               type="submit"
               variant="solid"
-              bgColor={theme.colors.blue600}
+              bgColor="green.600"
               cursor={'pointer'}
               borderRadius={8}
               transition="all 0.2s ease-in"
               _hover={{
-                bgColor: theme.colors.coreBlue,
+                bgColor: 'green.800',
+              }}
+              onClick={() => handleClickModalOpen('signUp')}
+            >
+              <Text color={theme.colors.offwhite} fontSize="16px">
+                회원가입
+              </Text>
+            </Button>
+          </Center>
+          <Center px={8} mt={4}>
+            <Button
+              width="100%"
+              py={2}
+              type="submit"
+              variant="solid"
+              bgColor="blue.600"
+              cursor={'pointer'}
+              borderRadius={8}
+              transition="all 0.2s ease-in"
+              _hover={{
+                bgColor: 'blue.800',
               }}
             >
               <Text color={theme.colors.offwhite} fontSize="16px">

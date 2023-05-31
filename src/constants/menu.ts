@@ -5,7 +5,7 @@ export const MENUS = [
   },
   {
     title: '상영작',
-    href: '/show',
+    href: '/',
   },
   {
     title: '로그인',

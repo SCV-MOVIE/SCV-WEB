@@ -13,28 +13,53 @@ import {
 } from '@chakra-ui/react';
 
 import { Movie } from '@root/src/@types';
-import { useBookContext } from './BookContext';
+import { initialSelectedMovieValue, useBookContext } from './BookContext';
 import { ShowTime } from '@root/src/@types/theater';
 import MovieRating from '@root/src/components/MovieRating';
 import SelectedTicketInformation from './SelectedTicketInformation';
-import { DUMMY_MOVIE, DUMMY_SHOWTIME } from '@root/src/constants/dummy';
-import { korDay, colorDay, dateFormatter } from '@root/src/utils';
+import { DUMMY_SHOWTIMES } from '@root/src/constants/dummy';
+import {
+  korDay,
+  colorDay,
+  dateFormatter,
+  endTimeFor,
+  moviesFromShowTimes,
+  formattedShowTimes,
+} from '@root/src/utils';
+import { useRouter } from 'next/router';
 
 const currentDate = dateFormatter.format(new Date()).split(', ');
-const formatedDate = currentDate[0].split('/');
-const theaters = ['1관', 'IMAX관'];
+const formattedDate = currentDate[0].split('/');
 
 function SelectMovieBox() {
+  const { query } = useRouter();
   const [movies, setMovies] = React.useState<Movie[]>([]);
-  const [showTimes, setShowTimes] = React.useState<ShowTime[]>([]);
+  const [showTimesByDay, setShowTimeByDay] = React.useState<Record<string, ShowTime[]>>({});
+  const [selectedDay, setSelectedDay] = React.useState<keyof (typeof showTimesByDay)[string]>(
+    '' as keyof (typeof showTimesByDay)[string],
+  );
   const { value, setValue } = useBookContext();
 
   React.useEffect(() => {
-    const nextMovies = [...Array(24)].map((_, idx) => ({ ...DUMMY_MOVIE, id: idx }));
+    const nextMovies = moviesFromShowTimes(DUMMY_SHOWTIMES);
     setMovies(nextMovies);
-    const nextShowTimes = [...Array(12)].map((_, idx) => ({ ...DUMMY_SHOWTIME, id: idx }));
-    setShowTimes(nextShowTimes);
-  }, []);
+    const nextShowTimes = formattedShowTimes(DUMMY_SHOWTIMES);
+    setShowTimeByDay(nextShowTimes);
+
+    if (value.showTime.id !== -1) {
+      setSelectedDay(
+        value.showTime.startDate.slice(8, 10) as keyof (typeof showTimesByDay)[string],
+      );
+    }
+    // id가 있으면 해당 영화를 선택한다.
+    if (query.id) {
+      const targetMovie = nextMovies.find((movie) => movie.id === Number(query.id));
+      setValue((prev) => ({
+        ...prev,
+        movie: targetMovie ? targetMovie : initialSelectedMovieValue.movie,
+      }));
+    }
+  }, [query.id, setValue, value.showTime.id, value.showTime.startDate]);
 
   return (
     <HStack width="100%" alignItems="start">
@@ -43,15 +68,21 @@ function SelectMovieBox() {
           <Heading size="md">영화</Heading>
         </Center>
         <ColumnContent>
-          {movies?.map((movie) => (
+          {movies?.map((movie, idx) => (
             <Button
-              key={movie.id}
+              key={idx}
               flexShrink={0}
               py={6}
               pl={12}
               justifyContent="start"
-              onClick={() => setValue((prev) => ({ ...prev, movie }))}
-              colorScheme={movie === value?.movie ? 'teal' : 'gray'}
+              onClick={() =>
+                setValue((prev) => ({
+                  ...prev,
+                  movie,
+                  showTime: initialSelectedMovieValue.showTime,
+                }))
+              }
+              colorScheme={movie.id === value.movie.id ? 'teal' : 'gray'}
             >
               <HStack justifyContent="start">
                 <Text as={'span'}>
@@ -71,85 +102,98 @@ function SelectMovieBox() {
           <Heading size="md">날짜</Heading>
         </Center>
         <Heading fontSize={24} textAlign="center" pt={4}>
-          {formatedDate[0] ?? '06'}
+          {formattedDate[0] ?? '06'}
         </Heading>
         <Heading fontSize={14} textAlign="center">
-          {formatedDate[2] ?? '2023'}
+          {formattedDate[2] ?? '2023'}
         </Heading>
-        <ColumnContent>
-          {showTimes?.map((showTime) => (
-            <Button
-              key={showTime.id}
-              flexShrink={0}
-              py={6}
-              justifyContent="center"
-              disabled={!value?.showTime}
-              onClick={() => setValue((prev) => ({ ...prev, showTime }))}
-              colorScheme={showTime === value?.showTime ? 'teal' : 'gray'}
-            >
-              <HStack spacing={0} gap={'6px'}>
-                <Text
-                  fontSize={14}
-                  color={
-                    showTime === value?.showTime
-                      ? 'white'
-                      : colorDay(showTime.startDate.getDay()).kor
-                  }
-                >
-                  {korDay(showTime.startDate.getDay())}
-                </Text>
-                <Text
-                  fontSize={18}
-                  color={
-                    showTime === value?.showTime
-                      ? 'white'
-                      : colorDay(showTime.startDate.getDay()).day
-                  }
-                >
-                  {formatedDate[1]}
-                </Text>
-              </HStack>
-            </Button>
-          ))}
-        </ColumnContent>
+        {value.movie.name && (
+          <ColumnContent>
+            {Object.keys(showTimesByDay[value.movie.name] ?? []).map((day) => (
+              <Button
+                key={day}
+                flexShrink={0}
+                py={6}
+                justifyContent="center"
+                disabled={!value?.showTime}
+                onClick={() => setSelectedDay(day as keyof (typeof showTimesByDay)[string])}
+                colorScheme={selectedDay === day ? 'teal' : 'gray'}
+              >
+                <HStack spacing={0} gap={'6px'}>
+                  <Text
+                    fontSize={14}
+                    color={
+                      selectedDay === day
+                        ? 'white'
+                        : colorDay(new Date(2023, 6, Number(day)).getDay()).kor
+                    }
+                  >
+                    {korDay(new Date(2023, 6, Number(day)).getDay())}
+                  </Text>
+                  <Text
+                    fontSize={18}
+                    color={
+                      selectedDay === day
+                        ? 'white'
+                        : colorDay(new Date(2023, 6, Number(day)).getDay()).day
+                    }
+                  >
+                    {day}
+                  </Text>
+                </HStack>
+              </Button>
+            ))}
+          </ColumnContent>
+        )}
       </Stack>
       <Divider orientation="vertical" />
       <Stack w="320px">
         <Center>
           <Heading size="md">상영시간</Heading>
         </Center>
-        {theaters.map((theater) => (
-          <Stack key={theater}>
-            <Text>{theater}</Text>
-            <Grid templateColumns={`repeat(3, 1fr)`} columnGap={2} rowGap={2}>
-              {showTimes?.map((showTime) => (
-                <Button
-                  key={showTime.id}
-                  flexShrink={0}
-                  py={'48px'}
-                  justifyContent="center"
-                  onClick={() => setValue((prev) => ({ ...prev, showTime }))}
-                  colorScheme={showTime === value?.showTime ? 'teal' : 'gray'}
-                  disabled={!value?.showTime}
-                >
-                  <Stack spacing={0} gap={'4px'}>
-                    <Text>{currentDate[1]}</Text>
-                    <Text fontSize={12} color={showTime === value?.showTime ? 'white' : 'gray.600'}>
-                      {currentDate[1]}
-                    </Text>
-                    <Divider />
-                    <Text fontSize={10} color={showTime === value?.showTime ? 'white' : 'gray.400'}>
-                      23/36
-                    </Text>
-                  </Stack>
-                </Button>
-              ))}
-            </Grid>
-          </Stack>
-        ))}
+        {Object.entries(selectedDay && showTimesByDay[value.movie.name][selectedDay]).map(
+          ([theaterName, showTimes]) => (
+            <Stack key={theaterName}>
+              <Text>{theaterName}</Text>
+              <Grid templateColumns={`repeat(3, 1fr)`} columnGap={2} rowGap={2}>
+                {showTimes.map((showTime: ShowTime) => {
+                  const startTime = showTime.startDate.split(' ')[1];
+                  return (
+                    <Button
+                      key={showTime.id}
+                      flexShrink={0}
+                      py={'48px'}
+                      justifyContent="center"
+                      onClick={() => setValue((prev) => ({ ...prev, showTime }))}
+                      colorScheme={showTime === value?.showTime ? 'teal' : 'gray'}
+                      disabled={!value?.showTime}
+                    >
+                      <Stack spacing={0} gap={'4px'}>
+                        <Text>{startTime}</Text>
+                        <Text
+                          fontSize={12}
+                          color={showTime === value?.showTime ? 'white' : 'gray.600'}
+                        >
+                          {endTimeFor(showTime.startDate, value.movie.length).split(' ')[1]}
+                        </Text>
+                        <Divider />
+                        <Text
+                          fontSize={10}
+                          color={showTime === value?.showTime ? 'white' : 'gray.400'}
+                        >
+                          {`${showTime.remainSeatNm}/${showTime.theaterSize}`}
+                        </Text>
+                      </Stack>
+                    </Button>
+                  );
+                })}
+              </Grid>
+            </Stack>
+          ),
+        )}
       </Stack>
       <Divider orientation="vertical" />
-      <SelectedTicketInformation selectedMovie={value} />
+      <SelectedTicketInformation selectedMovie={value} theaterType={value.showTime.theaterType} />
     </HStack>
   );
 }

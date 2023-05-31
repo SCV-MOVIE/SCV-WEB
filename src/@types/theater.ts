@@ -4,8 +4,13 @@ import { Payment } from './payment';
 export interface ShowTime {
   id: number;
   round: number;
-  startDate: Date;
+  startDate: string; // yyyy-mm-dd hh:mm
   isPublic: boolean;
+  movie: Movie;
+  remainSeatNm: number;
+  theaterName: string;
+  theaterType: TheaterType['value'];
+  theaterSize: number;
 }
 
 export interface Theater {
