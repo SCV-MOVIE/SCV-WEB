@@ -1,6 +1,6 @@
 import { Center, Divider, Heading, HStack, Input, Stack, Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { Partner, Payment } from '@root/src/@types';
+import { Partner, Payment, ShowTime } from '@root/src/@types';
 import { membershipTotalPrice, pointFor, salesTotalPrice, totalPrice } from '@root/src/utils';
 import React from 'react';
 
@@ -23,6 +23,7 @@ const MAX_POINT = 73212;
 
 interface Props {
   partners: Partner[];
+  showTimes: ShowTime[];
 }
 
 function SelectPayBox({ partners }: Props) {

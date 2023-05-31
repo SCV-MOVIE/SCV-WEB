@@ -18,12 +18,13 @@ import { BookStep, BookStepContent, BookStepReducer, InitialStepValue } from './
 import { BookContextProvider, initialSelectedMovieValue, SelectedMovie } from './BookContext';
 import { pretendard } from '@root/src/pages/_app';
 import { getAge } from '@root/src/utils';
-import { Partner } from '@root/src/@types';
+import { Partner, ShowTime } from '@root/src/@types';
 
 interface Props {
   isOpen: boolean;
   onClose: VoidFunction;
   partners: Partner[];
+  showTimes: ShowTime[];
 }
 
 const isCompleteCurrentStep = (step: BookStep, value: SelectedMovie) => {
@@ -61,7 +62,7 @@ const isCompleteCurrentStep = (step: BookStep, value: SelectedMovie) => {
   return typeof value.payment.method !== 'undefined';
 };
 
-function BookModal({ isOpen, partners, onClose }: Props) {
+function BookModal({ isOpen, partners, showTimes, onClose }: Props) {
   const isLogin = false;
   const [value, setValue] = React.useState<SelectedMovie>(initialSelectedMovieValue);
   const [state, dispatch] = React.useReducer(BookStepReducer, InitialStepValue);
@@ -108,7 +109,7 @@ function BookModal({ isOpen, partners, onClose }: Props) {
         <ModalCloseButton />
         <BookContextProvider value={value} setValue={setValue}>
           <ModalBody>
-            <ModalStepContent partners={partners} />
+            <ModalStepContent partners={partners} showTimes={showTimes} />
           </ModalBody>
         </BookContextProvider>
         <ModalFooter justifyContent={state.step !== BookStep.MOVIE ? 'space-between' : 'end'}>

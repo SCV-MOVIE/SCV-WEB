@@ -50,7 +50,7 @@ export const initialSelectedMovieValue: SelectedMovie = {
     startDate: '2022-05-23 14:12',
     round: 1,
     isPublic: true,
-    movie: DUMMY_MOVIE,
+    movieDTO: DUMMY_MOVIE,
     remainSeatNm: 23,
     theaterName: '1관',
     theaterType: '3D',

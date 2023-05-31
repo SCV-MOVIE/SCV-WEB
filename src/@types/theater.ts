@@ -6,7 +6,7 @@ export interface ShowTime {
   round: number;
   startDate: string; // yyyy-mm-dd hh:mm
   isPublic: boolean;
-  movie: Movie;
+  movieDTO: Movie;
   remainSeatNm: number;
   theaterName: string;
   theaterType: TheaterType['value'];

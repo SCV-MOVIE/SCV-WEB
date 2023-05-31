@@ -103,7 +103,7 @@ export const endTimeFor = (startTime: string, length: Movie['length']) => {
 
 export const moviesFromShowTimes = (showTimes: ShowTime[]) => {
   const movies = showTimes.map((showTime) => ({
-    ...showTime.movie,
+    ...showTime.movieDTO,
   }));
   return movies.filter(
     (item, index) => movies.findIndex((name) => name.name === item.name) === index,
@@ -121,12 +121,12 @@ export const formattedShowTimes = (showTimes: ShowTime[]) => {
 
         return {
           ...acc,
-          [showTime.movie.name]: {
-            ...(acc[showTime.movie.name as keyof typeof acc] as object),
+          [showTime.movieDTO.name]: {
+            ...(acc[showTime.movieDTO.name as keyof typeof acc] as object),
             [day]: {
-              ...((acc[showTime.movie.name as keyof typeof acc][day] as object) ?? []),
+              ...((acc[showTime.movieDTO.name as keyof typeof acc][day] as object) ?? []),
               [theaterName]: [
-                ...(acc[showTime.movie.name as keyof typeof acc][day]?.[theaterName] ?? []),
+                ...(acc[showTime.movieDTO.name as keyof typeof acc][day]?.[theaterName] ?? []),
                 showTime,
               ],
             },

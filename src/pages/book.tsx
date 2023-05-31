@@ -14,9 +14,16 @@ import {
 
 import { BookModal, Bottom, CheckModal } from '@/components';
 import { Film, Printer } from '@root/public/icons';
-import { Partner } from '../@types';
+import { Partner, ShowTime } from '../@types';
+import { GetServerSideProps } from 'next';
+import { api } from '../api';
 
-export default function BookPage({ partners }: { partners: Partner[] }) {
+interface Props {
+  partners: Partner[];
+  showTimes: ShowTime[];
+}
+
+export default function BookPage({ showTimes, partners }: Props) {
   const { isOpen: isBookOpen, onOpen: onBookOpen, onClose: onBookClose } = useDisclosure();
   const {
     isOpen: isCheckingBookOpen,
@@ -84,7 +91,12 @@ export default function BookPage({ partners }: { partners: Partner[] }) {
         </Center>
       </Content>
       <Bottom />
-      <BookModal isOpen={isBookOpen} onClose={onBookClose} partners={partners} />
+      <BookModal
+        isOpen={isBookOpen}
+        onClose={onBookClose}
+        partners={partners}
+        showTimes={showTimes}
+      />
       <CheckModal isOpen={isCheckingBookOpen} onClose={onCheckingBookClose} />
     </>
   );
@@ -116,3 +128,21 @@ const BookButton = styled(Button)`
     }
   }
 `;
+
+export const getServerSideProps: GetServerSideProps<Pick<Props, 'showTimes'>> = async (context) => {
+  try {
+    const result = await api.get<ShowTime[]>('/api/showtime/public-list');
+
+    return {
+      props: {
+        showTimes: result.data,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        showTimes: [],
+      },
+    };
+  }
+};
