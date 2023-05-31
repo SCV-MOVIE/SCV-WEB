@@ -35,14 +35,14 @@ export const initialSelectedMovieValue: SelectedMovie = {
   movie: {
     id: -1,
     name: '',
-    length: '',
+    length: '-1',
     rating: '12+',
     director: '',
     distributor: '',
     imgUrl: '',
     introduction: '',
-    actors: '',
-    genres: [],
+    actor: '',
+    genreDTOList: [],
     staff: '',
   },
   showTime: {

@@ -1,5 +1,5 @@
 import { HeadCount, SelectedMovie } from '@root/src/components/Modal/book/BookContext';
-import { ShowTime, TheaterType, User } from '../@types';
+import { Movie, ShowTime, TheaterType, User } from '../@types';
 
 const PRICE = {
   NORMAL: {
@@ -77,7 +77,7 @@ export const pointFor = (
   return point;
 };
 
-function addMinute(startDate: string, length: string) {
+function addMinute(startDate: string, length: number) {
   // startDate를 Date 객체로 변환
   const startDatetime = new Date(startDate);
 
@@ -97,8 +97,8 @@ function addMinute(startDate: string, length: string) {
   return formattedEndDatetime;
 }
 
-export const endTimeFor = (startTime: string, length: string) => {
-  return addMinute(startTime, length);
+export const endTimeFor = (startTime: string, length: Movie['length']) => {
+  return addMinute(startTime, Number(length));
 };
 
 export const moviesFromShowTimes = (showTimes: ShowTime[]) => {

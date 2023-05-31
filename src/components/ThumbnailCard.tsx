@@ -36,7 +36,7 @@ function ThumbnailCard({ src, movie, size = 'small', alt = 'movie-thumbnail' }: 
               {movie.name}
             </Heading>
             <Text variant="lg" color="white">
-              {movie.genres.map((genre) => genre.value).join(', ')}
+              {movie.genreDTOList.map((genre) => genre.name).join(', ')}
             </Text>
           </Stack>
         </OverlayLayout>

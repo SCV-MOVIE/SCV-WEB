@@ -4,94 +4,90 @@ import type { CheckTicket, ShowTime, TheaterType, Ticket } from '../@types/theat
 export const DUMMY_MOVIE: Movie = {
   id: 1,
   name: 'Joker',
-  length: '82',
+  length: 82,
   rating: '18+',
-  genres: [
-    { id: 1, value: 'Drama' },
-    { id: 2, value: 'Comedy' },
-    { id: 3, value: 'Adventure' },
-  ],
+  genreDTOList: [{ name: 'Drama' }, { name: 'Comedy' }, { name: 'Adventure' }],
   imgUrl: '/thumbnail.jpeg',
   director: 'Joker Director',
   introduction:
     'Joker is simple good. Joker is simple good. Joker is simple good. Joker is simple good.',
   distributor: 'Joker Distributor',
-  actors: 'John,Sarah,King',
+  actor: 'John,Sarah,King',
   staff: 'Queen,Ku,Kang',
 };
 
 export const DUMMY_MOVIE2: Movie = {
   id: 2,
   name: '스즈메의 문단속',
-  length: '182',
+  length: 182,
   rating: 'All',
-  genres: [{ id: 1, value: 'Action' }],
+  genreDTOList: [{ name: 'Action' }],
   imgUrl: '/door.jpeg',
   director: '스즈메 Director',
   introduction:
     '스즈메 is simple good. 스즈메 is simple good. 스즈메 is simple good. 스즈메 is simple good.',
   distributor: '스즈메 Distributor',
-  actors: 'John,Sarah,King',
+  actor: 'John,Sarah,King',
   staff: 'Queen,Ku,Kang',
 };
 
 export const DUMMY_MOVIE3: Movie = {
   id: 3,
   name: '슈퍼 마리오',
-  length: '122',
+  length: 122,
   rating: '12+',
-  genres: [{ id: 1, value: 'Action' }],
+  genreDTOList: [{ name: 'Action' }],
   imgUrl: '/mario.jpeg',
   director: '마리오 Director',
   introduction:
     '마리오 is simple good. 마리오 is simple good. 마리오 is simple good. 마리오 is simple good.',
   distributor: '마리오 Distributor',
-  actors: 'John,Sarah,King',
+  actor: 'John,Sarah,King',
   staff: 'Queen,Ku,Kang',
 };
 
 export const DUMMY_MOVIE4: Movie = {
   id: 4,
   name: '어벤져스',
-  length: '132',
+  length: 132,
   rating: '15+',
-  genres: [{ id: 1, value: 'Action' }],
+  genreDTOList: [{ name: 'Action' }],
   imgUrl: '/aven.jpeg',
   director: '어벤져스 Director',
   introduction:
     '어벤져스 is simple good. 어벤져스 is simple good. 어벤져스 is simple good. 어벤져스 is simple good.',
   distributor: '어벤져스 Distributor',
-  actors: 'John,Sarah,King',
+  actor: 'John,Sarah,King',
   staff: 'Queen,Ku,Kang',
 };
 
 export const DUMMY_MOVIE5: Movie = {
   id: 5,
   name: '기생충',
-  length: '132',
+  length: 132,
   rating: '15+',
-  genres: [{ id: 1, value: 'Action' }],
+  genreDTOList: [{ name: 'Action' }],
   imgUrl: '/para.jpeg',
   director: '기생충 Director',
   introduction:
     '기생충 is simple good. 기생충 is simple good. 기생충 is simple good. 기생충 is simple good.',
   distributor: '기생충 Distributor',
-  actors: 'John,Sarah,King',
+  actor: 'John,Sarah,King',
   staff: 'Queen,Ku,Kang',
 };
 
 export const DUMMY_MOVIE6: Movie = {
   id: 6,
   name: '범죄도시',
-  length: '92',
+  length: 92,
   rating: '15+',
-  genres: [{ id: 1, value: 'Action' }],
+  genreDTOList: [{ name: 'Action' }],
   imgUrl: '/crime.jpeg',
   director: '범죄도시 Director',
   introduction:
     '범죄도시 is simple good. 범죄도시 is simple good. 범죄도시 is simple good. 범죄도시 is simple good.',
   distributor: '범죄도시 Distributor',
-  actors: 'John,Sarah,King',
+  actor: 'John,Sarah,King',
   staff: 'Queen,Ku,Kang',
 };
 

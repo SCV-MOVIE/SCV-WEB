@@ -1,18 +1,18 @@
 export interface Movie {
   id: number;
-  name: string;
-  length: string;
-  rating: 'All' | '12+' | '15+' | '18+';
+  actor: string;
   director: string;
-  introduction: string;
   distributor: string;
+  genreDTOList: Pick<Genre, 'name'>[];
   imgUrl: string;
-  actors: string;
-  genres: Genre[];
+  introduction: string;
+  length: string | number;
+  name: string;
+  rating: 'All' | '12+' | '15+' | '18+';
   staff: string;
 }
 
 export interface Genre {
   id: number;
-  value: string;
+  name: string;
 }

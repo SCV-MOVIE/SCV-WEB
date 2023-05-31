@@ -4,8 +4,15 @@ import { Grid } from '@chakra-ui/react';
 
 import { DUMMY_MOVIES } from '@/constants/dummy';
 import { Bottom, LinedTitle, MovieCard } from '@/components';
+import { GetServerSideProps } from 'next';
+import { Movie } from '../@types';
+import { api } from '../api';
 
-export default function ShowPage() {
+interface Props {
+  movies: Movie[];
+}
+
+export default function MainPage({ movies }: Props) {
   return (
     <>
       <Head>
@@ -17,12 +24,11 @@ export default function ShowPage() {
       <Content>
         <LinedTitle title={'현재 상영작'} />
         <Grid templateColumns="repeat(4, 1fr)" rowGap={24} columnGap={8} mt={8}>
-          {DUMMY_MOVIES.map((movie, idx) => (
-            <MovieCard movie={movie} key={idx} />
+          {DUMMY_MOVIES.map((movie) => (
+            <MovieCard movie={movie} key={movie.id} />
           ))}
         </Grid>
       </Content>
-
       <Bottom />
     </>
   );
@@ -37,3 +43,21 @@ const Content = styled.div`
       padding-inline: 24px;
     }`}
 `;
+
+export const getServerSideProps: GetServerSideProps<Props> = async (context) => {
+  try {
+    const result = await api.get<Movie[]>('/api/movie/list');
+
+    return {
+      props: {
+        movies: result.data,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {
+        movies: [],
+      },
+    };
+  }
+};
