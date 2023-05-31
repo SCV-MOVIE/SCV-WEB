@@ -191,26 +191,18 @@ const DUMMY_TICKET: Ticket = {
 };
 
 export const DUMMY_CHECK_TICKET: CheckTicket = {
-  ticket: {
-    price: DUMMY_TICKET.price,
-    paymentDate: DUMMY_TICKET.paymentDate,
-  },
-  movie: {
-    name: DUMMY_MOVIE.name,
-    imgUrl: DUMMY_MOVIE.imgUrl,
-    length: DUMMY_MOVIE.length,
-  },
-  showTime: {
-    startDate: DUMMY_SHOWTIME.startDate,
-  },
-  seat: [
-    { id: 1, seatNm: 1 },
-    { id: 2, seatNm: 2 },
-  ],
-  theater: {
-    name: '3D',
-  },
-  payment: {
-    method: 'CARD',
-  },
+  movieImgUrl: '/thumbnail.jpeg',
+  movieLength: 221,
+  movieName: 'saw',
+  movieStartTime: 'yyyy-MM-dd HH:mm',
+  paymentDate: 'yyyy-MM-dd HH:mm:ss',
+  paymentMethod: 'ACCOUNT',
+  peopleNm: 2,
+  price: 20000,
+  reserveNm: '16자리 스트링 값',
+  seatInfo: 'A1, A2',
+  status: 'PRINTED',
+  theaterName: '1관',
+  ticketId: 1,
+  usedPoint: 1000,
 };

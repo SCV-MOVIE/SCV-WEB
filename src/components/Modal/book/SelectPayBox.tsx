@@ -26,7 +26,7 @@ interface Props {
   showTimes: ShowTime[];
 }
 
-function SelectPayBox({ partners }: Props) {
+function SelectPayBox({ showTimes, partners }: Props) {
   const { value, setValue } = useBookContext();
 
   const totalTicketPrice = React.useMemo(

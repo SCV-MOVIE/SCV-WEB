@@ -14,6 +14,7 @@ import type { CheckTicket, Information, Ticket } from '@root/src/@types';
 import CheckTicketInformationBox from './CheckTicketInformationBox';
 import PayedTicketInformationBox from './PayedTicketInformationBox';
 import { DUMMY_CHECK_TICKET } from '@root/src/constants/dummy';
+import { api } from '@root/src/api';
 
 interface Props {
   isOpen: boolean;
@@ -47,20 +48,32 @@ function CheckModal({ isOpen, onClose }: Props) {
   const [step, setStep] = React.useState<keyof typeof ModalContents>('information');
   const [ticketInformation, setTicketInformation] = React.useState<CheckTicket | null>(null);
 
+  const handleClose = () => {
+    setTicketInformation(null);
+    setStep('information');
+    onClose();
+  };
+
   const onInfoSubmit: SubmitHandler<Information> = async (data) => {
     console.log(data);
     //TODO: 백엔드 데이터 조회
     setStep('complete');
     setTicketInformation(DUMMY_CHECK_TICKET);
   };
+
   const onTicketSubmit: SubmitHandler<Pick<Ticket, 'reserveNumber'>> = async (data) => {
-    console.log(data);
-    setStep('complete');
-    setTicketInformation(DUMMY_CHECK_TICKET);
+    try {
+      const result = await api.get(`/api/ticket/check-by/reserveNm/${data.reserveNumber}`);
+      console.log(result.data);
+      setStep('complete');
+      setTicketInformation(DUMMY_CHECK_TICKET);
+    } catch (err) {
+      alert(err);
+    }
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} size="5xl">
+    <Modal isOpen={isOpen} onClose={handleClose} size="5xl">
       <ModalOverlay />
       <ModalContent overflow="scroll" minH={500} className={pretendard.className}>
         <ModalHeader>{ModalContents[step].header}</ModalHeader>
