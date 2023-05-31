@@ -65,6 +65,7 @@ export const initialSelectedMovieValue: SelectedMovie = {
     method: undefined,
     usedPoint: 0,
     partner: {
+      partnerId: -1,
       name: '',
       discount: 0,
     },

@@ -4,7 +4,7 @@ import { Partner, Payment } from '@root/src/@types';
 import { membershipTotalPrice, pointFor, salesTotalPrice, totalPrice } from '@root/src/utils';
 import React from 'react';
 
-import { useBookContext } from './BookContext';
+import { initialSelectedMovieValue, useBookContext } from './BookContext';
 import SelectedTicketInformation from './SelectedTicketInformation';
 
 const PAYMENT_METHOD = [
@@ -13,16 +13,21 @@ const PAYMENT_METHOD = [
 ] as const;
 
 const CARD_PARTNERS = [
-  { discount: 1000, name: 'SCV-CARD1' },
-  { discount: 2000, name: 'SCV-CARD2' },
-  { discount: 2000, name: 'SCV-CARD3' },
-  { discount: 1000, name: 'SCV-CARD4' },
+  { partnerId: 1, discount: 1000, name: 'SCV-CARD1' },
+  { partnerId: 2, discount: 2000, name: 'SCV-CARD2' },
+  { partnerId: 3, discount: 0, name: 'SCV-CARD3' },
+  { partnerId: 4, discount: 1000, name: 'SCV-CARD4' },
 ] as const;
 
 const MAX_POINT = 73212;
 
-function SelectPayBox() {
+interface Props {
+  partners: Partner[];
+}
+
+function SelectPayBox({ partners }: Props) {
   const { value, setValue } = useBookContext();
+
   const totalTicketPrice = React.useMemo(
     () =>
       membershipTotalPrice(value.headCount, value.payment.membership, value.showTime.theaterType),
@@ -36,7 +41,7 @@ function SelectPayBox() {
         payment: {
           ...prev.payment,
           method,
-          partner: { name: '', discount: 0 },
+          partner: initialSelectedMovieValue.payment.partner,
           account: '',
         },
       }));
@@ -49,7 +54,7 @@ function SelectPayBox() {
       if (value.payment.partner?.name === partner.name) {
         setValue((prev) => ({
           ...prev,
-          payment: { ...prev.payment, partner: { name: '', discount: 0 } },
+          payment: { ...prev.payment, partner: initialSelectedMovieValue.payment.partner },
         }));
       } else {
         setValue((prev) => ({

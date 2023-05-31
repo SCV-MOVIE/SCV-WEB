@@ -14,8 +14,9 @@ import {
 
 import { BookModal, Bottom, CheckModal } from '@/components';
 import { Film, Printer } from '@root/public/icons';
+import { Partner } from '../@types';
 
-export default function BookPage() {
+export default function BookPage({ partners }: { partners: Partner[] }) {
   const { isOpen: isBookOpen, onOpen: onBookOpen, onClose: onBookClose } = useDisclosure();
   const {
     isOpen: isCheckingBookOpen,
@@ -83,7 +84,7 @@ export default function BookPage() {
         </Center>
       </Content>
       <Bottom />
-      <BookModal isOpen={isBookOpen} onClose={onBookClose} />
+      <BookModal isOpen={isBookOpen} onClose={onBookClose} partners={partners} />
       <CheckModal isOpen={isCheckingBookOpen} onClose={onCheckingBookClose} />
     </>
   );

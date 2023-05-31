@@ -1,5 +1,5 @@
 import localFont from 'next/font/local';
-import type { AppProps } from 'next/app';
+import type { AppContext, AppProps } from 'next/app';
 import { ChakraProvider } from '@chakra-ui/react';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { QueryClient, QueryClientProvider } from 'react-query';
@@ -10,6 +10,7 @@ import { initialUserValue, UserContext, UserContextProvider } from '../component
 import React from 'react';
 import { User } from '../@types';
 import BankLayout from '../components/bank/BankLayout';
+import { api } from '../api';
 
 const queryClient = new QueryClient();
 
@@ -63,3 +64,20 @@ export default function App({ Component, pageProps }: AppProps) {
     </ChakraProvider>
   );
 }
+
+App.getInitialProps = async ({ Component, ctx }: AppContext) => {
+  let pageProps = {};
+
+  if (Component.getInitialProps) {
+    pageProps = await Component.getInitialProps(ctx);
+  }
+
+  try {
+    const partners = await api.get('/api/partner/list');
+
+    pageProps = { ...pageProps, partners: partners.data };
+    return { pageProps };
+  } catch (err) {
+    return { pageProps };
+  }
+};
