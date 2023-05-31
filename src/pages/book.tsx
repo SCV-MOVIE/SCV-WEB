@@ -24,6 +24,7 @@ interface Props {
 }
 
 export default function BookPage({ showTimes, partners }: Props) {
+  console.log(partners, showTimes);
   const { isOpen: isBookOpen, onOpen: onBookOpen, onClose: onBookClose } = useDisclosure();
   const {
     isOpen: isCheckingBookOpen,

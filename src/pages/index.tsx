@@ -13,6 +13,10 @@ interface Props {
 }
 
 export default function MainPage({ movies }: Props) {
+  const a = async () => {
+    const s = await api.get('/api/movie/list');
+    console.log(s);
+  };
   return (
     <>
       <Head>
@@ -22,6 +26,7 @@ export default function MainPage({ movies }: Props) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Content>
+        <div onClick={a}>hi</div>
         <LinedTitle title={'현재 상영작'} />
         <Grid templateColumns="repeat(4, 1fr)" rowGap={24} columnGap={8} mt={8}>
           {DUMMY_MOVIES.map((movie) => (

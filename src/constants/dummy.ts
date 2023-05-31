@@ -33,7 +33,7 @@ export const DUMMY_MOVIE2: Movie = {
 
 export const DUMMY_MOVIE3: Movie = {
   id: 3,
-  name: '슈퍼 마리오',
+  name: '슈퍼 마리오 브라더스',
   length: 122,
   rating: '12+',
   genreDTOList: [{ name: 'Action' }],
