@@ -15,6 +15,7 @@ import CheckTicketInformationBox from './CheckTicketInformationBox';
 import PayedTicketInformationBox from './PayedTicketInformationBox';
 import { DUMMY_CHECK_TICKET } from '@root/src/constants/dummy';
 import { api } from '@root/src/api';
+import { forPhoneNumber, forSecurityNumber } from '@root/src/utils';
 
 interface Props {
   isOpen: boolean;
@@ -55,10 +56,20 @@ function CheckModal({ isOpen, onClose }: Props) {
   };
 
   const onInfoSubmit: SubmitHandler<Information> = async (data) => {
-    console.log(data);
-    //TODO: 백엔드 데이터 조회
-    setStep('complete');
-    setTicketInformation(DUMMY_CHECK_TICKET);
+    try {
+      const result = await api.get(`/api/ticket/check-by/info`, {
+        data: {
+          name: data.name,
+          phoneNm: forPhoneNumber(data.phoneNumber),
+          securityNm: forSecurityNumber(data.securityFrontNumber, data.securityBackNumber),
+        },
+      });
+      console.log(result.data);
+      setStep('complete');
+      setTicketInformation(DUMMY_CHECK_TICKET);
+    } catch (err) {
+      alert(err);
+    }
   };
 
   const onTicketSubmit: SubmitHandler<Pick<Ticket, 'reserveNumber'>> = async (data) => {

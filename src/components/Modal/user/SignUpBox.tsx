@@ -3,6 +3,7 @@ import { Button, HStack, Input, Stack } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
 import { api } from '@root/src/api';
+import { forPhoneNumber, forSecurityNumber } from '@root/src/utils';
 
 interface SignUp {
   name: string;
@@ -32,11 +33,8 @@ function SignUpBox({ onClose }: { onClose: VoidFunction }) {
         loginId: data.loginId,
         name: data.name,
         password: data.password,
-        phoneNm: `${data.phoneNm.slice(0, 3)}-${data.phoneNm.slice(3, 7)}-${data.phoneNm.slice(
-          7,
-          11,
-        )}`,
-        securityNm: `${data.securityFrontNumber}-${data.securityBackNumber}`,
+        phoneNm: forPhoneNumber(data.phoneNm),
+        securityNm: forSecurityNumber(data.securityFrontNumber, data.securityBackNumber),
       });
       if (result.status === 200) {
         alert('회원가입이 완료되었습니다.');
