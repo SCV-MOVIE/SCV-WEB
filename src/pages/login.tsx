@@ -74,7 +74,27 @@ export default function Login() {
               color={theme.colors.gray100}
             />
           </Stack>
+
           <Center px={8} mt={12}>
+            <Button
+              width="100%"
+              py={2}
+              type="submit"
+              variant="solid"
+              bgColor="blue.600"
+              cursor={'pointer'}
+              borderRadius={8}
+              transition="all 0.2s ease-in"
+              _hover={{
+                bgColor: 'blue.800',
+              }}
+            >
+              <Text color={theme.colors.offwhite} fontSize="16px">
+                로그인
+              </Text>
+            </Button>
+          </Center>
+          <Center px={8} mt={4}>
             <Button
               width="100%"
               py={2}
@@ -91,25 +111,6 @@ export default function Login() {
             >
               <Text color={theme.colors.offwhite} fontSize="16px">
                 회원가입
-              </Text>
-            </Button>
-          </Center>
-          <Center px={8} mt={4}>
-            <Button
-              width="100%"
-              py={2}
-              type="submit"
-              variant="solid"
-              bgColor="blue.600"
-              cursor={'pointer'}
-              borderRadius={8}
-              transition="all 0.2s ease-in"
-              _hover={{
-                bgColor: 'blue.800',
-              }}
-            >
-              <Text color={theme.colors.offwhite} fontSize="16px">
-                로그인
               </Text>
             </Button>
           </Center>
