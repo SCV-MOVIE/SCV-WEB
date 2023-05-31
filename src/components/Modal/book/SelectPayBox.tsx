@@ -19,14 +19,14 @@ const CARD_PARTNERS = [
   { partnerId: 4, discount: 1000, name: 'SCV-CARD4' },
 ] as const;
 
-const MAX_POINT = 73212;
-
 interface Props {
   partners: Partner[];
   showTimes: ShowTime[];
+  userPoint?: number;
 }
 
-function SelectPayBox({ showTimes, partners }: Props) {
+function SelectPayBox({ showTimes, partners, userPoint }: Props) {
+  const point = userPoint ?? 0;
   const { value, setValue } = useBookContext();
 
   const totalTicketPrice = React.useMemo(
@@ -74,10 +74,10 @@ function SelectPayBox({ showTimes, partners }: Props) {
   );
 
   const handleClickMaxPoint = React.useCallback(() => {
-    if (MAX_POINT <= 0) {
+    if (point <= 0) {
       return;
     }
-    const usedPoint = Math.min(totalTicketPrice, MAX_POINT);
+    const usedPoint = Math.min(totalTicketPrice, point);
     setValue((prev) => ({
       ...prev,
       payment: {
@@ -86,14 +86,14 @@ function SelectPayBox({ showTimes, partners }: Props) {
         usedPoint,
       },
     }));
-  }, [setValue, totalTicketPrice]);
+  }, [point, setValue, totalTicketPrice]);
 
   const handleChangeInput = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const usedPoint = pointFor(
         Number(e.target.value ?? 0),
         value,
-        MAX_POINT,
+        point,
         value.payment.membership,
         value.showTime.theaterType,
       );
@@ -106,7 +106,7 @@ function SelectPayBox({ showTimes, partners }: Props) {
         },
       }));
     },
-    [setValue, totalTicketPrice, value],
+    [point, setValue, totalTicketPrice, value],
   );
 
   return (
@@ -129,7 +129,7 @@ function SelectPayBox({ showTimes, partners }: Props) {
           onChange={handleChangeInput}
         />
         <Text fontSize={12} textAlign="end">
-          사용가능한 포인트: {MAX_POINT.toLocaleString()}
+          사용가능한 포인트: {point.toLocaleString()}
         </Text>
       </Stack>
       <Divider orientation="vertical" h={320} alignSelf="center" color="gray.500" />

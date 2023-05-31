@@ -4,11 +4,14 @@ import { createGenericUseContext } from '../book/BookContext';
 
 export const initialUserValue: User = {
   id: -1,
-  loginId: '',
-  point: 0,
-  name: '',
-  phoneNumber: '',
-  membership: 'VVIP',
+  isMember: 'Y',
+  loginId: 'garfield',
+  membership: 'COMMON',
+  name: 'venom',
+  password: '1234',
+  phoneNm: '010-1234-5678',
+  point: 1,
+  securityNm: '000000-0000000',
 };
 
 interface UserContextType {

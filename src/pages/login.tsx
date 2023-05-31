@@ -101,7 +101,7 @@ export default function Login() {
             <Button
               width="100%"
               py={2}
-              type="submit"
+              type="button"
               variant="solid"
               bgColor="green.600"
               cursor={'pointer'}

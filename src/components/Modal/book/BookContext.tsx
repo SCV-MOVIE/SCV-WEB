@@ -70,7 +70,7 @@ export const initialSelectedMovieValue: SelectedMovie = {
       discount: 0,
     },
     account: '',
-    membership: 'VVIP',
+    membership: 'COMMON',
   },
   information: {
     name: '',
