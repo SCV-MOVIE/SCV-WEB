@@ -9,6 +9,7 @@ import { Bottom, Logo } from '@/components';
 import { useTheme } from '@emotion/react';
 import { UserUtilModal } from '../components/Modal/user';
 import { api } from '../api';
+import { useRouter } from 'next/router';
 
 interface LoginType {
   loginId: string;
@@ -16,6 +17,7 @@ interface LoginType {
 }
 
 export default function Login() {
+  const router = useRouter();
   const theme = useTheme();
   const [utilModalType, setUtilModalType] = React.useState<'findID' | 'findPW' | 'signUp'>(
     'findID',
@@ -34,6 +36,7 @@ export default function Login() {
     try {
       const result = await api.post('/api/member/login', data);
       if (result.status === 200) {
+        router.back();
         alert('로그인에 성공했습니다.');
       }
     } catch (err) {
