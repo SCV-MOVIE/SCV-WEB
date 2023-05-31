@@ -12,14 +12,15 @@ import {
 interface Props {
   label: string;
   value: number;
+  disabled?: boolean;
   onChange: UseCounterProps['onChange'];
 }
 
-function NumberInputBox({ label, value, onChange }: Props) {
+function NumberInputBox({ label, value, disabled = false, onChange }: Props) {
   return (
     <Stack spacing={1}>
       <Text size="sm">{label}</Text>
-      <NumberInput min={0} max={8} value={value} onChange={onChange}>
+      <NumberInput min={0} max={8} value={value} onChange={onChange} isDisabled={disabled}>
         <NumberInputField />
         <NumberInputStepper>
           <NumberIncrementStepper />
