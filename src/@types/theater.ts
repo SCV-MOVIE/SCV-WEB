@@ -1,12 +1,13 @@
 import { Movie } from './movie';
 import { Payment } from './payment';
+import { User } from './user';
 
 export interface ShowTime {
   id: number;
   round: number;
   startDate: string; // yyyy-mm-dd hh:mm
   isPublic: boolean;
-  movie: Movie;
+  movieDTO: Movie;
   remainSeatNm: number;
   theaterName: string;
   theaterType: TheaterType['value'];
@@ -27,7 +28,7 @@ export interface TheaterType {
 
 export interface Seat {
   id: number;
-  seatNm: number;
+  seatNm: string;
 }
 
 export interface Ticket {
@@ -42,10 +43,18 @@ export interface Ticket {
 }
 
 export type CheckTicket = {
-  ticket: Pick<Ticket, 'price' | 'paymentDate'>;
-  movie: Pick<Movie, 'imgUrl' | 'name' | 'length'>;
-  showTime: Pick<ShowTime, 'startDate'>;
-  theater: Pick<Theater, 'name'>;
-  seat: Seat[];
-  payment: Pick<Payment, 'method'>;
+  movieImgUrl: Movie['imgUrl'];
+  movieLength: Movie['length'];
+  movieName: Movie['name'];
+  movieStartTime: ShowTime['startDate'];
+  paymentDate: Ticket['paymentDate'];
+  paymentMethod: Payment['method'];
+  peopleNm: number;
+  price: Ticket['price'];
+  reserveNm: Ticket['reserveNumber'];
+  seatInfo: Seat['seatNm'];
+  status: Ticket['status'];
+  theaterName: Theater['name'];
+  ticketId: Ticket['id'];
+  usedPoint: User['point'];
 };

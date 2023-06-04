@@ -15,7 +15,7 @@ function PayedTicketInformationBox({ payedTicket }: Props) {
         <Image
           width={240}
           height={500}
-          src={payedTicket?.movie.imgUrl ?? ''}
+          src={payedTicket?.movieImgUrl ?? ''}
           alt="image-thumbnail"
         />
       </Stack>
@@ -24,19 +24,19 @@ function PayedTicketInformationBox({ payedTicket }: Props) {
         <HStack alignItems="center">
           <Heading fontSize={12}>제목: </Heading>
           <Text size="sm" fontSize={12}>
-            {payedTicket?.movie.name}
+            {payedTicket?.movieName}
           </Text>
         </HStack>
         <HStack alignItems="center">
           <Heading fontSize={12}>러닝타임: </Heading>
           <Text size="sm" fontSize={12}>
-            {payedTicket?.movie.length}
+            {payedTicket?.movieLength.toLocaleString()}분
           </Text>
         </HStack>
         <HStack alignItems="center">
           <Heading fontSize={12}>시작시간: </Heading>
           <Text size="sm" fontSize={12}>
-            {payedTicket?.showTime.startDate}
+            {payedTicket?.movieStartTime}
           </Text>
         </HStack>
       </Stack>
@@ -47,7 +47,7 @@ function PayedTicketInformationBox({ payedTicket }: Props) {
             가격:
           </Heading>
           <Text size="sm" fontSize={12}>
-            {payedTicket?.ticket.price.toLocaleString()}
+            {payedTicket?.price.toLocaleString()}
           </Text>
         </HStack>
         <HStack alignItems="center">
@@ -55,7 +55,7 @@ function PayedTicketInformationBox({ payedTicket }: Props) {
             결제 방법:
           </Heading>
           <Text size="sm" fontSize={12}>
-            {payedTicket?.payment.method}
+            {payedTicket?.paymentMethod}
           </Text>
         </HStack>
         <HStack alignItems="center">
@@ -63,7 +63,7 @@ function PayedTicketInformationBox({ payedTicket }: Props) {
             결제일:
           </Heading>
           <Text size="sm" fontSize={12}>
-            {payedTicket?.ticket.paymentDate}
+            {payedTicket?.paymentDate}
           </Text>
         </HStack>
         <HStack alignItems="center">
@@ -71,7 +71,7 @@ function PayedTicketInformationBox({ payedTicket }: Props) {
             영화관:
           </Heading>
           <Text size="sm" fontSize={12}>
-            {payedTicket?.theater.name}
+            {payedTicket?.theaterName}
           </Text>
         </HStack>
         <HStack alignItems="center">
@@ -79,7 +79,7 @@ function PayedTicketInformationBox({ payedTicket }: Props) {
             인원:
           </Heading>
           <Text size="sm" fontSize={12}>
-            {payedTicket?.seat.length} 명
+            {payedTicket?.peopleNm} 명
           </Text>
         </HStack>
         <HStack alignItems="center">
@@ -87,7 +87,7 @@ function PayedTicketInformationBox({ payedTicket }: Props) {
             좌석:
           </Heading>
           <Text size="sm" fontSize={12}>
-            {payedTicket?.seat.map((seat) => seat.seatNm).join(', ')}
+            {payedTicket?.seatInfo}
           </Text>
         </HStack>
         <Button colorScheme="red">예매 취소</Button>

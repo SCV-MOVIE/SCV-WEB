@@ -2,30 +2,58 @@ import React from 'react';
 import { Button, HStack, Input, Stack } from '@chakra-ui/react';
 import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
+import { api } from '@root/src/api';
+import { forPhoneNumber, forSecurityNumber } from '@root/src/utils';
 
 interface SignUp {
   name: string;
   loginId: string;
   password: string;
   passwordCheck: string;
-  phoneNumber: string;
+  phoneNm: string;
   securityFrontNumber: string;
   securityBackNumber: string;
 }
 
-function SignUpBox() {
+function SignUpBox({ onClose }: { onClose: VoidFunction }) {
+  const [checkLoginId, setCheckLoginId] = React.useState<boolean>(false);
   const { watch, register, handleSubmit } = useForm<SignUp>();
+
   const onSubmit: SubmitHandler<SignUp> = async (data) => {
+    if (!checkLoginId) {
+      alert('이메일 중복확인을 해주세요.');
+      return;
+    }
     if (data.password !== data.passwordCheck) {
       alert('비밀번호가 서로 다릅니다.');
       return;
     }
-    console.log(data);
+    try {
+      const result = await api.post('/api/member/register', {
+        loginId: data.loginId,
+        name: data.name,
+        password: data.password,
+        phoneNm: forPhoneNumber(data.phoneNm),
+        securityNm: forSecurityNumber(data.securityFrontNumber, data.securityBackNumber),
+      });
+      if (result.status === 200) {
+        alert('회원가입이 완료되었습니다.');
+        onClose();
+      }
+    } catch (err) {
+      alert(err);
+    }
   };
 
-  const handleClickCheckEmailButton = React.useCallback(() => {
+  const handleClickCheckEmailButton = React.useCallback(async () => {
     const loginId = watch('loginId');
-    console.log(loginId);
+    const result = await api.get(`/api/member/duplication-check/loginId/${loginId}`);
+    if (result.data) {
+      alert('중복된 아이디입니다.');
+    } else {
+      alert('사용 가능한 아이디입니다.');
+      setCheckLoginId(true);
+    }
   }, [watch]);
 
   return (
@@ -57,11 +85,11 @@ function SignUpBox() {
             {...register('passwordCheck')}
             padding={4}
           />
-          <label htmlFor="phoneNumber">핸드폰 번호</label>
+          <label htmlFor="phoneNm">핸드폰 번호</label>
           <Input
-            id="phoneNumber"
+            id="phoneNm"
             placeholder="핸드폰 번호(01011112222)"
-            {...register('phoneNumber')}
+            {...register('phoneNm')}
             padding={4}
             maxLength={11}
           />

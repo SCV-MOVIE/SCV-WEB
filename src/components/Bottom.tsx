@@ -14,7 +14,7 @@ function Bottom() {
           서울시립대학교 데이터베이스 설계
         </Text>
         <Text color={theme.colors.gray100} fontSize="md">
-          2018920039 이상민, 2017920049 이명재, 20189200 임재욱
+          2018920039 이상민, 2017920049 이명재, 2018920051 임재욱
         </Text>
         <Text color={theme.colors.gray100} fontSize="md">
           영화 예매 사이트 구현

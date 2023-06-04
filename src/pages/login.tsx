@@ -8,13 +8,16 @@ import { Button, Input, Stack, Text, Box, Center, HStack, useDisclosure } from '
 import { Bottom, Logo } from '@/components';
 import { useTheme } from '@emotion/react';
 import { UserUtilModal } from '../components/Modal/user';
+import { api } from '../api';
+import { useRouter } from 'next/router';
 
 interface LoginType {
-  email: string;
+  loginId: string;
   password: string;
 }
 
 export default function Login() {
+  const router = useRouter();
   const theme = useTheme();
   const [utilModalType, setUtilModalType] = React.useState<'findID' | 'findPW' | 'signUp'>(
     'findID',
@@ -29,7 +32,17 @@ export default function Login() {
   );
 
   const { register, handleSubmit } = useForm<LoginType>();
-  const onSubmit: SubmitHandler<LoginType> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<LoginType> = async (data) => {
+    try {
+      const result = await api.post('/api/member/login', data);
+      if (result.status === 200) {
+        router.back();
+        alert('로그인에 성공했습니다.');
+      }
+    } catch (err) {
+      alert(err);
+    }
+  };
 
   return (
     <>
@@ -48,7 +61,7 @@ export default function Login() {
             <Input
               id="id"
               placeholder="아이디"
-              {...register('email')}
+              {...register('loginId')}
               padding={4}
               color={theme.colors.gray100}
             />
@@ -64,27 +77,8 @@ export default function Login() {
               color={theme.colors.gray100}
             />
           </Stack>
+
           <Center px={8} mt={12}>
-            <Button
-              width="100%"
-              py={2}
-              type="submit"
-              variant="solid"
-              bgColor="green.600"
-              cursor={'pointer'}
-              borderRadius={8}
-              transition="all 0.2s ease-in"
-              _hover={{
-                bgColor: 'green.800',
-              }}
-              onClick={() => handleClickModalOpen('signUp')}
-            >
-              <Text color={theme.colors.offwhite} fontSize="16px">
-                회원가입
-              </Text>
-            </Button>
-          </Center>
-          <Center px={8} mt={4}>
             <Button
               width="100%"
               py={2}
@@ -100,6 +94,26 @@ export default function Login() {
             >
               <Text color={theme.colors.offwhite} fontSize="16px">
                 로그인
+              </Text>
+            </Button>
+          </Center>
+          <Center px={8} mt={4}>
+            <Button
+              width="100%"
+              py={2}
+              type="button"
+              variant="solid"
+              bgColor="green.600"
+              cursor={'pointer'}
+              borderRadius={8}
+              transition="all 0.2s ease-in"
+              _hover={{
+                bgColor: 'green.800',
+              }}
+              onClick={() => handleClickModalOpen('signUp')}
+            >
+              <Text color={theme.colors.offwhite} fontSize="16px">
+                회원가입
               </Text>
             </Button>
           </Center>

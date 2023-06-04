@@ -35,9 +35,9 @@ function MainMovieThumbnail({ movie }: Props) {
               장르:
             </Text>
             <HStack>
-              {movie.genres.map((genre) => (
-                <Text variant="md" key={genre.id} color="white">
-                  {genre.value}
+              {movie.genreDTOList.map((genre) => (
+                <Text variant="md" key={genre.name} color="white">
+                  {genre.name}
                 </Text>
               ))}
             </HStack>

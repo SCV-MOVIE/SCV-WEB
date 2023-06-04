@@ -6,6 +6,7 @@ export interface Payment {
 }
 
 export interface Partner {
+  partnerId: number;
   name: string;
   discount: number;
 }

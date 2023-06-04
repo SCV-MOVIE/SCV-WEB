@@ -12,7 +12,7 @@ interface Props {
   onClose: VoidFunction;
 }
 
-const ModalContents: Record<Props['type'], { header: string; body: React.ReactElement }> = {
+const ModalContents: Record<Props['type'], { header: string; body: JSX.Element }> = {
   findID: {
     header: '아이디 찾기',
     body: <FindIdBox />,
@@ -23,7 +23,7 @@ const ModalContents: Record<Props['type'], { header: string; body: React.ReactEl
   },
   signUp: {
     header: '회원가입',
-    body: <SignUpBox />,
+    body: <SignUpBox onClose={() => alert('error')} />,
   },
   changePW: {
     header: '비밀번호 변경',
@@ -37,7 +37,7 @@ function UserUtilModal({ type, isOpen, onClose }: Props) {
       <ModalOverlay />
       <ModalContent overflow="scroll" minH={500} className={pretendard.className}>
         <ModalHeader>{ModalContents[type].header}</ModalHeader>
-        {ModalContents[type].body}
+        {React.cloneElement(ModalContents[type].body, { onClose })}
         <ModalCloseButton />
       </ModalContent>
     </Modal>

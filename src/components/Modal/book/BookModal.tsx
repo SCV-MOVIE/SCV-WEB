@@ -18,15 +18,17 @@ import { BookStep, BookStepContent, BookStepReducer, InitialStepValue } from './
 import { BookContextProvider, initialSelectedMovieValue, SelectedMovie } from './BookContext';
 import { pretendard } from '@root/src/pages/_app';
 import { getAge } from '@root/src/utils';
+import { Partner, ShowTime } from '@root/src/@types';
+import { useUserInfo } from '@root/src/hooks';
 
 interface Props {
   isOpen: boolean;
   onClose: VoidFunction;
+  partners: Partner[];
+  showTimes: ShowTime[];
 }
 
-const isCompleteCurrentStep = (step: BookStep, value: SelectedMovie) => {
-  // TODO: 유저 조회 api 연동
-  const userAge = 20;
+const isCompleteCurrentStep = (step: BookStep, value: SelectedMovie, userAge: number) => {
   if (step === BookStep.MOVIE) {
     if (value.movie?.rating === '18+' && userAge < 20) {
       alert('성인이 아닙니다.');
@@ -59,18 +61,25 @@ const isCompleteCurrentStep = (step: BookStep, value: SelectedMovie) => {
   return typeof value.payment.method !== 'undefined';
 };
 
-function BookModal({ isOpen, onClose }: Props) {
-  const isLogin = false;
+function BookModal({ isOpen, partners, showTimes, onClose }: Props) {
+  const { isLogin, user } = useUserInfo();
   const [value, setValue] = React.useState<SelectedMovie>(initialSelectedMovieValue);
   const [state, dispatch] = React.useReducer(BookStepReducer, InitialStepValue);
   const ModalStepContent = BookStepContent[state.step];
 
   const onClickPrev = React.useCallback(() => dispatch({ direction: 'prev', isLogin }), [isLogin]);
   const onClickNext = React.useCallback(() => {
-    if (isCompleteCurrentStep(state.step, value)) {
+    if (
+      isCompleteCurrentStep(
+        state.step,
+        value,
+        Number(getAge(user?.securityNm ?? value.information.securityFrontNumber)),
+      )
+    ) {
       dispatch({ direction: 'next', isLogin });
     }
-  }, [isLogin, state.step, value]);
+  }, [isLogin, state.step, user?.securityNm, value]);
+
   const onClickClose = React.useCallback(() => {
     dispatch({ direction: 'reset', isLogin });
     onClose();
@@ -80,6 +89,18 @@ function BookModal({ isOpen, onClose }: Props) {
     dispatch({ direction: 'reset', isLogin });
     setValue(initialSelectedMovieValue);
   }, [isLogin]);
+
+  React.useEffect(() => {
+    if (user) {
+      setValue((prev) => ({
+        ...prev,
+        payment: {
+          ...prev.payment,
+          membership: user.membership,
+        },
+      }));
+    }
+  }, [user]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClickClose} size="5xl">
@@ -106,7 +127,7 @@ function BookModal({ isOpen, onClose }: Props) {
         <ModalCloseButton />
         <BookContextProvider value={value} setValue={setValue}>
           <ModalBody>
-            <ModalStepContent />
+            <ModalStepContent partners={partners} showTimes={showTimes} userPoint={user?.point} />
           </ModalBody>
         </BookContextProvider>
         <ModalFooter justifyContent={state.step !== BookStep.MOVIE ? 'space-between' : 'end'}>

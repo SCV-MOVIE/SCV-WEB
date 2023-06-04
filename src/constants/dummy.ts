@@ -4,94 +4,90 @@ import type { CheckTicket, ShowTime, TheaterType, Ticket } from '../@types/theat
 export const DUMMY_MOVIE: Movie = {
   id: 1,
   name: 'Joker',
-  length: '82',
+  length: 82,
   rating: '18+',
-  genres: [
-    { id: 1, value: 'Drama' },
-    { id: 2, value: 'Comedy' },
-    { id: 3, value: 'Adventure' },
-  ],
+  genreDTOList: [{ name: 'Drama' }, { name: 'Comedy' }, { name: 'Adventure' }],
   imgUrl: '/thumbnail.jpeg',
   director: 'Joker Director',
   introduction:
     'Joker is simple good. Joker is simple good. Joker is simple good. Joker is simple good.',
   distributor: 'Joker Distributor',
-  actors: 'John,Sarah,King',
+  actor: 'John,Sarah,King',
   staff: 'Queen,Ku,Kang',
 };
 
 export const DUMMY_MOVIE2: Movie = {
   id: 2,
   name: '스즈메의 문단속',
-  length: '182',
+  length: 182,
   rating: 'All',
-  genres: [{ id: 1, value: 'Action' }],
+  genreDTOList: [{ name: 'Action' }],
   imgUrl: '/door.jpeg',
   director: '스즈메 Director',
   introduction:
     '스즈메 is simple good. 스즈메 is simple good. 스즈메 is simple good. 스즈메 is simple good.',
   distributor: '스즈메 Distributor',
-  actors: 'John,Sarah,King',
+  actor: 'John,Sarah,King',
   staff: 'Queen,Ku,Kang',
 };
 
 export const DUMMY_MOVIE3: Movie = {
   id: 3,
-  name: '슈퍼 마리오',
-  length: '122',
+  name: '슈퍼 마리오 브라더스',
+  length: 122,
   rating: '12+',
-  genres: [{ id: 1, value: 'Action' }],
+  genreDTOList: [{ name: 'Action' }],
   imgUrl: '/mario.jpeg',
   director: '마리오 Director',
   introduction:
     '마리오 is simple good. 마리오 is simple good. 마리오 is simple good. 마리오 is simple good.',
   distributor: '마리오 Distributor',
-  actors: 'John,Sarah,King',
+  actor: 'John,Sarah,King',
   staff: 'Queen,Ku,Kang',
 };
 
 export const DUMMY_MOVIE4: Movie = {
   id: 4,
   name: '어벤져스',
-  length: '132',
+  length: 132,
   rating: '15+',
-  genres: [{ id: 1, value: 'Action' }],
+  genreDTOList: [{ name: 'Action' }],
   imgUrl: '/aven.jpeg',
   director: '어벤져스 Director',
   introduction:
     '어벤져스 is simple good. 어벤져스 is simple good. 어벤져스 is simple good. 어벤져스 is simple good.',
   distributor: '어벤져스 Distributor',
-  actors: 'John,Sarah,King',
+  actor: 'John,Sarah,King',
   staff: 'Queen,Ku,Kang',
 };
 
 export const DUMMY_MOVIE5: Movie = {
   id: 5,
   name: '기생충',
-  length: '132',
+  length: 132,
   rating: '15+',
-  genres: [{ id: 1, value: 'Action' }],
+  genreDTOList: [{ name: 'Action' }],
   imgUrl: '/para.jpeg',
   director: '기생충 Director',
   introduction:
     '기생충 is simple good. 기생충 is simple good. 기생충 is simple good. 기생충 is simple good.',
   distributor: '기생충 Distributor',
-  actors: 'John,Sarah,King',
+  actor: 'John,Sarah,King',
   staff: 'Queen,Ku,Kang',
 };
 
 export const DUMMY_MOVIE6: Movie = {
   id: 6,
   name: '범죄도시',
-  length: '92',
+  length: 92,
   rating: '15+',
-  genres: [{ id: 1, value: 'Action' }],
+  genreDTOList: [{ name: 'Action' }],
   imgUrl: '/crime.jpeg',
   director: '범죄도시 Director',
   introduction:
     '범죄도시 is simple good. 범죄도시 is simple good. 범죄도시 is simple good. 범죄도시 is simple good.',
   distributor: '범죄도시 Distributor',
-  actors: 'John,Sarah,King',
+  actor: 'John,Sarah,King',
   staff: 'Queen,Ku,Kang',
 };
 
@@ -109,14 +105,14 @@ export const DUMMY_SHOWTIME: ShowTime = {
   round: 1,
   startDate: '2023-05-23 14:05',
   isPublic: true,
-  movie: DUMMY_MOVIE,
+  movieDTO: DUMMY_MOVIE,
   remainSeatNm: 23,
   theaterName: '1관',
   theaterType: '3D',
   theaterSize: 30,
 };
 const createShowTime = (
-  movie: Movie,
+  movieDTO: Movie,
   startDate: string,
   id: number,
   theaterType: TheaterType['value'],
@@ -125,7 +121,7 @@ const createShowTime = (
   round: 1,
   startDate,
   isPublic: true,
-  movie,
+  movieDTO,
   remainSeatNm: 23,
   theaterName: '1관',
   theaterType,
@@ -195,26 +191,18 @@ const DUMMY_TICKET: Ticket = {
 };
 
 export const DUMMY_CHECK_TICKET: CheckTicket = {
-  ticket: {
-    price: DUMMY_TICKET.price,
-    paymentDate: DUMMY_TICKET.paymentDate,
-  },
-  movie: {
-    name: DUMMY_MOVIE.name,
-    imgUrl: DUMMY_MOVIE.imgUrl,
-    length: DUMMY_MOVIE.length,
-  },
-  showTime: {
-    startDate: DUMMY_SHOWTIME.startDate,
-  },
-  seat: [
-    { id: 1, seatNm: 1 },
-    { id: 2, seatNm: 2 },
-  ],
-  theater: {
-    name: '3D',
-  },
-  payment: {
-    method: 'CARD',
-  },
+  movieImgUrl: '/thumbnail.jpeg',
+  movieLength: 221,
+  movieName: 'saw',
+  movieStartTime: 'yyyy-MM-dd HH:mm',
+  paymentDate: 'yyyy-MM-dd HH:mm:ss',
+  paymentMethod: 'ACCOUNT',
+  peopleNm: 2,
+  price: 20000,
+  reserveNm: '16자리 스트링 값',
+  seatInfo: 'A1, A2',
+  status: 'PRINTED',
+  theaterName: '1관',
+  ticketId: 1,
+  usedPoint: 1000,
 };

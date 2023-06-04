@@ -1,10 +1,10 @@
 import { Center, Divider, Heading, HStack, Input, Stack, Text } from '@chakra-ui/react';
 import styled from '@emotion/styled';
-import { Partner, Payment } from '@root/src/@types';
+import { Partner, Payment, ShowTime } from '@root/src/@types';
 import { membershipTotalPrice, pointFor, salesTotalPrice, totalPrice } from '@root/src/utils';
 import React from 'react';
 
-import { useBookContext } from './BookContext';
+import { initialSelectedMovieValue, useBookContext } from './BookContext';
 import SelectedTicketInformation from './SelectedTicketInformation';
 
 const PAYMENT_METHOD = [
@@ -13,16 +13,22 @@ const PAYMENT_METHOD = [
 ] as const;
 
 const CARD_PARTNERS = [
-  { discount: 1000, name: 'SCV-CARD1' },
-  { discount: 2000, name: 'SCV-CARD2' },
-  { discount: 2000, name: 'SCV-CARD3' },
-  { discount: 1000, name: 'SCV-CARD4' },
+  { partnerId: 1, discount: 1000, name: 'SCV-CARD1' },
+  { partnerId: 2, discount: 2000, name: 'SCV-CARD2' },
+  { partnerId: 3, discount: 0, name: 'SCV-CARD3' },
+  { partnerId: 4, discount: 1000, name: 'SCV-CARD4' },
 ] as const;
 
-const MAX_POINT = 73212;
+interface Props {
+  partners: Partner[];
+  showTimes: ShowTime[];
+  userPoint?: number;
+}
 
-function SelectPayBox() {
+function SelectPayBox({ showTimes, partners, userPoint }: Props) {
+  const point = userPoint ?? 0;
   const { value, setValue } = useBookContext();
+
   const totalTicketPrice = React.useMemo(
     () =>
       membershipTotalPrice(value.headCount, value.payment.membership, value.showTime.theaterType),
@@ -36,7 +42,7 @@ function SelectPayBox() {
         payment: {
           ...prev.payment,
           method,
-          partner: { name: '', discount: 0 },
+          partner: initialSelectedMovieValue.payment.partner,
           account: '',
         },
       }));
@@ -49,7 +55,7 @@ function SelectPayBox() {
       if (value.payment.partner?.name === partner.name) {
         setValue((prev) => ({
           ...prev,
-          payment: { ...prev.payment, partner: { name: '', discount: 0 } },
+          payment: { ...prev.payment, partner: initialSelectedMovieValue.payment.partner },
         }));
       } else {
         setValue((prev) => ({
@@ -68,10 +74,10 @@ function SelectPayBox() {
   );
 
   const handleClickMaxPoint = React.useCallback(() => {
-    if (MAX_POINT <= 0) {
+    if (point <= 0) {
       return;
     }
-    const usedPoint = Math.min(totalTicketPrice, MAX_POINT);
+    const usedPoint = Math.min(totalTicketPrice, point);
     setValue((prev) => ({
       ...prev,
       payment: {
@@ -80,14 +86,14 @@ function SelectPayBox() {
         usedPoint,
       },
     }));
-  }, [setValue, totalTicketPrice]);
+  }, [point, setValue, totalTicketPrice]);
 
   const handleChangeInput = React.useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
       const usedPoint = pointFor(
         Number(e.target.value ?? 0),
         value,
-        MAX_POINT,
+        point,
         value.payment.membership,
         value.showTime.theaterType,
       );
@@ -100,7 +106,7 @@ function SelectPayBox() {
         },
       }));
     },
-    [setValue, totalTicketPrice, value],
+    [point, setValue, totalTicketPrice, value],
   );
 
   return (
@@ -123,7 +129,7 @@ function SelectPayBox() {
           onChange={handleChangeInput}
         />
         <Text fontSize={12} textAlign="end">
-          사용가능한 포인트: {MAX_POINT.toLocaleString()}
+          사용가능한 포인트: {point.toLocaleString()}
         </Text>
       </Stack>
       <Divider orientation="vertical" h={320} alignSelf="center" color="gray.500" />

@@ -28,7 +28,17 @@ function MovieCard({ movie }: Props) {
         _hover={{ bgColor: 'blackAlpha.300' }}
       >
         <MovieImage priority width={360} height={320} src={movie.imgUrl} alt="movie-image" />
-        <Stack paddingInline={4} boxSizing="border-box">
+        <Stack
+          paddingInline={4}
+          boxSizing="border-box"
+          minW={240}
+          style={{
+            display: 'block',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap',
+          }}
+        >
           <Heading color={theme.colors.gray100}>{movie.name}</Heading>
           <Text color={theme.colors.gray200}>감독: {movie.director}</Text>
           <Text color={theme.colors.gray200}>배급사: {movie.distributor}</Text>

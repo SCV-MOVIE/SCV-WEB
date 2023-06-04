@@ -27,9 +27,9 @@ function MovieDetailBox({ movie }: Props) {
               장르:{' '}
             </Heading>
             <HStack>
-              {movie.genres.map((genre) => (
-                <Text fontSize={12} key={genre.value}>
-                  {genre.value}
+              {movie.genreDTOList.map((genre) => (
+                <Text fontSize={12} key={genre.name}>
+                  {genre.name}
                 </Text>
               ))}
             </HStack>
@@ -62,7 +62,7 @@ function MovieDetailBox({ movie }: Props) {
             <Heading minW={'48px'} fontSize={12}>
               배우:{' '}
             </Heading>
-            <Text fontSize={12}>{movie.actors}</Text>
+            <Text fontSize={12}>{movie.actor}</Text>
           </HStack>
           <HStack alignItems="center">
             <Heading minW={'48px'} fontSize={12}>
