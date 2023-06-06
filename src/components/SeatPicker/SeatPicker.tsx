@@ -9,11 +9,11 @@ import { getSeatName } from '@root/src/utils';
 interface Props {
   row: number;
   column: number;
-  occupied: number[];
-  selected: number[];
+  occupied: string[];
+  selected: string[];
   maxReservableSeats: number;
-  addSeat: (seatId: number) => void;
-  cancelSeat: (seatId: number) => void;
+  addSeat: (seatId: string) => void;
+  cancelSeat: (seatId: string) => void;
 }
 
 function SeatPicker({
@@ -27,13 +27,13 @@ function SeatPicker({
 }: Props) {
   const seats = [...Array(row * column)].map((_, idx) => ({
     id: idx + 1,
-    occupied: occupied.includes(idx + 1),
-    selected: selected.includes(idx + 1),
+    occupied: occupied.includes(getSeatName(column, idx + 1)),
+    selected: selected.includes(getSeatName(column, idx + 1)),
     name: getSeatName(column, idx + 1),
   }));
 
   const onClickSeatBox = React.useCallback(
-    (seatId: number) => {
+    (seatId: string) => {
       if (selected.includes(seatId)) {
         // 이미 있다면 삭제
         cancelSeat(seatId);
@@ -59,7 +59,7 @@ function SeatPicker({
       {seats.map((seat) => (
         <SeatBox
           key={seat.id}
-          id={seat.id}
+          id={`${seat.id}`}
           name={seat.name}
           selected={seat.selected}
           occupied={seat.occupied}

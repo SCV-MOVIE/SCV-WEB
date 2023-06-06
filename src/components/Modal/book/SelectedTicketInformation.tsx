@@ -25,7 +25,13 @@ function SelectedTicketInformation({ selectedMovie, theaterType }: Props) {
       </Heading>
       {selectedMovie.movie.id !== -1 && (
         <Stack>
-          <Image width={160} height={160} src={selectedMovie.movie.imgUrl} alt="image-thumbnail" />
+          <Image
+            width={160}
+            height={160}
+            // src={selectedMovie.movie.imgUrl}
+            src={'/mario.jpeg'}
+            alt="image-thumbnail"
+          />
           <Heading as="h3" size="md">
             {selectedMovie.movie.name}
           </Heading>
@@ -64,7 +70,7 @@ function SelectedTicketInformation({ selectedMovie, theaterType }: Props) {
             <Grid templateColumns={`repeat(2, 1fr)`} columnGap={2}>
               {selectedMovie.selectedSeats.map((seat, idx) => (
                 <Text key={seat} fontSize={12}>
-                  {getSeatName(12, seat)}
+                  {seat}
                   {idx % 2 === 0 && ','}
                 </Text>
               ))}

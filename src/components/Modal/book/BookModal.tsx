@@ -17,9 +17,10 @@ import { RefreshRight } from '@root/public/icons';
 import { BookStep, BookStepContent, BookStepReducer, InitialStepValue } from './ModalReducer';
 import { BookContextProvider, initialSelectedMovieValue, SelectedMovie } from './BookContext';
 import { pretendard } from '@root/src/pages/_app';
-import { getAge } from '@root/src/utils';
+import { forPhoneNumber, forSecurityNumber, getAge, totalPrice } from '@root/src/utils';
 import { Partner, ShowTime } from '@root/src/@types';
 import { useUserInfo } from '@root/src/hooks';
+import { api } from '@root/src/api';
 
 interface Props {
   isOpen: boolean;
@@ -79,6 +80,59 @@ function BookModal({ isOpen, partners, showTimes, onClose }: Props) {
       dispatch({ direction: 'next', isLogin });
     }
   }, [isLogin, state.step, user?.securityNm, value]);
+
+  const onClickPay = React.useCallback(async () => {
+    try {
+      const result = await api.post('/api/ticket/reserve', {
+        cardOrAccountNm: value.payment.account,
+        partnerName: value.payment.partner?.name,
+        paymentMethod: value.payment.method,
+        price: totalPrice(value.headCount, value.showTime.theaterType),
+        privateInfoDTO: {
+          name: isLogin ? user?.name : value.information.name,
+          phoneNm: isLogin ? user?.phoneNm : forPhoneNumber(value.information.phoneNumber),
+          securityNm: isLogin
+            ? user?.securityNm
+            : forSecurityNumber(
+                value.information.securityFrontNumber,
+                value.information.securityBackNumber,
+              ),
+        },
+        seats: value.selectedSeats.map((seat) => ({
+          seatNm: seat,
+          theaterId: value.showTime.theaterId,
+        })),
+        showtimeId: value.showTime.id,
+        usedPoint: value.payment.usedPoint,
+      });
+      if (result.status === 200) {
+        alert('영화가 성공적으로 예매되었습니다.');
+        setValue(initialSelectedMovieValue);
+        onClose();
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }, [
+    isLogin,
+    onClose,
+    user?.name,
+    user?.phoneNm,
+    user?.securityNm,
+    value.headCount,
+    value.information.name,
+    value.information.phoneNumber,
+    value.information.securityBackNumber,
+    value.information.securityFrontNumber,
+    value.payment.account,
+    value.payment.method,
+    value.payment.partner?.name,
+    value.payment.usedPoint,
+    value.selectedSeats,
+    value.showTime.id,
+    value.showTime.theaterId,
+    value.showTime.theaterType,
+  ]);
 
   const onClickClose = React.useCallback(() => {
     dispatch({ direction: 'reset', isLogin });
@@ -141,7 +195,7 @@ function BookModal({ isOpen, partners, showTimes, onClose }: Props) {
               다음 단계
             </Button>
           ) : (
-            <Button colorScheme="red" onClick={onClickNext} borderRadius={0}>
+            <Button colorScheme="red" onClick={onClickPay} borderRadius={0}>
               결제
             </Button>
           )}

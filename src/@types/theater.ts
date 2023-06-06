@@ -9,7 +9,9 @@ export interface ShowTime {
   isPublic: boolean;
   movieDTO: Movie;
   remainSeatNm: number;
+  theaterId: number;
   theaterName: string;
+  theaterLayout: string;
   theaterType: TheaterType['value'];
   theaterSize: number;
 }
