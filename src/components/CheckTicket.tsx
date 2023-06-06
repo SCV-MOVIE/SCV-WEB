@@ -1,13 +1,19 @@
 import { Button, Divider, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 import Image from 'next/image';
-import { CheckTicket } from '../@types';
+import type { CheckTicket } from '../@types';
 
 interface Props {
-  ticket: CheckTicket;
+  color: 'white' | 'black';
+  ticket?: CheckTicket;
   onClickPrint?: VoidFunction;
 }
 
-function CheckTicket({ ticket, onClickPrint }: Props) {
+function CheckTicketBox({ color, ticket, onClickPrint }: Props) {
+  const isDisabled =
+    ticket?.status === 'CANCELLED' || ticket?.status === 'REJECTED' || ticket?.status === 'PRINTED';
+  if (!ticket) {
+    return null;
+  }
   return (
     <HStack gap={12}>
       <Image
@@ -18,102 +24,104 @@ function CheckTicket({ ticket, onClickPrint }: Props) {
         alt="image-thumbnail"
       />
       <Stack>
-        <Heading as="h3" size="md" color="white">
+        <Heading as="h3" size="md" color={color}>
           {ticket.movieName}
         </Heading>
         <Divider />
         <HStack alignItems="center">
-          <Heading size="sm" fontSize={12} color="white">
+          <Heading size="sm" fontSize={12} color={color}>
             예약번호:
           </Heading>
-          <Text size="sm" fontSize={12} color="white">
+          <Text size="sm" fontSize={12} color={color}>
             {ticket.reserveNm}
           </Text>
         </HStack>
         <HStack alignItems="center">
-          <Heading size="sm" fontSize={12} color="white">
+          <Heading size="sm" fontSize={12} color={color}>
             상태:
           </Heading>
-          <Text size="sm" fontSize={12} color="white">
+          <Text size="sm" fontSize={12} color={color}>
             {ticket.status}
           </Text>
         </HStack>
         <HStack alignItems="center">
-          <Heading size="sm" fontSize={12} color="white">
+          <Heading size="sm" fontSize={12} color={color}>
             상영관:
           </Heading>
-          <Text size="sm" fontSize={12} color="white">
+          <Text size="sm" fontSize={12} color={color}>
             {ticket.theaterName}
           </Text>
         </HStack>
         <HStack alignItems="center">
-          <Heading fontSize={12} color="white">
+          <Heading fontSize={12} color={color}>
             날짜:{' '}
           </Heading>
-          <Text fontSize={12} color="white">
-            {ticket.movieStartTime.split(' ')[0]}
+          <Text fontSize={12} color={color}>
+            {ticket.movieStartTime?.split(' ')[0]}
           </Text>
         </HStack>
         <HStack alignItems="center">
-          <Heading fontSize={12} color="white">
+          <Heading fontSize={12} color={color}>
             상영시간:{' '}
           </Heading>
-          <Text fontSize={12} color="white">
-            {ticket.movieStartTime.split(' ')[1]}
+          <Text fontSize={12} color={color}>
+            {ticket.movieStartTime?.split(' ')[1]}
           </Text>
         </HStack>
         <HStack alignItems="center">
-          <Heading size="sm" fontSize={12} color="white">
+          <Heading size="sm" fontSize={12} color={color}>
             인원수:
           </Heading>
-          <Text size="sm" fontSize={12} color="white">
+          <Text size="sm" fontSize={12} color={color}>
             {ticket.peopleNm}
           </Text>
         </HStack>
         <HStack alignItems="center">
-          <Heading size="sm" fontSize={12} color="white">
+          <Heading size="sm" fontSize={12} color={color}>
             좌석번호:
           </Heading>
-          <Text size="sm" fontSize={12} color="white">
+          <Text size="sm" fontSize={12} color={color}>
             {ticket.seatInfo}
           </Text>
         </HStack>
         <HStack alignItems="center">
-          <Heading size="sm" fontSize={12} color="white">
+          <Heading size="sm" fontSize={12} color={color}>
             결제방법:
           </Heading>
-          <Text size="sm" fontSize={12} color="white">
+          <Text size="sm" fontSize={12} color={color}>
             {ticket.paymentMethod}
           </Text>
         </HStack>
         <HStack alignItems="center">
-          <Heading size="sm" fontSize={12} color="white">
+          <Heading size="sm" fontSize={12} color={color}>
             결제날짜:
           </Heading>
-          <Text size="sm" fontSize={12} color="white">
+          <Text size="sm" fontSize={12} color={color}>
             {ticket.paymentDate}
           </Text>
         </HStack>
         <HStack alignItems="center">
-          <Heading size="sm" fontSize={12} color="white">
+          <Heading size="sm" fontSize={12} color={color}>
             가격:
           </Heading>
-          <Text size="sm" fontSize={12} color="white">
-            {ticket.price.toLocaleString()}
+          <Text size="sm" fontSize={12} color={color}>
+            {ticket.price?.toLocaleString()}
           </Text>
         </HStack>
         <HStack alignItems="center">
-          <Heading size="sm" fontSize={12} color="white">
+          <Heading size="sm" fontSize={12} color={color}>
             사용포인트:
           </Heading>
-          <Text size="sm" fontSize={12} color="white">
-            {ticket.usedPoint.toLocaleString()}
+          <Text size="sm" fontSize={12} color={color}>
+            {ticket.usedPoint?.toLocaleString()}
           </Text>
         </HStack>
       </Stack>
-      <Button onClick={onClickPrint}>출력하기</Button>
+      <Button onClick={!isDisabled ? onClickPrint : undefined} disabled={isDisabled}>
+        출력하기
+      </Button>
     </HStack>
   );
 }
 
-export default CheckTicket;
+export default CheckTicketBox;

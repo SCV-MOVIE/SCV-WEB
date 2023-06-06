@@ -95,6 +95,7 @@ export default function MyPage() {
                   {tickets.map((ticket) => (
                     <CheckTicketBox
                       key={ticket.ticketId}
+                      color={'white'}
                       ticket={ticket}
                       onClickPrint={() => handleClickPrint(ticket.ticketId)}
                     />
