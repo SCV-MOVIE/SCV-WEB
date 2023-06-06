@@ -36,9 +36,16 @@ function NavBar() {
             ),
         )}
         {isLogin && (
-          <Text variant="lg" color="white" onClick={handleClickLogoutButton} role="button">
-            로그아웃
-          </Text>
+          <>
+            <LinkWrapper href={'/mypage'}>
+              <Text variant="lg" color="white">
+                마이페이지
+              </Text>
+            </LinkWrapper>
+            <Text variant="lg" color="white" onClick={handleClickLogoutButton} role="button">
+              로그아웃
+            </Text>
+          </>
         )}
       </HStack>
     </Wrapper>

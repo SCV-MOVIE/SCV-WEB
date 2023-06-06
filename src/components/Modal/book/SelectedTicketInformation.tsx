@@ -41,7 +41,7 @@ function SelectedTicketInformation({ selectedMovie, theaterType }: Props) {
               상영관:
             </Heading>
             <Text size="sm" fontSize={12}>
-              1관
+              {selectedMovie.showTime.theaterName}
             </Text>
           </HStack>
           <HStack alignItems="center">
