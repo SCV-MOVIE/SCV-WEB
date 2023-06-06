@@ -6,11 +6,14 @@ import HalfStar from './HalfStar.svg';
 import Calendar from './Calendar.svg';
 import RefreshRight from './RefreshRight.svg';
 import DashBoard from './Dashboard.svg';
+import Application from './Application.svg';
 import Users from './Users.svg';
 import CreditCard from './CreditCard.svg';
 import Timelapse from './Timelapse.svg';
 import LeftArrow from './LeftArrow.svg';
 import RightArrow from './RightArrow.svg';
+import Public from './Public.svg';
+import Private from './Private.svg';
 
 export {
   Star,
@@ -21,9 +24,12 @@ export {
   Printer,
   RefreshRight,
   DashBoard,
+  Application,
   Users,
   CreditCard,
   Timelapse,
   LeftArrow,
   RightArrow,
+  Public,
+  Private,
 };

@@ -15,10 +15,12 @@ export interface ShowTime {
 }
 
 export interface Theater {
+  id: number;
   theaterNm: number;
-  isOccupied: boolean;
   layout: string;
   name: string;
+  deleted: 'Y' | 'N';
+  theaterType: TheaterType;
 }
 
 export interface TheaterType {

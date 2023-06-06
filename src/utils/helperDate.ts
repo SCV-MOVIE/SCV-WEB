@@ -40,3 +40,23 @@ export const getAge = (frontNumber: string) => {
   const today = new Date();
   return today.getFullYear() - birth.getFullYear() + 1;
 };
+
+const zeroPadding = (content: string | number, unit: number) =>
+  content.toString().padStart(unit, '0');
+
+export const runningTime = (startDate: Date, length: number) => {
+  const endDate = new Date(startDate.getTime() + length * 60 * 1000);
+  const startHour = zeroPadding(startDate.getHours(), 2);
+  const startMinute = zeroPadding(startDate.getMinutes(), 2);
+  const endHour = zeroPadding(endDate.getHours(), 2);
+  const endMinute = zeroPadding(endDate.getMinutes(), 2);
+  return `${startHour}:${startMinute} ~ ${endHour}:${endMinute}`;
+};
+
+export const getYYYYMMDD = (date: Date, separator = '') => {
+  const YYYY = date.getFullYear();
+  const MM = zeroPadding(date.getMonth() + 1, 2);
+  const DD = zeroPadding(date.getDate(), 2);
+
+  return [YYYY, MM, DD].join(separator);
+};

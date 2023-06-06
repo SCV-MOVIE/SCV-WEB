@@ -7,16 +7,7 @@ import { Flex, HStack, Icon, Text } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import { CreditCard, LeftArrow, RightArrow, Timelapse } from '@root/public/icons';
 import React, { CSSProperties } from 'react';
-
-type BankDashBoard = {
-  id: number;
-  method: 'Bank' | 'Card';
-  from: string;
-  to: string;
-  amount: number;
-  date: Date | null;
-  approveNm: string | null;
-};
+import { BankDashBoard } from '@root/src/@types';
 
 const dummyData: BankDashBoard[] = [
   {
@@ -25,7 +16,7 @@ const dummyData: BankDashBoard[] = [
     from: 'SCV 123456-00-123456',
     to: 'SCV 123456-00-345678',
     amount: 45000,
-    date: null,
+    updatedAt: null,
     approveNm: null,
   },
   {
@@ -34,7 +25,7 @@ const dummyData: BankDashBoard[] = [
     from: 'SCV 123456-00-123456',
     to: 'SCV 123456-00-345678',
     amount: 45000,
-    date: null,
+    updatedAt: null,
     approveNm: null,
   },
   {
@@ -43,7 +34,7 @@ const dummyData: BankDashBoard[] = [
     from: 'SCV 123456-00-123456',
     to: 'SCV 123456-00-345678',
     amount: 45000,
-    date: new Date('2020.12.24 13:16:04'),
+    updatedAt: new Date('2020.12.24 13:16:04'),
     approveNm: '1234568',
   },
   {
@@ -52,7 +43,7 @@ const dummyData: BankDashBoard[] = [
     from: 'SCV 123456-00-123456',
     to: 'SCV 123456-00-345678',
     amount: 45000,
-    date: new Date('2020.12.24 11:16:02'),
+    updatedAt: new Date('2020.12.24 11:16:02'),
     approveNm: '1234567',
   },
 ];
@@ -80,9 +71,9 @@ const bankColumns = [
     cell: (info) => <Right>{info.getValue().toLocaleString('ko-KR')}원</Right>,
     header: () => <Right>Amount</Right>,
   }),
-  columnHelper.accessor((row) => row.date, {
+  columnHelper.accessor((row) => row.updatedAt, {
     id: 'date',
-    cell: (info) => <DateCell date={info.getValue()} />,
+    cell: (info) => <DateCell updatedAt={info.getValue()} />,
     header: () => <span>Date</span>,
   }),
   columnHelper.accessor((row) => row.approveNm, {
@@ -173,15 +164,15 @@ const MethodCell = ({ method }: Pick<BankDashBoard, 'method'>) => {
   );
 };
 
-const DateCell = ({ date }: Pick<BankDashBoard, 'date'>) => {
+const DateCell = ({ updatedAt }: Pick<BankDashBoard, 'updatedAt'>) => {
   const theme = useTheme();
-  const formattedData = date ? dateFormatter.format(date!) : null;
+  const formattedData = updatedAt ? dateFormatter.format(updatedAt!) : null;
   const [dateNoTime, time] = formattedData?.split(',') ?? ['', ''];
   const [hour, minute] = time.split(':') ?? ['', ''];
   const isPM = Number(hour) >= 12;
   return (
     <Flex flexDirection="column" justifyContent="center">
-      {date ? (
+      {updatedAt ? (
         <>
           <BankDate>{dateNoTime.replace(/\//g, '.')}</BankDate>
           <BankTime fontSize="sm" color={theme.colors.gray300}>
