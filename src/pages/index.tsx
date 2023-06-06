@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { Grid } from '@chakra-ui/react';
 
 import { DUMMY_MOVIES } from '@/constants/dummy';
-import { Bottom, LinedTitle, MovieCard } from '@/components';
+import { Bottom, LinedTitle, MovieCard, NavBar } from '@/components';
 import { GetServerSideProps } from 'next';
 import { Movie } from '../@types';
 import { api } from '../api';
@@ -13,14 +13,6 @@ interface Props {
 }
 
 export default function MainPage({ movies }: Props) {
-  const a = async () => {
-    (async () => {
-      try {
-        const result = await api.get<boolean>('/api/member/isLogin');
-        console.log(result.data);
-      } catch (err) {}
-    })();
-  };
   return (
     <>
       <Head>
@@ -29,8 +21,9 @@ export default function MainPage({ movies }: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <NavBar />
+
       <Content>
-        <div onClick={a}>이거를 클릭하세요!</div>
         <LinedTitle title={'현재 상영작'} />
         <Grid templateColumns="repeat(4, 1fr)" rowGap={24} columnGap={8} mt={8}>
           {DUMMY_MOVIES.map((movie) => (

@@ -6,7 +6,6 @@ import styled from '@emotion/styled';
 function MainLayout({ children }: React.PropsWithChildren<unknown>) {
   return (
     <Wrapper>
-      <NavBar />
       <Main>
         <Content>{children}</Content>
       </Main>

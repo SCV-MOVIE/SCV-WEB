@@ -8,7 +8,16 @@ import { MENUS } from '../constants';
 import { useUserInfo } from '../hooks';
 
 function NavBar() {
-  const { isLogin } = useUserInfo();
+  const { isLogin, logout } = useUserInfo();
+
+  const handleClickLogoutButton = async () => {
+    const { isSuccess } = await logout();
+    if (isSuccess) {
+      alert('로그아웃에 성공했습니다.');
+    } else {
+      alert('로그아웃에 실패했습니다.');
+    }
+  };
 
   return (
     <Wrapper justify="space-between">
@@ -27,7 +36,7 @@ function NavBar() {
             ),
         )}
         {isLogin && (
-          <Text variant="lg" color="white">
+          <Text variant="lg" color="white" onClick={handleClickLogoutButton} role="button">
             로그아웃
           </Text>
         )}
