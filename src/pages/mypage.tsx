@@ -49,6 +49,12 @@ export default function MyPage() {
     alert('발권이 완료되었습니다.');
   };
 
+  const handleClickCancel = async (id: number) => {
+    await api.patch(`/api/ticket/cancel/${id}`);
+
+    alert('취소가 완료되었습니다.');
+  };
+
   return (
     <>
       <Head>
@@ -98,6 +104,7 @@ export default function MyPage() {
                       color={'white'}
                       ticket={ticket}
                       onClickPrint={() => handleClickPrint(ticket.ticketId)}
+                      onClickCancel={() => handleClickCancel(ticket.ticketId)}
                     />
                   ))}
                 </Stack>

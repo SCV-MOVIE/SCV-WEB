@@ -7,9 +7,10 @@ interface Props {
   color: 'white' | 'black';
   tickets: CheckTicket[];
   onClickPrint: (id: number) => void;
+  onClickCancel: (id: number) => void;
 }
 
-function CheckTicketList({ color, tickets, onClickPrint }: Props) {
+function CheckTicketList({ color, tickets, onClickPrint, onClickCancel }: Props) {
   return (
     <>
       {tickets?.map((ticket) => (
@@ -18,6 +19,7 @@ function CheckTicketList({ color, tickets, onClickPrint }: Props) {
           color={color}
           ticket={ticket}
           onClickPrint={() => onClickPrint(ticket.ticketId)}
+          onClickCancel={() => onClickCancel(ticket.ticketId)}
         />
       ))}
       ;

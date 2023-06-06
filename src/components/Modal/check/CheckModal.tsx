@@ -32,7 +32,14 @@ const ModalContents: Record<
   },
   completeList: {
     header: '예매 정보 확인',
-    body: <CheckTicketList color={'black'} tickets={[]} onClickPrint={() => {}} />,
+    body: (
+      <CheckTicketList
+        color={'black'}
+        tickets={[]}
+        onClickPrint={() => {}}
+        onClickCancel={() => {}}
+      />
+    ),
   },
   information: {
     header: '예매 정보 입력',
@@ -91,6 +98,12 @@ function CheckModal({ isOpen, onClose }: Props) {
     alert('발권이 완료되었습니다.');
   };
 
+  const handleClickCancel = async (id: number) => {
+    await api.patch(`/api/ticket/cancel/${id}`);
+
+    alert('취소가 완료되었습니다.');
+  };
+
   return (
     <Modal isOpen={isOpen} onClose={handleClose} size="5xl">
       <ModalOverlay />
@@ -105,6 +118,7 @@ function CheckModal({ isOpen, onClose }: Props) {
             onInfoSubmit,
             onTicketSubmit,
             onTicketPrint: handleClickPrint,
+            onClickCancel: handleClickCancel,
           })}
         </ModalBody>
       </ModalContent>

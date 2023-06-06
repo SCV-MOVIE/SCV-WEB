@@ -6,9 +6,10 @@ interface Props {
   color: 'white' | 'black';
   ticket?: CheckTicket;
   onClickPrint?: VoidFunction;
+  onClickCancel?: VoidFunction;
 }
 
-function CheckTicketBox({ color, ticket, onClickPrint }: Props) {
+function CheckTicketBox({ color, ticket, onClickPrint, onClickCancel }: Props) {
   const isDisabled =
     ticket?.status === 'CANCELLED' || ticket?.status === 'REJECTED' || ticket?.status === 'PRINTED';
   if (!ticket) {
@@ -117,9 +118,18 @@ function CheckTicketBox({ color, ticket, onClickPrint }: Props) {
           </Text>
         </HStack>
       </Stack>
-      <Button onClick={!isDisabled ? onClickPrint : undefined} disabled={isDisabled}>
-        출력하기
-      </Button>
+      <Stack w={320}>
+        <Button onClick={!isDisabled ? onClickPrint : undefined} disabled={isDisabled}>
+          출력하기
+        </Button>
+        <Button
+          onClick={!isDisabled ? onClickPrint : undefined}
+          disabled={isDisabled}
+          colorScheme={'red'}
+        >
+          취소하기
+        </Button>
+      </Stack>
     </HStack>
   );
 }
