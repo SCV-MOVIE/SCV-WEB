@@ -4,9 +4,12 @@ import { Center, Divider, Heading, HStack, Stack } from '@chakra-ui/react';
 import { HeadCount, useBookContext } from './BookContext';
 import { NumberInputBox, SeatPicker } from '@/components';
 import SelectedTicketInformation from './SelectedTicketInformation';
+import { api } from '@root/src/api';
 
 function SelectSeatBox() {
   const { value, setValue } = useBookContext();
+  const size = value.showTime.theaterLayout.split('x');
+  const [bookedSeats, setBookedSeats] = React.useState<string[]>([]);
   const maxReservableSeats =
     Number(value.headCount.child ?? 0) + Number(value.headCount.adult ?? 0);
 
@@ -19,7 +22,7 @@ function SelectSeatBox() {
   );
 
   const cancelSeat = React.useCallback(
-    (seatId: number) => {
+    (seatId: string) => {
       setValue((prev) => ({
         ...prev,
         selectedSeats: value.selectedSeats.filter((seat) => seat !== seatId),
@@ -29,11 +32,19 @@ function SelectSeatBox() {
   );
 
   const addSeat = React.useCallback(
-    (seatId: number) => {
+    (seatId: string) => {
       setValue((prev) => ({ ...prev, selectedSeats: [...value.selectedSeats, seatId] }));
     },
     [value.selectedSeats, setValue],
   );
+
+  React.useEffect(() => {
+    (async () => {
+      const result = await api.get(`/api/showtime/reservedSeat/list/${value.showTime.id}`);
+      console.log(result);
+      setBookedSeats(result.data);
+    })();
+  }, [value.showTime.id]);
 
   return (
     <HStack spacing={2} alignItems="start">
@@ -49,6 +60,7 @@ function SelectSeatBox() {
         <NumberInputBox
           label="유아/청소년"
           value={Number(value.headCount.child ?? 0)}
+          disabled={value.movie.rating === '18+'}
           onChange={(value) => handleChangeNumberInput(value, 'child')}
         />
       </Stack>
@@ -59,9 +71,9 @@ function SelectSeatBox() {
         </Heading>
         <Center>
           <SeatPicker
-            row={20}
-            column={12}
-            occupied={[4, 12, 17, 30, 50, 1]}
+            row={Number(size[0])}
+            column={Number(size[1])}
+            occupied={bookedSeats}
             selected={value.selectedSeats}
             maxReservableSeats={maxReservableSeats}
             addSeat={addSeat}

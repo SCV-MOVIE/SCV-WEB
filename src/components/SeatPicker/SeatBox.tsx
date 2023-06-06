@@ -3,11 +3,11 @@ import styled from '@emotion/styled';
 import React from 'react';
 
 interface Props {
-  id: number;
+  id: string;
   name: string;
   occupied: boolean;
   selected: boolean;
-  onClick: (seatId: number) => void;
+  onClick: (seatId: string) => void;
 }
 
 function SeatBox(props: Props) {
@@ -20,7 +20,7 @@ function SeatBox(props: Props) {
       selected={selected}
       aria-disabled={occupied}
       justifyContent="center"
-      onClick={() => (occupied ? null : onClick(id))}
+      onClick={() => (occupied ? null : onClick(name))}
       {...restProps}
     >
       <Text fontSize={14} color="white">

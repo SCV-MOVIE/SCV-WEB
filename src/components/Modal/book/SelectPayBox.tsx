@@ -161,7 +161,7 @@ function SelectPayBox({ showTimes, partners, userPoint }: Props) {
         </Center>
         <DividerStack spacing={0}>
           {value.payment.method === 'CARD' &&
-            CARD_PARTNERS.map((partner) => (
+            partners.map((partner) => (
               <ColorText
                 key={partner.name}
                 selected={partner.name === value.payment.partner?.name}
@@ -170,7 +170,7 @@ function SelectPayBox({ showTimes, partners, userPoint }: Props) {
                 disabled={totalTicketPrice === value.payment.usedPoint}
                 aria-disabled={totalTicketPrice === value.payment.usedPoint}
               >
-                {partner.name}
+                {partner.name === 'none' ? '없음' : partner.name}
                 {partner.discount > 0 && (
                   <Text as="span" color="red.400" ml={2}>
                     (최대 {partner.discount.toLocaleString()} 할인)
