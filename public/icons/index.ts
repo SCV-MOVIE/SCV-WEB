@@ -14,6 +14,7 @@ import LeftArrow from './LeftArrow.svg';
 import RightArrow from './RightArrow.svg';
 import Public from './Public.svg';
 import Private from './Private.svg';
+import Theater from './Theater.svg';
 
 export {
   Star,
@@ -32,4 +33,5 @@ export {
   RightArrow,
   Public,
   Private,
+  Theater,
 };

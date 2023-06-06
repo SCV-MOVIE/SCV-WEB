@@ -5,59 +5,27 @@ import { useTheme } from '@emotion/react';
 import { LeftArrow, RightArrow } from '@root/public/icons';
 import React, { CSSProperties } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
-import { Movie } from '@root/src/@types';
-import { AdminMovieModal, AdminMovieTable } from '@root/src/components/admin';
-import { useGetAllMovies } from '@root/src/api/query';
-import { MovieRating } from '@root/src/components';
+import { Theater } from '@root/src/@types';
+import { AdminTheaterModal, AdminTheaterTable } from '@root/src/components/admin';
+import { useGetAllTheaters } from '@root/src/api/query';
 
-const columnHelper = createColumnHelper<Movie>();
+const columnHelper = createColumnHelper<Theater>();
 
-const showTimeColumns = [
-  columnHelper.accessor((row) => row.id, {
-    id: 'id',
-    cell: (info) => info.getValue(),
-    header: () => <span>ID</span>,
-  }),
+const theaterColumns = [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
     cell: (info) => <Center>{info.getValue()}</Center>,
-    header: () => <Center>제목</Center>,
+    header: () => <Center>상영관 이름</Center>,
   }),
-  columnHelper.accessor((row) => row.rating, {
+  columnHelper.accessor((row) => row.theaterType, {
+    id: 'theaterType',
+    cell: (info) => <Center>{info.getValue().toString()}</Center>,
+    header: () => <Center>타입</Center>,
+  }),
+  columnHelper.accessor((row) => row.layout, {
     id: 'round',
-    cell: (info) => (
-      <Center>
-        <MovieRating rating={info.getValue()} size="sm" />
-      </Center>
-    ),
-    header: () => <Center>등급</Center>,
-  }),
-  columnHelper.accessor((row) => row.length, {
-    id: 'length',
-    cell: (info) => <Center>{info.getValue()}분</Center>,
-    header: () => <Center>상영 시간</Center>,
-  }),
-  columnHelper.accessor((row) => row.distributor, {
-    id: 'distributor',
     cell: (info) => <Center>{info.getValue()}</Center>,
-    header: () => <Center>배급사</Center>,
-  }),
-  columnHelper.accessor((row) => row.genreDTOList, {
-    id: 'genre',
-    cell: (info) => (
-      <Center>
-        {info
-          .getValue()
-          .map((elem) => elem.name)
-          .join(', ')}
-      </Center>
-    ),
-    header: () => <Center>장르</Center>,
-  }),
-  columnHelper.accessor((row) => row.director, {
-    id: 'director',
-    cell: (info) => <Center>{info.getValue()}</Center>,
-    header: () => <Center>감독</Center>,
+    header: () => <Center>레이아웃</Center>,
   }),
   columnHelper.accessor((row) => row.id, {
     id: 'delete',
@@ -66,12 +34,14 @@ const showTimeColumns = [
   }),
 ];
 
-export default function AdminMoviePage() {
+export default function AdminTheaterPage() {
   const theme = useTheme();
   const [pageNum, setPageNum] = React.useState(1);
   const navigateNum = pageNum - (pageNum % 4 === 0 ? 4 : pageNum % 4) + 1;
   const navigateArr = new Array(4).fill(0).map((_, idx) => navigateNum + idx);
-  const { isSuccess, data } = useGetAllMovies();
+  const { isSuccess, data: theaters } = useGetAllTheaters();
+
+  const filteredTheaters = theaters?.filter((theater) => theater.deleted === 'N') ?? [];
 
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
 
@@ -96,10 +66,12 @@ export default function AdminMoviePage() {
       </Head>
       <Content>
         <Header>
-          <StyledButton onClick={onModalOpen}>영화 생성</StyledButton>
+          <StyledButton onClick={onModalOpen}>상영관 생성</StyledButton>
         </Header>
         <TableWrapper>
-          {isSuccess ? <AdminMovieTable columns={showTimeColumns} data={data} /> : null}
+          {isSuccess ? (
+            <AdminTheaterTable columns={theaterColumns} data={filteredTheaters} />
+          ) : null}
         </TableWrapper>
         <Bottom>
           <HStack>
@@ -121,12 +93,12 @@ export default function AdminMoviePage() {
           </HStack>
         </Bottom>
       </Content>
-      <AdminMovieModal isOpen={isModalOpen} onClose={onModalClose} />
+      <AdminTheaterModal onClose={onModalClose} isOpen={isModalOpen} />
     </>
   );
 }
 
-const DeleteButton = ({ id }: Pick<Movie, 'id'>) => {
+const DeleteButton = ({ id }: Pick<Theater, 'id'>) => {
   const handleClickButton = () => {
     console.log(id);
   };
@@ -136,7 +108,7 @@ const DeleteButton = ({ id }: Pick<Movie, 'id'>) => {
 export const getStaticProps = async () => ({
   props: {
     layout: 'admin',
-    title: 'Movie',
+    title: 'Theater',
   },
 });
 

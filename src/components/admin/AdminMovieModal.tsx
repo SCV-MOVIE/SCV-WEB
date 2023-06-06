@@ -9,6 +9,7 @@ import {
   ModalContent,
   ModalHeader,
   ModalOverlay,
+  Select,
   Stack,
   Text,
 } from '@chakra-ui/react';
@@ -64,7 +65,15 @@ function AdminMovieModal({ isOpen, onClose }: Props) {
                 <label htmlFor="length">영화 길이</label>
                 <Input placeholder="N분 (숫자만 입력)" {...register('length')} />
 
-                <label htmlFor="distributor">영화 배급사</label>
+                <label htmlFor="rating">상영물 등급</label>
+                <Select {...register('rating')} defaultValue="ALL">
+                  <option value="ALL">ALL</option>
+                  <option value="12+">12+</option>
+                  <option value="15+">15+</option>
+                  <option value="19+">19+</option>
+                </Select>
+
+                <label htmlFor="distributor">배급사</label>
                 <Input placeholder="영화 배급사" {...register('distributor')} />
 
                 <label htmlFor="director">감독</label>

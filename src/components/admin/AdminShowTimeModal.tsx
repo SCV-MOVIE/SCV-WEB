@@ -83,7 +83,7 @@ function AdminShowTimeModal({ movies, theaters, isOpen, onClose }: Props) {
                     />
                   )}
                 />
-                <label htmlFor="theaterId">영화</label>
+                <label htmlFor="theaterId">상영관</label>
                 <Select {...register('theaterId')} defaultValue={theaters[0]?.id ?? 0}>
                   {validTheaters.map((theater) => (
                     <option key={theater.id} value={theater.id}>

@@ -4,3 +4,5 @@ export { default as AdminShowTimeTable } from './AdminShowTimeTable';
 export { default as AdminSideBar } from './AdminSideBar';
 export { default as AdminMovieTable } from './AdminMovieTable';
 export { default as AdminMovieModal } from './AdminMovieModal';
+export { default as AdminTheaterTable } from './AdminTheaterTable';
+export { default as AdminTheaterModal } from './AdminTheaterModal';

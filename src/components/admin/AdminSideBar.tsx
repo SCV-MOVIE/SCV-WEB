@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { Flex, FlexProps, Icon, Text } from '@chakra-ui/react';
 
 import Logo from '../Logo';
-import { Application, Film, Users } from '@root/public/icons';
+import { Application, Film, Theater, Users } from '@root/public/icons';
 import { useTheme } from '@emotion/react';
 import { useRouter } from 'next/router';
 
@@ -21,6 +21,9 @@ function AdminSideBar() {
       <SideBarContent title="MAIN MENU" flexGrow={1}>
         <NavItem pathname="/admin/movie" icon={Film}>
           Movie
+        </NavItem>
+        <NavItem pathname="/admin/theater" icon={Theater}>
+          Theater
         </NavItem>
         <NavItem pathname="/admin/showtime" icon={Application}>
           Showtime

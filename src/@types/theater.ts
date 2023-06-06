@@ -20,7 +20,7 @@ export interface Theater {
   layout: string;
   name: string;
   deleted: 'Y' | 'N';
-  theaterType: TheaterType;
+  theaterType: TheaterType | Pick<TheaterType, 'value'>;
 }
 
 export interface TheaterType {
