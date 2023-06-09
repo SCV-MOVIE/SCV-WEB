@@ -69,11 +69,9 @@ function CheckModal({ isOpen, onClose }: Props) {
   const onInfoSubmit: SubmitHandler<Information> = async (data) => {
     try {
       const result = await api.post(`/api/ticket/check-by/info`, {
-        data: {
-          name: data.name,
-          phoneNm: forPhoneNumber(data.phoneNumber),
-          securityNm: forSecurityNumber(data.securityFrontNumber, data.securityBackNumber),
-        },
+        name: data.name,
+        phoneNm: forPhoneNumber(data.phoneNumber),
+        securityNm: forSecurityNumber(data.securityFrontNumber, data.securityBackNumber),
       });
       setStep('completeList');
       setTicketInformation(result.data);
