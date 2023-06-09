@@ -85,7 +85,7 @@ function BookModal({ isOpen, partners, showTimes, onClose }: Props) {
     try {
       const result = await api.post('/api/ticket/reserve', {
         cardOrAccountNm: value.payment.account,
-        partnerName: value.payment.partner?.name,
+        partnerName: value.payment.partner?.name || 'none',
         paymentMethod: value.payment.method,
         price: totalPrice(value.headCount, value.showTime.theaterType),
         privateInfoDTO: {
@@ -106,7 +106,7 @@ function BookModal({ isOpen, partners, showTimes, onClose }: Props) {
         usedPoint: value.payment.usedPoint,
       });
       if (result.status === 200) {
-        alert('영화가 성공적으로 예매되었습니다.');
+        alert('영화가 성공적으로 예매되었습니다. 핸드폰으로 예매 번호를 보냈습니다.');
         dispatch({ direction: 'reset', isLogin });
         setValue(initialSelectedMovieValue);
         onClose();
