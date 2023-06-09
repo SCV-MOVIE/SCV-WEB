@@ -33,12 +33,18 @@ export default function MyPage() {
     onOpen: onChangePWOpen,
     onClose: onChangePWClose,
   } = useDisclosure();
+  const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
 
   React.useEffect(() => {
     (async () => {
       if (user?.id) {
-        const result = await api.get('/api/ticket/list');
-        setTickets(result.data);
+        const result = await api.get<CheckTicket[]>('/api/ticket/list');
+        setTickets(
+          result.data.sort(
+            (a, b) =>
+              new Date(a.paymentDate).getMilliseconds() - new Date(b.paymentDate).getMilliseconds(),
+          ),
+        );
       }
     })();
   }, [user?.id]);
@@ -94,6 +100,9 @@ export default function MyPage() {
                   <Button color="blue" onClick={onChangePWOpen}>
                     비밀번호 변경
                   </Button>
+                  <Button colorScheme="red" onClick={onDeleteOpen}>
+                    회원 탈퇴
+                  </Button>
                 </Stack>
               </TabPanel>
               <TabPanel>
@@ -114,6 +123,7 @@ export default function MyPage() {
         </Center>
       </Content>
       <UserUtilModal type={'changePW'} isOpen={isChangePWOpen} onClose={onChangePWClose} />
+      <UserUtilModal type={'delete'} isOpen={isDeleteOpen} onClose={onDeleteClose} />
       <Bottom />
     </>
   );
