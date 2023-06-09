@@ -5,81 +5,37 @@ import { useTheme } from '@emotion/react';
 import { LeftArrow, RightArrow } from '@root/public/icons';
 import React, { CSSProperties } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
-import { Movie } from '@root/src/@types';
-import { AdminMovieModal, AdminMovieTable } from '@root/src/components/admin';
-import { useDeleteMovie, useGetAllMovieGenres, useGetAllMovies } from '@root/src/api/query';
-import { MovieRating } from '@root/src/components';
+import { Genre } from '@root/src/@types';
+import { AdminGenreModal, AdminGenreTable, AdminTheaterModal } from '@root/src/components/admin';
+import { useDeleteGenre, useGetAllMovieGenres } from '@root/src/api/query';
 import { toast } from 'react-toastify';
 import { arrayDivision } from '@root/src/utils';
 
-const columnHelper = createColumnHelper<Movie>();
+const columnHelper = createColumnHelper<Genre>();
 
-const showTimeColumns = [
-  columnHelper.accessor((row) => row.id, {
-    id: 'id',
-    cell: (info) => info.getValue(),
-    header: () => <span>ID</span>,
-  }),
+const genreColumns = [
   columnHelper.accessor((row) => row.name, {
     id: 'name',
     cell: (info) => <Center>{info.getValue()}</Center>,
-    header: () => <Center>제목</Center>,
-  }),
-  columnHelper.accessor((row) => row.rating, {
-    id: 'round',
-    cell: (info) => (
-      <Center>
-        <MovieRating rating={info.getValue()} size="sm" />
-      </Center>
-    ),
-    header: () => <Center>등급</Center>,
-  }),
-  columnHelper.accessor((row) => row.length, {
-    id: 'length',
-    cell: (info) => <Center>{info.getValue()}분</Center>,
-    header: () => <Center>상영 시간</Center>,
-  }),
-  columnHelper.accessor((row) => row.distributor, {
-    id: 'distributor',
-    cell: (info) => <Center>{info.getValue()}</Center>,
-    header: () => <Center>배급사</Center>,
-  }),
-  columnHelper.accessor((row) => row.genreDTOList, {
-    id: 'genre',
-    cell: (info) => (
-      <Center>
-        {info
-          .getValue()
-          .map((elem) => elem.name)
-          .join(', ')}
-      </Center>
-    ),
     header: () => <Center>장르</Center>,
   }),
-  columnHelper.accessor((row) => row.director, {
-    id: 'director',
-    cell: (info) => <Center>{info.getValue()}</Center>,
-    header: () => <Center>감독</Center>,
-  }),
-  columnHelper.accessor((row) => row.id, {
+  columnHelper.accessor((row) => row.name, {
     id: 'delete',
-    cell: (info) => <DeleteButton id={info.getValue()} />,
+    cell: (info) => <DeleteButton name={info.getValue()} />,
     header: () => <></>,
   }),
 ];
 
-export default function AdminMoviePage() {
+export default function AdminGenrePage() {
   const theme = useTheme();
   const [pageNum, setPageNum] = React.useState(1);
   const navigateNum = pageNum - (pageNum % 4 === 0 ? 4 : pageNum % 4) + 1;
   const navigateArr = new Array(4).fill(0).map((_, idx) => navigateNum + idx);
-  const { isSuccess, data: movies } = useGetAllMovies();
-  const { data: genres } = useGetAllMovieGenres();
-
+  const { isSuccess, data: genres } = useGetAllMovieGenres();
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
+  const filteredGenres = arrayDivision([...(genres ?? [])], 10)[pageNum - 1];
+  const maxNavigate = arrayDivision([...(genres ?? [])], 10).length;
 
-  const filteredMovies = arrayDivision([...(movies ?? [])], 10)[pageNum - 1];
-  const maxNavigate = arrayDivision([...(movies ?? [])], 10).length;
   const handleClickPrevNav = () => {
     setPageNum((prev) => Math.max(prev - 1, 1));
   };
@@ -94,17 +50,17 @@ export default function AdminMoviePage() {
   return (
     <>
       <Head>
-        <title>Admin / Movie</title>
+        <title>Admin / Genre</title>
         <meta name="description" content="SCV Bank Page" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Content>
         <Header>
-          <StyledButton onClick={onModalOpen}>영화 생성</StyledButton>
+          <StyledButton onClick={onModalOpen}>장르 생성</StyledButton>
         </Header>
         <TableWrapper>
-          {isSuccess ? <AdminMovieTable columns={showTimeColumns} data={filteredMovies} /> : null}
+          {isSuccess ? <AdminGenreTable columns={genreColumns} data={filteredGenres} /> : null}
         </TableWrapper>
         <Bottom>
           <HStack>
@@ -128,19 +84,22 @@ export default function AdminMoviePage() {
           </HStack>
         </Bottom>
       </Content>
-      <AdminMovieModal genres={genres ?? []} isOpen={isModalOpen} onClose={onModalClose} />
+      <AdminGenreModal onClose={onModalClose} isOpen={isModalOpen} />
     </>
   );
 }
 
-const DeleteButton = ({ id }: Pick<Movie, 'id'>) => {
-  const deleteMovie = useDeleteMovie();
+const DeleteButton = ({ name }: Pick<Genre, 'name'>) => {
+  const deleteGenre = useDeleteGenre();
   const handleClickButton = () => {
-    deleteMovie.mutate(id, {
-      onSuccess: () => {
-        toast.success('삭제 성공!');
+    deleteGenre.mutate(
+      { name },
+      {
+        onSuccess: () => {
+          toast.success('삭제 성공!');
+        },
       },
-    });
+    );
   };
   return <StyledDeleteButton onClick={handleClickButton}>삭제</StyledDeleteButton>;
 };
@@ -148,7 +107,7 @@ const DeleteButton = ({ id }: Pick<Movie, 'id'>) => {
 export const getStaticProps = async () => ({
   props: {
     layout: 'admin',
-    title: 'Movie',
+    title: 'Genre',
   },
 });
 

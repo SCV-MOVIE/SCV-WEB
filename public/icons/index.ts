@@ -15,6 +15,8 @@ import RightArrow from './RightArrow.svg';
 import Public from './Public.svg';
 import Private from './Private.svg';
 import Theater from './Theater.svg';
+import Category from './Category.svg';
+import Business from './Business.svg';
 
 export {
   Star,
@@ -34,4 +36,6 @@ export {
   Public,
   Private,
   Theater,
+  Category,
+  Business,
 };

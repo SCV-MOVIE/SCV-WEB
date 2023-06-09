@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { Flex, FlexProps, Icon, Text } from '@chakra-ui/react';
 
 import Logo from '../Logo';
-import { Application, Film, Theater, Users } from '@root/public/icons';
+import { Application, Business, Category, Film, Theater, Users } from '@root/public/icons';
 import { useTheme } from '@emotion/react';
 import { useRouter } from 'next/router';
 
@@ -22,11 +22,17 @@ function AdminSideBar() {
         <NavItem pathname="/admin/movie" icon={Film}>
           Movie
         </NavItem>
+        <NavItem pathname="/admin/genre" icon={Category}>
+          Genre
+        </NavItem>
         <NavItem pathname="/admin/theater" icon={Theater}>
           Theater
         </NavItem>
         <NavItem pathname="/admin/showtime" icon={Application}>
           Showtime
+        </NavItem>
+        <NavItem pathname="/admin/partner" icon={Business}>
+          Partner
         </NavItem>
       </SideBarContent>
       <SideBarContent title="GENERAL" minHeight="30%">

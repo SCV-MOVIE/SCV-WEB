@@ -12,7 +12,36 @@ export interface Movie {
   staff: string;
 }
 
+export type RequestMovie = Pick<
+  Movie,
+  | 'actor'
+  | 'director'
+  | 'distributor'
+  | 'genreDTOList'
+  | 'imgUrl'
+  | 'introduction'
+  | 'length'
+  | 'name'
+  | 'rating'
+  | 'staff'
+>;
+
+export type RequestUpdateMovie = Pick<
+  Movie,
+  | 'actor'
+  | 'director'
+  | 'distributor'
+  | 'genreDTOList'
+  | 'imgUrl'
+  | 'introduction'
+  | 'length'
+  | 'rating'
+  | 'staff'
+>;
+
 export interface Genre {
   id: number;
   name: string;
 }
+
+export type RequestGenre = Pick<Genre, 'name'>;

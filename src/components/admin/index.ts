@@ -6,3 +6,7 @@ export { default as AdminMovieTable } from './AdminMovieTable';
 export { default as AdminMovieModal } from './AdminMovieModal';
 export { default as AdminTheaterTable } from './AdminTheaterTable';
 export { default as AdminTheaterModal } from './AdminTheaterModal';
+export { default as AdminGenreTable } from './AdminGenreTable';
+export { default as AdminGenreModal } from './AdminGenreModal';
+export { default as AdminPartnerTable } from './AdminPartnerTable';
+export { default as AdminPartnerModal } from './AdminPartnerModal';
