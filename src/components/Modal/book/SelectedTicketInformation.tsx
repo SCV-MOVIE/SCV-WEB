@@ -28,8 +28,7 @@ function SelectedTicketInformation({ selectedMovie, theaterType }: Props) {
           <Image
             width={160}
             height={160}
-            // src={selectedMovie.movie.imgUrl}
-            src={'/mario.jpeg'}
+            src={selectedMovie.movie.imgUrl || '/mario.jpeg'}
             alt="image-thumbnail"
           />
           <Heading as="h3" size="md">
