@@ -123,7 +123,7 @@ function CheckTicketBox({ color, ticket, onClickPrint, onClickCancel }: Props) {
           출력하기
         </Button>
         <Button
-          onClick={!isDisabled ? onClickPrint : undefined}
+          onClick={!isDisabled ? onClickCancel : undefined}
           disabled={isDisabled}
           colorScheme={'red'}
         >
