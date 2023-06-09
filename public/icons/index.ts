@@ -17,6 +17,7 @@ import Private from './Private.svg';
 import Theater from './Theater.svg';
 import Category from './Category.svg';
 import Business from './Business.svg';
+import People from './People.svg';
 
 export {
   Star,
@@ -38,4 +39,5 @@ export {
   Theater,
   Category,
   Business,
+  People,
 };

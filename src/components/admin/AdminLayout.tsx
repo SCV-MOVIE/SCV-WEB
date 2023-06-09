@@ -3,7 +3,15 @@ import React, { ReactNode } from 'react';
 import styled from '@emotion/styled';
 import AdminSideBar from './AdminSideBar';
 import { Flex, Icon, Text } from '@chakra-ui/react';
-import { Application, Business, Category, DashBoard, Film, Theater } from '@root/public/icons';
+import {
+  Application,
+  Business,
+  Category,
+  DashBoard,
+  Film,
+  People,
+  Theater,
+} from '@root/public/icons';
 import { pretendard } from '@root/src/pages/_app';
 
 import { ToastContainer } from 'react-toastify';
@@ -16,6 +24,7 @@ const ICON_TITLE_TABLE: { [key: string]: any } = {
   Theater: Theater,
   Genre: Category,
   Partner: Business,
+  Member: People,
 } as const;
 
 interface AdminLayoutProps {

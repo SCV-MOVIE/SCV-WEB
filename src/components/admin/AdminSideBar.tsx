@@ -3,14 +3,14 @@ import styled from '@emotion/styled';
 import { Flex, FlexProps, Icon, Text } from '@chakra-ui/react';
 
 import Logo from '../Logo';
-import { Application, Business, Category, Film, Theater, Users } from '@root/public/icons';
+import { Application, Business, Category, Film, People, Theater, Users } from '@root/public/icons';
 import { useTheme } from '@emotion/react';
 import { useRouter } from 'next/router';
 
 function AdminSideBar() {
   const router = useRouter();
   const handleClickLogOut = () => {
-    router.push('/bank');
+    router.push('/admin');
   };
 
   return (
@@ -33,6 +33,9 @@ function AdminSideBar() {
         </NavItem>
         <NavItem pathname="/admin/partner" icon={Business}>
           Partner
+        </NavItem>
+        <NavItem pathname="/admin/member" icon={People}>
+          Member
         </NavItem>
       </SideBarContent>
       <SideBarContent title="GENERAL" minHeight="30%">

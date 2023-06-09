@@ -2,53 +2,16 @@ import Head from 'next/head';
 import styled from '@emotion/styled';
 import BankTable from '@root/src/components/bank/BankTable';
 import { createColumnHelper } from '@tanstack/react-table';
-import { dateFormatter } from '@root/src/utils';
-import { Flex, HStack, Icon, Text } from '@chakra-ui/react';
+import { arrayDivision, dateFormatter } from '@root/src/utils';
+import { Flex, HStack, Icon, Text, filter, useDisclosure } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import { CreditCard, LeftArrow, RightArrow, Timelapse } from '@root/public/icons';
 import React, { CSSProperties } from 'react';
-import { BankDashBoard } from '@root/src/@types';
+import { BankRequest } from '@root/src/@types';
+import { useGetAllBankRequests, useUpdateBankRequest } from '@root/src/api/query';
+import { toast } from 'react-toastify';
 
-const dummyData: BankDashBoard[] = [
-  {
-    id: 4,
-    method: 'Bank',
-    from: 'SCV 123456-00-123456',
-    to: 'SCV 123456-00-345678',
-    amount: 45000,
-    updatedAt: null,
-    approveNm: null,
-  },
-  {
-    id: 3,
-    method: 'Bank',
-    from: 'SCV 123456-00-123456',
-    to: 'SCV 123456-00-345678',
-    amount: 45000,
-    updatedAt: null,
-    approveNm: null,
-  },
-  {
-    id: 2,
-    method: 'Card',
-    from: 'SCV 123456-00-123456',
-    to: 'SCV 123456-00-345678',
-    amount: 45000,
-    updatedAt: new Date('2020.12.24 13:16:04'),
-    approveNm: '1234568',
-  },
-  {
-    id: 1,
-    method: 'Bank',
-    from: 'SCV 123456-00-123456',
-    to: 'SCV 123456-00-345678',
-    amount: 45000,
-    updatedAt: new Date('2020.12.24 11:16:02'),
-    approveNm: '1234567',
-  },
-];
-
-const columnHelper = createColumnHelper<BankDashBoard>();
+const columnHelper = createColumnHelper<BankRequest>();
 
 const bankColumns = [
   columnHelper.accessor((row) => row.method, {
@@ -56,18 +19,18 @@ const bankColumns = [
     cell: (info) => <MethodCell method={info.getValue()} />,
     header: () => <span>Method</span>,
   }),
-  columnHelper.accessor((row) => row.from, {
-    id: 'from',
+  columnHelper.accessor((row) => row.source, {
+    id: 'source',
     cell: (info) => info.getValue(),
     header: () => <span>From</span>,
   }),
-  columnHelper.accessor((row) => row.to, {
-    id: 'to',
+  columnHelper.accessor((row) => row.destination, {
+    id: 'destination',
     cell: (info) => info.getValue(),
     header: () => <span>To</span>,
   }),
-  columnHelper.accessor((row) => row.amount, {
-    id: 'amount',
+  columnHelper.accessor((row) => row.price, {
+    id: 'price',
     cell: (info) => <Right>{info.getValue().toLocaleString('ko-KR')}원</Right>,
     header: () => <Right>Amount</Right>,
   }),
@@ -81,14 +44,14 @@ const bankColumns = [
     cell: (info) => info.getValue(),
     header: () => <span>Approve Num.</span>,
   }),
-  columnHelper.accessor((row) => row.id, {
-    id: 'id',
-    cell: (info) => <RejectButton id={info.getValue()} />,
+  columnHelper.accessor((row) => row.bankId, {
+    id: 'reject',
+    cell: (info) => <RejectButton bankId={info.getValue()} />,
     header: () => <></>,
   }),
-  columnHelper.accessor((row) => row.id, {
-    id: 'id',
-    cell: (info) => <ApproveButton id={info.getValue()} />,
+  columnHelper.accessor((row) => row.bankId, {
+    id: 'approve',
+    cell: (info) => <ApproveButton bankId={info.getValue()} />,
     header: () => <></>,
   }),
 ];
@@ -98,6 +61,11 @@ export default function BankPage() {
   const [pageNum, setPageNum] = React.useState(1);
   const navigateNum = pageNum - (pageNum % 4 === 0 ? 4 : pageNum % 4) + 1;
   const navigateArr = new Array(4).fill(0).map((_, idx) => navigateNum + idx);
+
+  const { isSuccess, data: requests } = useGetAllBankRequests();
+
+  const filteredRequests = arrayDivision([...(requests ?? [])], 10)[pageNum - 1];
+  const maxNavigate = arrayDivision([...(requests ?? [])], 10).length;
 
   const handleClickPrevNav = () => {
     setPageNum((prev) => Math.max(prev - 1, 1));
@@ -119,21 +87,23 @@ export default function BankPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Content>
-        <BankTable columns={bankColumns} data={dummyData} />
+        {isSuccess ? <BankTable columns={bankColumns} data={filteredRequests} /> : null}
         <BankBottom>
           <HStack>
             <NavigateButton onClick={handleClickPrevNav}>
               <Icon width={6} height={6} fill={theme.colors.gray300} as={LeftArrow} />
             </NavigateButton>
-            {navigateArr.map((id) => (
-              <NavigateButton
-                key={id}
-                selected={pageNum === id}
-                onClick={() => handleClickNumNav(id)}
-              >
-                {id}
-              </NavigateButton>
-            ))}
+            {navigateArr.map((id) =>
+              maxNavigate > id ? (
+                <NavigateButton
+                  key={id}
+                  selected={pageNum === id}
+                  onClick={() => handleClickNumNav(id)}
+                >
+                  {id}
+                </NavigateButton>
+              ) : null,
+            )}
             <NavigateButton onClick={handleClickNextNav}>
               <Icon width={6} height={6} fill={theme.colors.gray300} as={RightArrow} />
             </NavigateButton>
@@ -151,10 +121,10 @@ export const getStaticProps = async () => ({
   },
 });
 
-const MethodCell = ({ method }: Pick<BankDashBoard, 'method'>) => {
+const MethodCell = ({ method }: Pick<BankRequest, 'method'>) => {
   return (
     <Flex gap="1rem" alignItems="center">
-      {method === 'Bank' ? (
+      {method === 'ACCOUNT' ? (
         <Icon fontSize="lg" as={Timelapse} />
       ) : (
         <Icon fontSize="lg" as={CreditCard} />
@@ -164,9 +134,9 @@ const MethodCell = ({ method }: Pick<BankDashBoard, 'method'>) => {
   );
 };
 
-const DateCell = ({ updatedAt }: Pick<BankDashBoard, 'updatedAt'>) => {
+const DateCell = ({ updatedAt }: Pick<BankRequest, 'updatedAt'>) => {
   const theme = useTheme();
-  const formattedData = updatedAt ? dateFormatter.format(updatedAt!) : null;
+  const formattedData = updatedAt ? dateFormatter.format(new Date(updatedAt!)) : null;
   const [dateNoTime, time] = formattedData?.split(',') ?? ['', ''];
   const [hour, minute] = time.split(':') ?? ['', ''];
   const isPM = Number(hour) >= 12;
@@ -186,9 +156,17 @@ const DateCell = ({ updatedAt }: Pick<BankDashBoard, 'updatedAt'>) => {
   );
 };
 
-const ApproveButton = ({ id }: Pick<BankDashBoard, 'id'>) => {
+const ApproveButton = ({ bankId }: Pick<BankRequest, 'bankId'>) => {
+  const updateBankRequest = useUpdateBankRequest();
   const handleClickButton = () => {
-    console.log(id);
+    updateBankRequest.mutate(
+      { bankId, status: 'APPROVED' },
+      {
+        onSuccess: () => {
+          toast.success('승인 성공!');
+        },
+      },
+    );
   };
   return (
     <BankButton onClick={handleClickButton} isApprove>
@@ -197,9 +175,17 @@ const ApproveButton = ({ id }: Pick<BankDashBoard, 'id'>) => {
   );
 };
 
-const RejectButton = ({ id }: Pick<BankDashBoard, 'id'>) => {
+const RejectButton = ({ bankId }: Pick<BankRequest, 'bankId'>) => {
+  const updateBankRequest = useUpdateBankRequest();
   const handleClickButton = () => {
-    console.log(id);
+    updateBankRequest.mutate(
+      { bankId, status: 'REJECTED' },
+      {
+        onSuccess: () => {
+          toast.success('거절 성공!');
+        },
+      },
+    );
   };
   return (
     <BankButton onClick={handleClickButton} isReject>
