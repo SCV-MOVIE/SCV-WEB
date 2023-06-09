@@ -107,6 +107,7 @@ function BookModal({ isOpen, partners, showTimes, onClose }: Props) {
       });
       if (result.status === 200) {
         alert('영화가 성공적으로 예매되었습니다.');
+        dispatch({ direction: 'reset', isLogin });
         setValue(initialSelectedMovieValue);
         onClose();
       }
