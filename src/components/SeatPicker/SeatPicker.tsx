@@ -73,11 +73,11 @@ function SeatPicker({
 type StyleProps = Pick<Props, 'column'>;
 const GridWithEmpty = styled(Grid)<StyleProps>`
   ${({ column }) => css`
-    & button:nth-of-type(${column}n + 2) {
+    & button:nth-of-type(${column}n + 6) {
       margin-right: 40px;
     }
 
-    & button:nth-of-type(${column}n + ${column - 2}) {
+    & button:nth-of-type(${column}n + ${column - 6}) {
       margin-right: 40px;
     }
   `}
