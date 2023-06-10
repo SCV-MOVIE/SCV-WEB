@@ -140,6 +140,11 @@ const DeleteButton = ({ id }: Pick<Movie, 'id'>) => {
       onSuccess: () => {
         toast.success('삭제 성공!');
       },
+      onError: (res: any) => {
+        const { data } = res?.response;
+
+        toast.error(data?.message ?? '삭제 실패!');
+      },
     });
   };
   return <StyledDeleteButton onClick={handleClickButton}>삭제</StyledDeleteButton>;

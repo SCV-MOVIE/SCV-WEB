@@ -8,6 +8,12 @@ import { Button, Input, Stack, Text, Box, Center } from '@chakra-ui/react';
 import { Logo } from '@/components';
 import { useTheme } from '@emotion/react';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
+
+const BANK_ADMIN = {
+  ID: 'bankAdmin',
+  PW: '1234',
+};
 
 interface LoginType {
   id: string;
@@ -20,7 +26,11 @@ export default function BankLogin() {
   const router = useRouter();
   const { register, handleSubmit } = useForm<LoginType>();
   const onSubmit: SubmitHandler<LoginType> = (data) => {
-    console.log(data);
+    if (data.id !== BANK_ADMIN.ID || data.password !== BANK_ADMIN.PW) {
+      toast.error('아이디 또는 비밀번호가 일치하지 않습니다.');
+      return;
+    }
+    toast.success('로그인 성공!');
     router.push('/bank/dashboard');
   };
 

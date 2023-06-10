@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useMemo } from 'react';
 import {
   Button,
   HStack,
@@ -19,6 +19,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { Movie, Theater } from '@root/src/@types';
 import ReactDatePicker from 'react-datepicker';
 import styled from '@emotion/styled';
+import { useGetSuggestedStartDate } from '@root/src/api/query';
 
 interface CreateShowTime {
   movieId: number;
@@ -38,12 +39,23 @@ function AdminShowTimeModal({ movies, theaters, isOpen, onClose }: Props) {
     onClose();
   }, [onClose]);
 
-  const { register, handleSubmit, control } = useForm<CreateShowTime>();
+  const { register, handleSubmit, control, getValues, setValue } = useForm<CreateShowTime>();
   const onSubmit: SubmitHandler<CreateShowTime> = async (data) => {
     console.log(data);
   };
 
+  const { data, isSuccess } = useGetSuggestedStartDate(getValues().movieId);
+
   const validTheaters = theaters.filter((theater) => theater.deleted === 'N');
+
+  const suggestedStartTime = useMemo(
+    () => (isSuccess ? new Date(data) : new Date()),
+    [data, isSuccess],
+  );
+
+  useEffect(() => {
+    setValue('startDate', suggestedStartTime);
+  }, [setValue, suggestedStartTime]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClickClose} size="5xl">
@@ -58,39 +70,47 @@ function AdminShowTimeModal({ movies, theaters, isOpen, onClose }: Props) {
         <ModalBody>
           <form onSubmit={handleSubmit(onSubmit)}>
             <Stack padding={8} gap={8}>
-              <Stack>
-                <label htmlFor="movieId">영화</label>
-                <Select {...register('movieId')} defaultValue={movies[0]?.id ?? 0}>
-                  {movies.map((movie) => (
-                    <option key={movie.id} value={movie.id}>
-                      {movie.name}
-                    </option>
-                  ))}
-                </Select>
-                <label htmlFor="round">상영 회차</label>
-                <Input placeholder="N회차 (숫자만 입력)" {...register('round')} />
-                <label htmlFor="startDate">상영 일자</label>
-                <Controller
-                  control={control}
-                  name="startDate"
-                  defaultValue={new Date()}
-                  render={({ field }) => (
-                    <StyledDatePicker
-                      onChange={(date) => field.onChange(date)}
-                      selected={field.value}
-                      dateFormat="yyyy-MM-dd HH:mm"
-                      showTimeInput
-                    />
-                  )}
-                />
-                <label htmlFor="theaterId">상영관</label>
-                <Select {...register('theaterId')} defaultValue={theaters[0]?.id ?? 0}>
-                  {validTheaters.map((theater) => (
-                    <option key={theater.id} value={theater.id}>
-                      {theater.name}
-                    </option>
-                  ))}
-                </Select>
+              <Stack gap={4}>
+                <Stack>
+                  <label htmlFor="movieId">영화</label>
+                  <Select {...register('movieId')} defaultValue={movies[0]?.id ?? 0}>
+                    {movies.map((movie) => (
+                      <option key={movie.id} value={movie.id}>
+                        {movie.name}
+                      </option>
+                    ))}
+                  </Select>
+                </Stack>
+                <Stack>
+                  <label htmlFor="round">상영 회차</label>
+                  <Input placeholder="N회차 (숫자만 입력)" {...register('round')} />
+                </Stack>
+                <Stack>
+                  <label htmlFor="startDate">상영 일자</label>
+                  <Controller
+                    control={control}
+                    name="startDate"
+                    defaultValue={suggestedStartTime}
+                    render={({ field }) => (
+                      <StyledDatePicker
+                        onChange={(date) => field.onChange(date)}
+                        selected={field.value}
+                        dateFormat="yyyy-MM-dd HH:mm"
+                        showTimeInput
+                      />
+                    )}
+                  />
+                </Stack>
+                <Stack>
+                  <label htmlFor="theaterId">상영관</label>
+                  <Select {...register('theaterId')} defaultValue={theaters[0]?.id ?? 0}>
+                    {validTheaters.map((theater) => (
+                      <option key={theater.id} value={theater.id}>
+                        {theater.name}
+                      </option>
+                    ))}
+                  </Select>
+                </Stack>
               </Stack>
               <Button type="submit" colorScheme="blue">
                 생성

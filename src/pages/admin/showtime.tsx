@@ -7,7 +7,7 @@ import { Calendar, LeftArrow, Private, Public, RightArrow } from '@root/public/i
 import React, { CSSProperties } from 'react';
 import { Movie, ShowTime, Theater } from '@root/src/@types';
 import AdminShowTimeTable from '@root/src/components/admin/AdminShowTimeTable';
-import { getYYYYMMDD, runningTime } from '@root/src/utils';
+import { arrayDivision, getYYYYMMDD, runningTime } from '@root/src/utils';
 import ReactDatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
@@ -77,10 +77,22 @@ export default function AdminDashBoardPage({ movies, theaters }: Props) {
 
   const { data: showtimes, isSuccess } = useGetAllShowTimes();
 
-  const filteredShowtimes =
-    showtimes?.filter((showtime) =>
-      showtime.startDate.includes(getYYYYMMDD(dateFilter ?? new Date(), '-')),
-    ) ?? [];
+  const filteredShowtimes = arrayDivision(
+    [
+      ...(showtimes?.filter((showtime) =>
+        showtime.startDate.includes(getYYYYMMDD(dateFilter ?? new Date(), '-')),
+      ) ?? []),
+    ],
+    10,
+  )[pageNum - 1];
+  const maxNavigate = arrayDivision(
+    [
+      ...(showtimes?.filter((showtime) =>
+        showtime.startDate.includes(getYYYYMMDD(dateFilter ?? new Date(), '-')),
+      ) ?? []),
+    ],
+    10,
+  ).length;
 
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
 
@@ -126,15 +138,17 @@ export default function AdminDashBoardPage({ movies, theaters }: Props) {
             <NavigateButton onClick={handleClickPrevNav}>
               <Icon width={6} height={6} fill={theme.colors.gray300} as={LeftArrow} />
             </NavigateButton>
-            {navigateArr.map((id) => (
-              <NavigateButton
-                key={id}
-                selected={pageNum === id}
-                onClick={() => handleClickNumNav(id)}
-              >
-                {id}
-              </NavigateButton>
-            ))}
+            {navigateArr.map((id) =>
+              maxNavigate > id ? (
+                <NavigateButton
+                  key={id}
+                  selected={pageNum === id}
+                  onClick={() => handleClickNumNav(id)}
+                >
+                  {id}
+                </NavigateButton>
+              ) : null,
+            )}
             <NavigateButton onClick={handleClickNextNav}>
               <Icon width={6} height={6} fill={theme.colors.gray300} as={RightArrow} />
             </NavigateButton>

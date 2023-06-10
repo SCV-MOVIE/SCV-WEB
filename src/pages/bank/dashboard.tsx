@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import BankTable from '@root/src/components/bank/BankTable';
 import { createColumnHelper } from '@tanstack/react-table';
 import { arrayDivision, dateFormatter } from '@root/src/utils';
-import { Flex, HStack, Icon, Text, filter, useDisclosure } from '@chakra-ui/react';
+import { Flex, HStack, Icon, Tag, Text } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import { CreditCard, LeftArrow, RightArrow, Timelapse } from '@root/public/icons';
 import React, { CSSProperties } from 'react';
@@ -18,6 +18,15 @@ const bankColumns = [
     id: 'method',
     cell: (info) => <MethodCell method={info.getValue()} />,
     header: () => <span>Method</span>,
+  }),
+  columnHelper.accessor((row) => row.status, {
+    id: 'status',
+    cell: (info) => (
+      <Center>
+        <StatusCell status={info.getValue()} />
+      </Center>
+    ),
+    header: () => <Center>Status</Center>,
   }),
   columnHelper.accessor((row) => row.source, {
     id: 'source',
@@ -44,14 +53,28 @@ const bankColumns = [
     cell: (info) => info.getValue(),
     header: () => <span>Approve Num.</span>,
   }),
-  columnHelper.accessor((row) => row.bankId, {
+  columnHelper.accessor((row) => ({ bankId: row.bankId, method: row.method, status: row.status }), {
     id: 'reject',
-    cell: (info) => <RejectButton bankId={info.getValue()} />,
+    cell: (info) => {
+      const { bankId, method, status } = info.getValue();
+      return method === 'ACCOUNT' && status === 'STANDBY' ? (
+        <RejectButton bankId={bankId} />
+      ) : (
+        <></>
+      );
+    },
     header: () => <></>,
   }),
-  columnHelper.accessor((row) => row.bankId, {
+  columnHelper.accessor((row) => ({ bankId: row.bankId, method: row.method, status: row.status }), {
     id: 'approve',
-    cell: (info) => <ApproveButton bankId={info.getValue()} />,
+    cell: (info) => {
+      const { bankId, method, status } = info.getValue();
+      return method === 'ACCOUNT' && status === 'STANDBY' ? (
+        <ApproveButton bankId={bankId} />
+      ) : (
+        <></>
+      );
+    },
     header: () => <></>,
   }),
 ];
@@ -123,7 +146,7 @@ export const getStaticProps = async () => ({
 
 const MethodCell = ({ method }: Pick<BankRequest, 'method'>) => {
   return (
-    <Flex gap="1rem" alignItems="center">
+    <Flex gap="0.5rem" alignItems="center">
       {method === 'ACCOUNT' ? (
         <Icon fontSize="lg" as={Timelapse} />
       ) : (
@@ -132,6 +155,19 @@ const MethodCell = ({ method }: Pick<BankRequest, 'method'>) => {
       {method}
     </Flex>
   );
+};
+
+const StatusCell = ({ status }: Pick<BankRequest, 'status'>) => {
+  switch (status) {
+    case 'APPROVED':
+      return <Tag colorScheme="teal">승인</Tag>;
+    case 'REJECTED':
+      return <Tag colorScheme="red">거절</Tag>;
+    case 'STANDBY':
+      return <Tag colorScheme="gray">대기</Tag>;
+    default:
+      return <Tag colorScheme="gray">대기</Tag>;
+  }
 };
 
 const DateCell = ({ updatedAt }: Pick<BankRequest, 'updatedAt'>) => {
@@ -165,6 +201,11 @@ const ApproveButton = ({ bankId }: Pick<BankRequest, 'bankId'>) => {
         onSuccess: () => {
           toast.success('승인 성공!');
         },
+        onError: (res: any) => {
+          const { data } = res?.response;
+
+          toast.error(data?.message ?? '에러!');
+        },
       },
     );
   };
@@ -183,6 +224,11 @@ const RejectButton = ({ bankId }: Pick<BankRequest, 'bankId'>) => {
       {
         onSuccess: () => {
           toast.success('거절 성공!');
+        },
+        onError: (res: any) => {
+          const { data } = res?.response;
+
+          toast.error(data?.message ?? '에러!');
         },
       },
     );
@@ -221,6 +267,12 @@ const Right = styled.span`
   display: block;
   width: 100%;
   text-align: right;
+`;
+
+const Center = styled.span`
+  display: block;
+  width: 100%;
+  text-align: center;
 `;
 
 type NavigateButtonProps = CSSProperties & {

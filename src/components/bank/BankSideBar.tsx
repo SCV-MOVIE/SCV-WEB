@@ -6,10 +6,12 @@ import Logo from '../Logo';
 import { DashBoard, Users } from '@root/public/icons';
 import { useTheme } from '@emotion/react';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
 
 function BankSideBar() {
   const router = useRouter();
   const handleClickLogOut = () => {
+    toast.success('로그아웃 성공!');
     router.push('/bank');
   };
 

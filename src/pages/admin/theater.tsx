@@ -8,6 +8,7 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { Theater } from '@root/src/@types';
 import { AdminTheaterModal, AdminTheaterTable } from '@root/src/components/admin';
 import { useGetAllTheaters } from '@root/src/api/query';
+import { arrayDivision } from '@root/src/utils';
 
 const columnHelper = createColumnHelper<Theater>();
 
@@ -41,7 +42,14 @@ export default function AdminTheaterPage() {
   const navigateArr = new Array(4).fill(0).map((_, idx) => navigateNum + idx);
   const { isSuccess, data: theaters } = useGetAllTheaters();
 
-  const filteredTheaters = theaters?.filter((theater) => theater.deleted === 'N') ?? [];
+  const filteredTheaters = arrayDivision(
+    [...(theaters?.filter((theater) => theater.deleted === 'N') ?? [])],
+    10,
+  )[pageNum - 1];
+  const maxNavigate = arrayDivision(
+    [...(theaters?.filter((theater) => theater.deleted === 'N') ?? [])],
+    10,
+  ).length;
 
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
 
@@ -78,15 +86,17 @@ export default function AdminTheaterPage() {
             <NavigateButton onClick={handleClickPrevNav}>
               <Icon width={6} height={6} fill={theme.colors.gray300} as={LeftArrow} />
             </NavigateButton>
-            {navigateArr.map((id) => (
-              <NavigateButton
-                key={id}
-                selected={pageNum === id}
-                onClick={() => handleClickNumNav(id)}
-              >
-                {id}
-              </NavigateButton>
-            ))}
+            {navigateArr.map((id) =>
+              maxNavigate > id ? (
+                <NavigateButton
+                  key={id}
+                  selected={pageNum === id}
+                  onClick={() => handleClickNumNav(id)}
+                >
+                  {id}
+                </NavigateButton>
+              ) : null,
+            )}
             <NavigateButton onClick={handleClickNextNav}>
               <Icon width={6} height={6} fill={theme.colors.gray300} as={RightArrow} />
             </NavigateButton>

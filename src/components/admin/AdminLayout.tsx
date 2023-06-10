@@ -46,11 +46,11 @@ function AdminLayout({ title, children }: AdminLayoutProps) {
             </Flex>
             <Content>{children}</Content>
           </Main>
-          <ToastContainer />
         </>
       ) : (
         <Main>{children}</Main>
       )}
+      <ToastContainer />
     </Wrapper>
   );
 }
