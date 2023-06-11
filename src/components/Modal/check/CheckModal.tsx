@@ -115,7 +115,7 @@ function CheckModal({ isOpen, onClose }: Props) {
             tickets: ticketInformation,
             onInfoSubmit,
             onTicketSubmit,
-            onTicketPrint: handleClickPrint,
+            onClickPrint: handleClickPrint,
             onClickCancel: handleClickCancel,
           })}
         </ModalBody>

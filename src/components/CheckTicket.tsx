@@ -19,6 +19,7 @@ function CheckTicketBox({ color, ticket, onClickPrint, onClickCancel }: Props) {
   }
   const isDisabled =
     ticket.status === 'CANCELLED' || ticket.status === 'REJECTED' || ticket.status === 'PRINTED';
+
   return (
     <HStack gap={12}>
       <Image
