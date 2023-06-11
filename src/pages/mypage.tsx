@@ -1,13 +1,9 @@
 import Head from 'next/head';
 import styled from '@emotion/styled';
-import Image from 'next/image';
 import {
   Button,
   Center,
-  Divider,
-  Heading,
   HStack,
-  Input,
   Stack,
   Tab,
   TabList,
@@ -29,9 +25,9 @@ export default function MyPage() {
   const { user } = useUserInfo();
   const [tickets, setTickets] = React.useState<CheckTicket[]>([]);
   const {
-    isOpen: isChangePWOpen,
-    onOpen: onChangePWOpen,
-    onClose: onChangePWClose,
+    isOpen: isChangeInfoOpen,
+    onOpen: onChangeInfoOpen,
+    onClose: onChangeInfoClose,
   } = useDisclosure();
   const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
 
@@ -97,8 +93,8 @@ export default function MyPage() {
                     <Text color="white">포인트</Text>
                     <Text color="white">{user?.point.toLocaleString()}</Text>
                   </HStack>
-                  <Button color="blue" onClick={onChangePWOpen}>
-                    비밀번호 변경
+                  <Button color="blue" onClick={onChangeInfoOpen}>
+                    내정보 변경
                   </Button>
                   <Button colorScheme="red" onClick={onDeleteOpen}>
                     회원 탈퇴
@@ -107,7 +103,7 @@ export default function MyPage() {
               </TabPanel>
               <TabPanel>
                 <Stack>
-                  {tickets.map((ticket) => (
+                  {/* {tickets.map((ticket) => (
                     <CheckTicketBox
                       key={ticket.ticketId}
                       color={'white'}
@@ -115,14 +111,14 @@ export default function MyPage() {
                       onClickPrint={() => handleClickPrint(ticket.ticketId)}
                       onClickCancel={() => handleClickCancel(ticket.ticketId)}
                     />
-                  ))}
+                  ))} */}
                 </Stack>
               </TabPanel>
             </TabPanels>
           </Tabs>
         </Center>
       </Content>
-      <UserUtilModal type={'changePW'} isOpen={isChangePWOpen} onClose={onChangePWClose} />
+      <UserUtilModal type={'changeInfo'} isOpen={isChangeInfoOpen} onClose={onChangeInfoClose} />
       <UserUtilModal type={'delete'} isOpen={isDeleteOpen} onClose={onDeleteClose} />
       <Bottom />
     </>

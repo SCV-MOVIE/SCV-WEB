@@ -1,4 +1,8 @@
 import { Button, HStack, Input, Stack } from '@chakra-ui/react';
+import { api } from '@root/src/api';
+import { useUserInfo } from '@root/src/hooks';
+import { forPhoneNumber } from '@root/src/utils';
+import { useRouter } from 'next/router';
 import type { SubmitHandler } from 'react-hook-form';
 import { useForm } from 'react-hook-form';
 
@@ -6,14 +10,28 @@ interface FindPW {
   name: string;
   loginId: string;
   phoneNumber: string;
-  securityFrontNumber: string;
-  securityBackNumber: string;
 }
 
-function FindPWBox() {
+function ChangeInfoBox() {
+  const { user } = useUserInfo();
+  const router = useRouter();
   const { register, handleSubmit } = useForm<FindPW>();
   const onSubmit: SubmitHandler<FindPW> = async (data) => {
-    console.log(data);
+    if (user?.id) {
+      const result = await api.patch('/api/member/info', {
+        id: user.id,
+        newLoginId: data.loginId,
+        newName: data.name,
+        newPhoneNm: forPhoneNumber(data.phoneNumber),
+      });
+
+      if (result.status === 200) {
+        alert('수정이 완료되었습니다.');
+        router.push('/');
+      } else {
+        alert('문제가 생겼습니다.');
+      }
+    }
   };
 
   return (
@@ -32,31 +50,13 @@ function FindPWBox() {
             padding={4}
             maxLength={11}
           />
-          <label htmlFor="securityFrontNumber">주민등록번호</label>
-          <HStack>
-            <Input
-              id="securityFrontNumber"
-              placeholder="앞자리(6)"
-              {...register('securityFrontNumber')}
-              padding={4}
-              maxLength={6}
-            />
-            <Input
-              id="securityBackNumber"
-              placeholder="뒷자리(7)"
-              type="password"
-              {...register('securityBackNumber')}
-              padding={4}
-              maxLength={7}
-            />
-          </HStack>
         </Stack>
         <Button type="submit" colorScheme="blue">
-          아이디 찾기
+          내정보 변경
         </Button>
       </Stack>
     </form>
   );
 }
 
-export default FindPWBox;
+export default ChangeInfoBox;
