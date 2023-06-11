@@ -16,6 +16,7 @@ import { api } from '@root/src/api';
 import { forPhoneNumber, forSecurityNumber } from '@root/src/utils';
 import CheckTicketBox from '../../CheckTicket';
 import CheckTicketList from '../../CheckTicketList';
+import { AxiosError } from 'axios';
 
 interface Props {
   isOpen: boolean;
@@ -76,7 +77,9 @@ function CheckModal({ isOpen, onClose }: Props) {
       setStep('completeList');
       setTicketInformation(result.data);
     } catch (err) {
-      alert(err);
+      const error = err as AxiosError;
+      const data = error.response?.data as { message: string };
+      alert(data.message);
     }
   };
 
@@ -86,7 +89,9 @@ function CheckModal({ isOpen, onClose }: Props) {
       setStep('complete');
       setTicketInformation(result.data);
     } catch (err) {
-      alert(err);
+      const error = err as AxiosError;
+      const data = error.response?.data as { message: string };
+      alert(data.message);
     }
   };
 

@@ -21,6 +21,7 @@ import { forPhoneNumber, forSecurityNumber, getAge, totalPrice } from '@root/src
 import { Partner, ShowTime } from '@root/src/@types';
 import { useUserInfo } from '@root/src/hooks';
 import { api } from '@root/src/api';
+import { AxiosError } from 'axios';
 
 interface Props {
   isOpen: boolean;
@@ -112,7 +113,9 @@ function BookModal({ isOpen, partners, showTimes, onClose }: Props) {
         onClose();
       }
     } catch (err) {
-      console.log(err);
+      const error = err as AxiosError;
+      const data = error.response?.data as { message: string };
+      alert(data.message);
     }
   }, [
     isLogin,
