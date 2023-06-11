@@ -22,7 +22,6 @@ function CheckTicketList({ color, tickets, onClickPrint, onClickCancel }: Props)
           onClickCancel={() => onClickCancel(ticket.ticketId)}
         />
       ))}
-      ;
     </>
   );
 }
