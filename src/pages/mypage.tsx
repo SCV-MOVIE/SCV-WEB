@@ -103,7 +103,7 @@ export default function MyPage() {
               </TabPanel>
               <TabPanel>
                 <Stack>
-                  {/* {tickets.map((ticket) => (
+                  {tickets.map((ticket) => (
                     <CheckTicketBox
                       key={ticket.ticketId}
                       color={'white'}
@@ -111,7 +111,7 @@ export default function MyPage() {
                       onClickPrint={() => handleClickPrint(ticket.ticketId)}
                       onClickCancel={() => handleClickCancel(ticket.ticketId)}
                     />
-                  ))} */}
+                  ))}
                 </Stack>
               </TabPanel>
             </TabPanels>

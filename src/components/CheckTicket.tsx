@@ -9,6 +9,10 @@ interface Props {
   onClickCancel?: VoidFunction;
 }
 
+export function isEmptyValue(str: string) {
+  return str === '""';
+}
+
 function CheckTicketBox({ color, ticket, onClickPrint, onClickCancel }: Props) {
   const isDisabled =
     ticket?.status === 'CANCELLED' || ticket?.status === 'REJECTED' || ticket?.status === 'PRINTED';
@@ -20,7 +24,7 @@ function CheckTicketBox({ color, ticket, onClickPrint, onClickCancel }: Props) {
       <Image
         width={160}
         height={160}
-        src={ticket.movieImgUrl || '/mario.jpeg'}
+        src={isEmptyValue(ticket.movieImgUrl) ? '/mario.jpeg' : ticket.movieImgUrl}
         alt="image-thumbnail"
       />
       <Stack>

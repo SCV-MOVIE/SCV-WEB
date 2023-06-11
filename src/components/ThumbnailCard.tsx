@@ -7,6 +7,7 @@ import { HStack, Stack, Text, Heading } from '@chakra-ui/react';
 import { Movie } from '../@types';
 import MovieRating from './MovieRating';
 import { Play } from '@root/public/icons';
+import { isEmptyValue } from './CheckTicket';
 
 interface Props {
   src: string;
@@ -18,7 +19,7 @@ interface Props {
 function ThumbnailCard({ src, movie, size = 'small', alt = 'movie-thumbnail' }: Props) {
   return (
     <Wrapper justify="center">
-      <ThumbnailImage fill alt={alt} src={src} />
+      <ThumbnailImage fill alt={alt} src={isEmptyValue(src) ? '/mario.jpeg' : src} />
       <AnimatePresence>
         <OverlayLayout
           initial={{ opacity: 0 }}
