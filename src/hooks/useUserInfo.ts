@@ -2,8 +2,6 @@ import React from 'react';
 import { User } from '../@types';
 import { api } from '../api';
 
-// TODO: 로그아웃했는데 회원취급 받음
-// FIXME:
 function useUserInfo() {
   const [user, setUser] = React.useState<User | null>(null);
   const [isMounted, setIsMounted] = React.useState<boolean>(false);
@@ -28,8 +26,9 @@ function useUserInfo() {
     try {
       const result = await api.post('/api/member/logout');
       if (result.status === 200) {
-        setIsRefresh(true);
         setUser(null);
+        setIsRefresh(true);
+        setIsLogin(false);
         return { isSuccess: true };
       }
       return { isSuccess: false };
