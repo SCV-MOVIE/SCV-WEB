@@ -2,13 +2,18 @@ import Head from 'next/head';
 import styled from '@emotion/styled';
 import { HStack, Icon, useDisclosure } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
-import { LeftArrow, RightArrow } from '@root/public/icons';
-import React, { CSSProperties } from 'react';
+import { LeftArrow, RightArrow, TrashBin } from '@root/public/icons';
+import React, { CSSProperties, useEffect } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
 import { Theater } from '@root/src/@types';
-import { AdminTheaterModal, AdminTheaterTable } from '@root/src/components/admin';
-import { useGetAllTheaters } from '@root/src/api/query';
+import {
+  AdminTheaterModal,
+  AdminTheaterTable,
+  AdminTheaterUpdateModal,
+} from '@root/src/components/admin';
+import { useDeleteTheater, useGetAllTheaters } from '@root/src/api/query';
 import { arrayDivision } from '@root/src/utils';
+import { toast } from 'react-toastify';
 
 const columnHelper = createColumnHelper<Theater>();
 
@@ -29,7 +34,7 @@ const theaterColumns = [
     header: () => <Center>레이아웃</Center>,
   }),
   columnHelper.accessor((row) => row.id, {
-    id: 'delete',
+    id: 'id',
     cell: (info) => <DeleteButton id={info.getValue()} />,
     header: () => <></>,
   }),
@@ -38,12 +43,22 @@ const theaterColumns = [
 export default function AdminTheaterPage() {
   const theme = useTheme();
   const [pageNum, setPageNum] = React.useState(1);
+  const [updateTheater, setUpdateTheater] = React.useState<Theater | null>(null);
   const navigateNum = pageNum - (pageNum % 4 === 0 ? 4 : pageNum % 4) + 1;
   const navigateArr = new Array(4).fill(0).map((_, idx) => navigateNum + idx);
   const { isSuccess, data: theaters } = useGetAllTheaters();
 
   const filteredTheaters = arrayDivision(
-    [...(theaters?.filter((theater) => theater.deleted === 'N') ?? [])],
+    [
+      ...(theaters
+        ?.filter((theater) => theater.deleted === 'N')
+        .sort((a, b) => {
+          if (a.name === b.name) {
+            return b.id - a.id;
+          }
+          return a.name > b.name ? 1 : -1;
+        }) ?? []),
+    ],
     10,
   )[pageNum - 1];
   const maxNavigate = arrayDivision(
@@ -52,6 +67,19 @@ export default function AdminTheaterPage() {
   ).length;
 
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
+  const {
+    isOpen: isUpdateModalOpen,
+    onOpen: onUpdateModalOpen,
+    onClose: onUpdateModalClose,
+  } = useDisclosure();
+
+  const handleClickRow = (id: number) => {
+    if (id === updateTheater?.id) {
+      onUpdateModalOpen();
+      return;
+    }
+    setUpdateTheater(filteredTheaters.find((theater: Theater) => theater?.id === id));
+  };
 
   const handleClickPrevNav = () => {
     setPageNum((prev) => Math.max(prev - 1, 1));
@@ -64,10 +92,16 @@ export default function AdminTheaterPage() {
   const handleClickNumNav = (num: number) => {
     setPageNum(num);
   };
+
+  useEffect(() => {
+    if (updateTheater) {
+      onUpdateModalOpen();
+    }
+  }, [updateTheater, onUpdateModalOpen]);
   return (
     <>
       <Head>
-        <title>Admin</title>
+        <title>Admin / Theater</title>
         <meta name="description" content="SCV Bank Page" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -78,7 +112,11 @@ export default function AdminTheaterPage() {
         </Header>
         <TableWrapper>
           {isSuccess ? (
-            <AdminTheaterTable columns={theaterColumns} data={filteredTheaters} />
+            <AdminTheaterTable
+              handleClickRow={handleClickRow}
+              columns={theaterColumns}
+              data={filteredTheaters}
+            />
           ) : null}
         </TableWrapper>
         <Bottom>
@@ -104,15 +142,34 @@ export default function AdminTheaterPage() {
         </Bottom>
       </Content>
       <AdminTheaterModal onClose={onModalClose} isOpen={isModalOpen} />
+      {updateTheater && (
+        <AdminTheaterUpdateModal
+          data={updateTheater}
+          isOpen={isUpdateModalOpen}
+          onClose={onUpdateModalClose}
+        />
+      )}
     </>
   );
 }
 
 const DeleteButton = ({ id }: Pick<Theater, 'id'>) => {
-  const handleClickButton = () => {
-    console.log(id);
+  const deleteTheater = useDeleteTheater();
+  const handleClickButton = (e: React.MouseEvent<HTMLOrSVGElement, MouseEvent>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    deleteTheater.mutate(id, {
+      onSuccess: () => {
+        toast.success('삭제 성공!');
+      },
+      onError: (res: any) => {
+        const { data } = res?.response;
+
+        toast.error(data?.message ?? '삭제 실패!');
+      },
+    });
   };
-  return <StyledDeleteButton onClick={handleClickButton}>삭제</StyledDeleteButton>;
+  return <StyledIcon as={TrashBin} fontSize="xl" onClick={handleClickButton} />;
 };
 
 export const getStaticProps = async () => ({
@@ -190,12 +247,11 @@ const StyledButton = styled.button`
   height: auto;
 `;
 
-const StyledDeleteButton = styled.button`
-  width: 3rem;
-  height: 1.5rem;
-  border-radius: 0.75rem;
-
-  font-size: small;
-  color: ${({ theme }) => theme.colors.white};
-  background-color: ${({ theme }) => theme.colors.reject};
+const StyledIcon = styled(Icon)`
+  cursor: pointer;
+  &:hover {
+    path {
+      fill: ${({ theme }) => theme.colors.reject};
+    }
+  }
 `;

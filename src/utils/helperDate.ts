@@ -60,3 +60,10 @@ export const getYYYYMMDD = (date: Date, separator = '') => {
 
   return [YYYY, MM, DD].join(separator);
 };
+
+export const getHHMM = (date: Date, separator = '') => {
+  const HH = zeroPadding(date.getHours(), 2);
+  const MM = zeroPadding(date.getMinutes(), 2);
+
+  return [HH, MM].join(separator);
+};

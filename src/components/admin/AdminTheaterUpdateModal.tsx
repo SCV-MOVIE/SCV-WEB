@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Button,
   HStack,
@@ -17,46 +17,60 @@ import {
 import { pretendard } from '@root/src/pages/_app';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { RequestTheater, Theater } from '@root/src/@types';
-import { useCreateTheater } from '@root/src/api/query';
+import { useUpdateTheater } from '@root/src/api/query';
 import { toast } from 'react-toastify';
 
-type CreateTheater = RequestTheater;
+type UpdateTheater = RequestTheater;
 
 interface Props {
   isOpen: boolean;
   onClose: VoidFunction;
+  data: Theater;
 }
-function AdminTheaterModal({ isOpen, onClose }: Props) {
-  const createTheater = useCreateTheater();
-
-  const [buttonText, setButtonText] = React.useState('생성');
+function AdminTheaterModal({ data, isOpen, onClose }: Props) {
+  const [buttonText, setButtonText] = React.useState('수정');
   const onClickClose = React.useCallback(() => {
     onClose();
   }, [onClose]);
 
-  const { register, handleSubmit, reset } = useForm<CreateTheater>();
-  const onSubmit: SubmitHandler<CreateTheater> = async (data) => {
-    if (Object.values(data).some((elem) => !Boolean(elem))) {
+  const { register, handleSubmit, reset } = useForm<UpdateTheater>();
+  const updateTheater = useUpdateTheater();
+  const onSubmit: SubmitHandler<UpdateTheater> = async (inputData) => {
+    if (Object.values(inputData).some((elem) => !Boolean(elem))) {
       toast.error('모든 데이터를 채워주셔야 합니다!');
       return;
     }
+
     setButtonText('Loading...');
 
-    createTheater.mutate(data, {
-      onSuccess: () => {
-        toast.success('상영 일정 생성 성공!');
-        reset();
-        onClickClose();
+    updateTheater.mutate(
+      { ...inputData, theaterId: data.id },
+      {
+        onSuccess: () => {
+          toast.success('상영관 수정 성공!');
+          onClickClose();
+        },
+        onSettled: () => {
+          setButtonText('수정');
+        },
+        onError: (res: any) => {
+          const { message } = res?.response?.data;
+          toast.error(message ?? '상영관 수정 실패!');
+        },
       },
-      onSettled: () => {
-        setButtonText('생성');
-      },
-      onError: (res: any) => {
-        const { message } = res?.response?.data;
-        toast.error(message ?? '상영 일정 생성 실패!');
-      },
-    });
+    );
   };
+
+  useEffect(() => {
+    if (data) {
+      reset({
+        row: Number(data.layout.split('x')[0]),
+        column: Number(data.layout.split('x')[1]),
+        name: data.name,
+        theaterType: data.theaterType,
+      });
+    }
+  }, [data, reset]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClickClose} size="5xl">
@@ -64,7 +78,7 @@ function AdminTheaterModal({ isOpen, onClose }: Props) {
       <ModalContent overflow="scroll" minH={620} className={pretendard.className}>
         <ModalHeader>
           <HStack justifyContent="center" position="relative">
-            <Text>상영관 생성</Text>
+            <Text>{`'${data.name}'`} 상영관 수정</Text>
           </HStack>
         </ModalHeader>
         <ModalCloseButton />
@@ -88,7 +102,7 @@ function AdminTheaterModal({ isOpen, onClose }: Props) {
                   <option value="3D">3D</option>
                 </Select>
               </Stack>
-              <Button type="submit" colorScheme="blue" isDisabled={buttonText !== '생성'}>
+              <Button type="submit" colorScheme="blue" isDisabled={buttonText !== '수정'}>
                 {buttonText}
               </Button>
             </Stack>

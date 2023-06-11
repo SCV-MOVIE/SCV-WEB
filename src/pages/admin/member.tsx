@@ -5,13 +5,12 @@ import { useTheme } from '@emotion/react';
 import { LeftArrow, RightArrow } from '@root/public/icons';
 import React, { CSSProperties } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
-import { Genre, User } from '@root/src/@types';
-import { AdminGenreModal } from '@root/src/components/admin';
-import { useDeleteGenre, useGetAllMembers } from '@root/src/api/query';
-import { toast } from 'react-toastify';
+import { User } from '@root/src/@types';
+import { useGetAllMembers } from '@root/src/api/query';
 import { arrayDivision } from '@root/src/utils';
 import AdminMemberTable from '@root/src/components/admin/AdminMemberTable';
 import AdminMemberUpdateModal from '@root/src/components/admin/AdminMemberUpdateModal';
+import Image from 'next/image';
 
 const columnHelper = createColumnHelper<User>();
 
@@ -50,15 +49,18 @@ export default function AdminMemberPage() {
   const navigateNum = pageNum - (pageNum % 4 === 0 ? 4 : pageNum % 4) + 1;
   const navigateArr = new Array(4).fill(0).map((_, idx) => navigateNum + idx);
 
-  const { isSuccess, data: members } = useGetAllMembers();
+  const { isSuccess, data: members, isLoading } = useGetAllMembers();
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
 
   const filteredMembers = arrayDivision([...(members ?? [])], 10)[pageNum - 1];
   const maxNavigate = arrayDivision([...(members ?? [])], 10).length;
 
   const handleClickRow = (data: User) => {
+    if (data.loginId === updateUser?.loginId) {
+      onModalOpen();
+      return;
+    }
     setUpdateUser(data);
-    onModalOpen();
   };
 
   const handleClickPrevNav = () => {
@@ -72,6 +74,13 @@ export default function AdminMemberPage() {
   const handleClickNumNav = (num: number) => {
     setPageNum(num);
   };
+
+  React.useEffect(() => {
+    if (updateUser) {
+      onModalOpen();
+    }
+  }, [updateUser, onModalOpen]);
+
   return (
     <>
       <Head>
@@ -81,15 +90,20 @@ export default function AdminMemberPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Content>
-        <TableWrapper>
-          {isSuccess ? (
+        {isLoading ? (
+          <LoadingWrapper>
+            <Image width={64} height={64} src="/loading.gif" alt="loading" />
+          </LoadingWrapper>
+        ) : null}
+        {isSuccess ? (
+          <TableWrapper>
             <AdminMemberTable
               columns={memberColumns}
               data={filteredMembers}
               handleClickRow={handleClickRow}
             />
-          ) : null}
-        </TableWrapper>
+          </TableWrapper>
+        ) : null}
         <Bottom>
           <HStack>
             <NavigateButton onClick={handleClickPrevNav}>
@@ -147,6 +161,13 @@ const Bottom = styled.div`
 
 const TableWrapper = styled.div`
   flex-grow: 1;
+`;
+
+const LoadingWrapper = styled.div`
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
 `;
 
 type NavigateButtonProps = CSSProperties & {

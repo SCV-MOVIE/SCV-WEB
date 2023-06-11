@@ -51,7 +51,7 @@ function AdminMovieModal({ isOpen, onClose, genres }: Props) {
 
   const createMovie = useCreateMovie();
   const { value: checkedGenres, getCheckboxProps } = useCheckboxGroup();
-  const { register, handleSubmit } = useForm<CreateMovie>();
+  const { register, handleSubmit, reset } = useForm<CreateMovie>();
   const onSubmit: SubmitHandler<CreateMovie> = async (data) => {
     if (Object.values(data).some((elem) => !Boolean(elem)) || checkedGenres.length === 0) {
       toast.error('모든 데이터를 채워주셔야 합니다!');
@@ -67,6 +67,7 @@ function AdminMovieModal({ isOpen, onClose, genres }: Props) {
     createMovie.mutate(req, {
       onSuccess: () => {
         toast.success('영화 생성 성공!');
+        reset();
         onClickClose();
       },
       onError: (res: any) => {
@@ -105,7 +106,7 @@ function AdminMovieModal({ isOpen, onClose, genres }: Props) {
                     <option value="ALL">ALL</option>
                     <option value="12+">12+</option>
                     <option value="15+">15+</option>
-                    <option value="19+">19+</option>
+                    <option value="18+">18+</option>
                   </Select>
                 </Stack>
                 <Stack>

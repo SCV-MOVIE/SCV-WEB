@@ -26,18 +26,18 @@ export type RequestMovie = Pick<
   | 'staff'
 >;
 
-export type RequestUpdateMovie = Pick<
-  Movie,
-  | 'actor'
-  | 'director'
-  | 'distributor'
-  | 'genreDTOList'
-  | 'imgUrl'
-  | 'introduction'
-  | 'length'
-  | 'rating'
-  | 'staff'
->;
+export interface RequestUpdateMovie {
+  movieId: number;
+  genreDTOList: Pick<Genre, 'name'>[];
+  newActor: string;
+  newDirector: string;
+  newStaff: string;
+  newDistributor: string;
+  newImgUrl: string;
+  newIntroduction: string;
+  newLength: number;
+  newRating: 'ALL' | '12+' | '15+' | '18+';
+}
 
 export interface Genre {
   id: number;

@@ -1,11 +1,15 @@
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { api } from '..';
-import { ShowTime } from '@root/src/@types';
+import { RequestShowTime, RequestUpdateShowTime, ShowTime } from '@root/src/@types';
 
 const SHOWTIME_KEY = 'showtime';
 
 export const useGetAllShowTimes = () =>
-  useQuery([SHOWTIME_KEY], () => api.get<ShowTime[]>('/api/showtime/list').then((res) => res.data));
+  useQuery(
+    [SHOWTIME_KEY],
+    () => api.get<ShowTime[]>('/api/showtime/list').then((res) => res.data),
+    { refetchOnWindowFocus: false },
+  );
 
 export const useGetSuggestedStartDate = (movieId: number) =>
   useQuery(
@@ -15,3 +19,39 @@ export const useGetSuggestedStartDate = (movieId: number) =>
       enabled: Boolean(movieId),
     },
   );
+
+export const useCreateShowTime = () => {
+  const queryClient = useQueryClient();
+  return useMutation((data: RequestShowTime) => api.post('/api/showtime', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries([SHOWTIME_KEY]);
+    },
+  });
+};
+
+export const useUpdateShowTime = () => {
+  const queryClient = useQueryClient();
+  return useMutation((data: RequestUpdateShowTime) => api.patch('/api/showtime', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries([SHOWTIME_KEY]);
+    },
+  });
+};
+
+export const useDeleteShowTime = () => {
+  const queryClient = useQueryClient();
+  return useMutation((showTimeId: number) => api.delete(`/api/showtime/${showTimeId}`), {
+    onSuccess: () => {
+      queryClient.invalidateQueries([SHOWTIME_KEY]);
+    },
+  });
+};
+
+export const usePublishShowTime = () => {
+  const queryClient = useQueryClient();
+  return useMutation((showTimeId: number) => api.patch(`/api/showtime/public/${showTimeId}`), {
+    onSuccess: () => {
+      queryClient.invalidateQueries([SHOWTIME_KEY]);
+    },
+  });
+};

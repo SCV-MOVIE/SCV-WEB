@@ -18,6 +18,7 @@ import Theater from './Theater.svg';
 import Category from './Category.svg';
 import Business from './Business.svg';
 import People from './People.svg';
+import TrashBin from './TrashBin.svg';
 
 export {
   Star,
@@ -39,5 +40,6 @@ export {
   Theater,
   Category,
   Business,
+  TrashBin,
   People,
 };

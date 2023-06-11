@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Th, Td, theme } from '@chakra-ui/react';
 import {
   useReactTable,
   flexRender,
@@ -14,9 +14,14 @@ import { useTheme } from '@emotion/react';
 export type DataTableProps<Data extends object> = {
   data: Data[];
   columns: ColumnDef<Data, any>[];
+  handleClickRow: (data: any) => void;
 };
 
-function AdminGenreTable<Data extends object>({ data, columns }: DataTableProps<Data>) {
+function AdminGenreTable<Data extends object>({
+  data,
+  columns,
+  handleClickRow,
+}: DataTableProps<Data>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const theme = useTheme();
   const table = useReactTable({
@@ -53,7 +58,7 @@ function AdminGenreTable<Data extends object>({ data, columns }: DataTableProps<
       </Thead>
       <Tbody>
         {table.getRowModel().rows.map((row) => (
-          <Tr key={row.id}>
+          <StyledTr key={row.id} onClick={() => handleClickRow(row._valuesCache)}>
             {row.getVisibleCells().map((cell) => {
               const meta: any = cell.column.columnDef.meta;
               return (
@@ -62,7 +67,7 @@ function AdminGenreTable<Data extends object>({ data, columns }: DataTableProps<
                 </StyledTd>
               );
             })}
-          </Tr>
+          </StyledTr>
         ))}
       </Tbody>
     </Table>
@@ -82,6 +87,12 @@ const StyledTd = styled(Td)`
   vertical-align: middle;
   height: 4rem;
   padding: 0.5rem 1.5rem;
+`;
+
+const StyledTr = styled(Tr)`
+  &:hover {
+    background-color: ${theme.colors.gray['50']};
+  }
 `;
 
 export default AdminGenreTable;

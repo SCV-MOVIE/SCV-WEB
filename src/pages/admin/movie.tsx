@@ -2,19 +2,24 @@ import Head from 'next/head';
 import styled from '@emotion/styled';
 import { HStack, Icon, useDisclosure } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
-import { LeftArrow, RightArrow } from '@root/public/icons';
-import React, { CSSProperties } from 'react';
+import { LeftArrow, RightArrow, TrashBin } from '@root/public/icons';
+import React, { CSSProperties, useEffect } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
 import { Movie } from '@root/src/@types';
-import { AdminMovieModal, AdminMovieTable } from '@root/src/components/admin';
+import {
+  AdminMovieModal,
+  AdminMovieTable,
+  AdminMovieUpdateModal,
+} from '@root/src/components/admin';
 import { useDeleteMovie, useGetAllMovieGenres, useGetAllMovies } from '@root/src/api/query';
 import { MovieRating } from '@root/src/components';
 import { toast } from 'react-toastify';
 import { arrayDivision } from '@root/src/utils';
+import Image from 'next/image';
 
 const columnHelper = createColumnHelper<Movie>();
 
-const showTimeColumns = [
+const movieColumns = [
   columnHelper.accessor((row) => row.id, {
     id: 'id',
     cell: (info) => info.getValue(),
@@ -71,15 +76,29 @@ const showTimeColumns = [
 export default function AdminMoviePage() {
   const theme = useTheme();
   const [pageNum, setPageNum] = React.useState(1);
+  const [updateMovie, setUpdateMovie] = React.useState<Movie | null>(null);
   const navigateNum = pageNum - (pageNum % 4 === 0 ? 4 : pageNum % 4) + 1;
   const navigateArr = new Array(4).fill(0).map((_, idx) => navigateNum + idx);
-  const { isSuccess, data: movies } = useGetAllMovies();
+  const { isSuccess, data: movies, isLoading } = useGetAllMovies();
   const { data: genres } = useGetAllMovieGenres();
 
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
+  const {
+    isOpen: isUpdateModalOpen,
+    onOpen: onUpdateModalOpen,
+    onClose: onUpdateModalClose,
+  } = useDisclosure();
 
   const filteredMovies = arrayDivision([...(movies ?? [])], 10)[pageNum - 1];
   const maxNavigate = arrayDivision([...(movies ?? [])], 10).length;
+
+  const handleClickRow = (id: number) => {
+    if (id === updateMovie?.id) {
+      onUpdateModalOpen();
+      return;
+    }
+    setUpdateMovie(filteredMovies.find((movie: Movie) => movie?.id === id));
+  };
   const handleClickPrevNav = () => {
     setPageNum((prev) => Math.max(prev - 1, 1));
   };
@@ -91,6 +110,12 @@ export default function AdminMoviePage() {
   const handleClickNumNav = (num: number) => {
     setPageNum(num);
   };
+
+  useEffect(() => {
+    if (updateMovie) {
+      onUpdateModalOpen();
+    }
+  }, [updateMovie, onUpdateModalOpen]);
   return (
     <>
       <Head>
@@ -103,9 +128,20 @@ export default function AdminMoviePage() {
         <Header>
           <StyledButton onClick={onModalOpen}>영화 생성</StyledButton>
         </Header>
-        <TableWrapper>
-          {isSuccess ? <AdminMovieTable columns={showTimeColumns} data={filteredMovies} /> : null}
-        </TableWrapper>
+        {isLoading ? (
+          <LoadingWrapper>
+            <Image width={64} height={64} src="/loading.gif" alt="loading" />
+          </LoadingWrapper>
+        ) : null}
+        {isSuccess ? (
+          <TableWrapper>
+            <AdminMovieTable
+              columns={movieColumns}
+              data={filteredMovies}
+              handleClickRow={handleClickRow}
+            />
+          </TableWrapper>
+        ) : null}
         <Bottom>
           <HStack>
             <NavigateButton onClick={handleClickPrevNav}>
@@ -129,13 +165,23 @@ export default function AdminMoviePage() {
         </Bottom>
       </Content>
       <AdminMovieModal genres={genres ?? []} isOpen={isModalOpen} onClose={onModalClose} />
+      {updateMovie && (
+        <AdminMovieUpdateModal
+          data={updateMovie}
+          genres={genres ?? []}
+          isOpen={isUpdateModalOpen}
+          onClose={onUpdateModalClose}
+        />
+      )}
     </>
   );
 }
 
 const DeleteButton = ({ id }: Pick<Movie, 'id'>) => {
   const deleteMovie = useDeleteMovie();
-  const handleClickButton = () => {
+  const handleClickButton = (e: React.MouseEvent<HTMLOrSVGElement, MouseEvent>) => {
+    e.preventDefault();
+    e.stopPropagation();
     deleteMovie.mutate(id, {
       onSuccess: () => {
         toast.success('삭제 성공!');
@@ -147,7 +193,7 @@ const DeleteButton = ({ id }: Pick<Movie, 'id'>) => {
       },
     });
   };
-  return <StyledDeleteButton onClick={handleClickButton}>삭제</StyledDeleteButton>;
+  return <StyledIcon as={TrashBin} fontSize="xl" onClick={handleClickButton} />;
 };
 
 export const getStaticProps = async () => ({
@@ -188,6 +234,13 @@ const TableWrapper = styled.div`
   flex-grow: 1;
 `;
 
+const LoadingWrapper = styled.div`
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
 type NavigateButtonProps = CSSProperties & {
   disabled?: boolean;
   selected?: boolean;
@@ -225,12 +278,11 @@ const StyledButton = styled.button`
   height: auto;
 `;
 
-const StyledDeleteButton = styled.button`
-  width: 3rem;
-  height: 1.5rem;
-  border-radius: 0.75rem;
-
-  font-size: small;
-  color: ${({ theme }) => theme.colors.white};
-  background-color: ${({ theme }) => theme.colors.reject};
+const StyledIcon = styled(Icon)`
+  cursor: pointer;
+  &:hover {
+    path {
+      fill: ${({ theme }) => theme.colors.reject};
+    }
+  }
 `;

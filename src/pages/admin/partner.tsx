@@ -9,6 +9,7 @@ import { Genre, Partner } from '@root/src/@types';
 import { AdminPartnerModal, AdminPartnerTable } from '@root/src/components/admin';
 import { useGetAllPartners } from '@root/src/api/query';
 import { arrayDivision } from '@root/src/utils';
+import Image from 'next/image';
 
 const columnHelper = createColumnHelper<Partner>();
 
@@ -30,7 +31,7 @@ export default function AdminPartnerPage() {
   const [pageNum, setPageNum] = React.useState(1);
   const navigateNum = pageNum - (pageNum % 4 === 0 ? 4 : pageNum % 4) + 1;
   const navigateArr = new Array(4).fill(0).map((_, idx) => navigateNum + idx);
-  const { isSuccess, data: partners } = useGetAllPartners();
+  const { isSuccess, data: partners, isLoading } = useGetAllPartners();
 
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
 
@@ -66,11 +67,16 @@ export default function AdminPartnerPage() {
         <Header>
           <StyledButton onClick={onModalOpen}>제휴사 등록</StyledButton>
         </Header>
-        <TableWrapper>
-          {isSuccess ? (
+        {isLoading ? (
+          <LoadingWrapper>
+            <Image width={64} height={64} src="/loading.gif" alt="loading" />
+          </LoadingWrapper>
+        ) : null}
+        {isSuccess ? (
+          <TableWrapper>
             <AdminPartnerTable columns={partnerColumns} data={filteredPartners} />
-          ) : null}
-        </TableWrapper>
+          </TableWrapper>
+        ) : null}
         <Bottom>
           <HStack>
             <NavigateButton onClick={handleClickPrevNav}>
@@ -97,13 +103,6 @@ export default function AdminPartnerPage() {
     </>
   );
 }
-
-const DeleteButton = ({ name }: Pick<Genre, 'name'>) => {
-  const handleClickButton = () => {
-    console.log(name);
-  };
-  return <StyledDeleteButton onClick={handleClickButton}>삭제</StyledDeleteButton>;
-};
 
 export const getStaticProps = async () => ({
   props: {
@@ -143,6 +142,13 @@ const TableWrapper = styled.div`
   flex-grow: 1;
 `;
 
+const LoadingWrapper = styled.div`
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
 type NavigateButtonProps = CSSProperties & {
   disabled?: boolean;
   selected?: boolean;
@@ -178,14 +184,4 @@ const StyledButton = styled.button`
   border-radius: 8px;
 
   height: auto;
-`;
-
-const StyledDeleteButton = styled.button`
-  width: 3rem;
-  height: 1.5rem;
-  border-radius: 0.75rem;
-
-  font-size: small;
-  color: ${({ theme }) => theme.colors.white};
-  background-color: ${({ theme }) => theme.colors.reject};
 `;

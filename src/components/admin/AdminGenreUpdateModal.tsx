@@ -17,39 +17,32 @@ import {
 import { pretendard } from '@root/src/pages/_app';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Genre } from '@root/src/@types';
-import { useCreateGenre } from '@root/src/api/query';
 import { toast } from 'react-toastify';
 
 type CreateGenre = Pick<Genre, 'name'>;
 
 interface Props {
+  data: Genre;
   isOpen: boolean;
   onClose: VoidFunction;
 }
-function AdminGenreModal({ isOpen, onClose }: Props) {
+function AdminGenreUpdateModal({ data, isOpen, onClose }: Props) {
   const onClickClose = React.useCallback(() => {
     onClose();
   }, [onClose]);
-  const createGenre = useCreateGenre();
   const { register, handleSubmit, reset } = useForm<CreateGenre>();
   const onSubmit: SubmitHandler<CreateGenre> = async (data) => {
-    if (Object.values(data).some((elem) => !Boolean(elem))) {
-      toast.error('모든 데이터를 채워주셔야 합니다!');
-      return;
-    }
-    createGenre.mutate(data, {
-      onSuccess: () => {
-        toast.success('장르 생성 성공!');
-        reset();
-        onClickClose();
-      },
-      onError: (res: any) => {
-        const { data } = res?.response;
-
-        toast.error(data?.message ?? '장르 생성 실패!');
-      },
-    });
+    console.log(data);
+    toast.success('장르 수정 성공!');
   };
+
+  React.useEffect(() => {
+    if (data) {
+      reset({
+        name: data.name,
+      });
+    }
+  }, [data, reset]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClickClose} size="5xl">
@@ -57,7 +50,7 @@ function AdminGenreModal({ isOpen, onClose }: Props) {
       <ModalContent overflow="scroll" minH={620} className={pretendard.className}>
         <ModalHeader>
           <HStack justifyContent="center" position="relative">
-            <Text>장르 생성</Text>
+            <Text>장르 수정</Text>
           </HStack>
         </ModalHeader>
         <ModalCloseButton />
@@ -69,7 +62,7 @@ function AdminGenreModal({ isOpen, onClose }: Props) {
                 <Input placeholder="이름" {...register('name')} />
               </Stack>
               <Button type="submit" colorScheme="blue">
-                생성
+                수정
               </Button>
             </Stack>
           </form>
@@ -78,4 +71,4 @@ function AdminGenreModal({ isOpen, onClose }: Props) {
     </Modal>
   );
 }
-export default AdminGenreModal;
+export default AdminGenreUpdateModal;

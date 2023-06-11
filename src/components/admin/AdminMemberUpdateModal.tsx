@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Button,
   HStack,
@@ -33,10 +33,19 @@ function AdminMemberUpdateModal({ data, isOpen, onClose }: Props) {
     onClose();
   }, [onClose]);
 
-  const { register, handleSubmit } = useForm<UpdateUser>();
+  const { register, handleSubmit, reset } = useForm<UpdateUser>();
   const onSubmit: SubmitHandler<UpdateUser> = async (data) => {
     console.log(data);
   };
+
+  useEffect(() => {
+    if (data) {
+      reset({
+        newMembership: data.membership,
+        newPoint: data.point,
+      });
+    }
+  }, [data, reset]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClickClose} size="5xl">
@@ -74,7 +83,7 @@ function AdminMemberUpdateModal({ data, isOpen, onClose }: Props) {
                 </Stack>
               </Stack>
               <Button type="submit" colorScheme="blue">
-                생성
+                수정
               </Button>
             </Stack>
           </form>

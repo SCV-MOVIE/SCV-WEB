@@ -10,6 +10,7 @@ import React, { CSSProperties } from 'react';
 import { BankRequest } from '@root/src/@types';
 import { useGetAllBankRequests, useUpdateBankRequest } from '@root/src/api/query';
 import { toast } from 'react-toastify';
+import Image from 'next/image';
 
 const columnHelper = createColumnHelper<BankRequest>();
 
@@ -85,9 +86,19 @@ export default function BankPage() {
   const navigateNum = pageNum - (pageNum % 4 === 0 ? 4 : pageNum % 4) + 1;
   const navigateArr = new Array(4).fill(0).map((_, idx) => navigateNum + idx);
 
-  const { isSuccess, data: requests } = useGetAllBankRequests();
+  const { isSuccess, data: requests, isLoading, isFetching } = useGetAllBankRequests();
 
-  const filteredRequests = arrayDivision([...(requests ?? [])], 10)[pageNum - 1];
+  const filteredRequests = arrayDivision(
+    [
+      ...(requests?.sort((a, b) => {
+        if (a?.updatedAt && b?.updatedAt) {
+          return new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime();
+        }
+        return b.bankId - a.bankId;
+      }) ?? []),
+    ],
+    10,
+  )[pageNum - 1];
   const maxNavigate = arrayDivision([...(requests ?? [])], 10).length;
 
   const handleClickPrevNav = () => {
@@ -110,7 +121,16 @@ export default function BankPage() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Content>
-        {isSuccess ? <BankTable columns={bankColumns} data={filteredRequests} /> : null}
+        {isLoading || isFetching ? (
+          <LoadingWrapper>
+            <Image width={64} height={64} src="/loading.gif" alt="loading" />
+          </LoadingWrapper>
+        ) : null}
+        {isSuccess && !isFetching ? (
+          <TableWrapper>
+            <BankTable columns={bankColumns} data={filteredRequests} />{' '}
+          </TableWrapper>
+        ) : null}
         <BankBottom>
           <HStack>
             <NavigateButton onClick={handleClickPrevNav}>
@@ -273,6 +293,17 @@ const Center = styled.span`
   display: block;
   width: 100%;
   text-align: center;
+`;
+
+const TableWrapper = styled.div`
+  flex-grow: 1;
+`;
+
+const LoadingWrapper = styled.div`
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
 `;
 
 type NavigateButtonProps = CSSProperties & {

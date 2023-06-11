@@ -2,14 +2,19 @@ import Head from 'next/head';
 import styled from '@emotion/styled';
 import { HStack, Icon, useDisclosure } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
-import { LeftArrow, RightArrow } from '@root/public/icons';
+import { LeftArrow, RightArrow, TrashBin } from '@root/public/icons';
 import React, { CSSProperties } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
 import { Genre } from '@root/src/@types';
-import { AdminGenreModal, AdminGenreTable, AdminTheaterModal } from '@root/src/components/admin';
+import {
+  AdminGenreModal,
+  AdminGenreTable,
+  AdminGenreUpdateModal,
+} from '@root/src/components/admin';
 import { useDeleteGenre, useGetAllMovieGenres } from '@root/src/api/query';
 import { toast } from 'react-toastify';
 import { arrayDivision } from '@root/src/utils';
+import Image from 'next/image';
 
 const columnHelper = createColumnHelper<Genre>();
 
@@ -20,7 +25,7 @@ const genreColumns = [
     header: () => <Center>장르</Center>,
   }),
   columnHelper.accessor((row) => row.name, {
-    id: 'delete',
+    id: 'id',
     cell: (info) => <DeleteButton name={info.getValue()} />,
     header: () => <></>,
   }),
@@ -29,12 +34,26 @@ const genreColumns = [
 export default function AdminGenrePage() {
   const theme = useTheme();
   const [pageNum, setPageNum] = React.useState(1);
+  const [updateGenre, setUpdateGenre] = React.useState<Genre | null>(null);
   const navigateNum = pageNum - (pageNum % 4 === 0 ? 4 : pageNum % 4) + 1;
   const navigateArr = new Array(4).fill(0).map((_, idx) => navigateNum + idx);
-  const { isSuccess, data: genres } = useGetAllMovieGenres();
+  const { isSuccess, data: genres, isLoading } = useGetAllMovieGenres();
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
+  const {
+    isOpen: isUpdateModalOpen,
+    onOpen: onUpdateModalOpen,
+    onClose: onUpdateModalClose,
+  } = useDisclosure();
   const filteredGenres = arrayDivision([...(genres ?? [])], 10)[pageNum - 1];
   const maxNavigate = arrayDivision([...(genres ?? [])], 10).length;
+
+  const handleClickRow = (data: Genre) => {
+    if (data.id === updateGenre?.id) {
+      onUpdateModalOpen();
+      return;
+    }
+    setUpdateGenre(data);
+  };
 
   const handleClickPrevNav = () => {
     setPageNum((prev) => Math.max(prev - 1, 1));
@@ -47,6 +66,12 @@ export default function AdminGenrePage() {
   const handleClickNumNav = (num: number) => {
     setPageNum(num);
   };
+
+  React.useEffect(() => {
+    if (updateGenre) {
+      onUpdateModalOpen();
+    }
+  }, [updateGenre, onUpdateModalOpen]);
   return (
     <>
       <Head>
@@ -59,9 +84,20 @@ export default function AdminGenrePage() {
         <Header>
           <StyledButton onClick={onModalOpen}>장르 생성</StyledButton>
         </Header>
-        <TableWrapper>
-          {isSuccess ? <AdminGenreTable columns={genreColumns} data={filteredGenres} /> : null}
-        </TableWrapper>
+        {isLoading ? (
+          <LoadingWrapper>
+            <Image width={64} height={64} src="/loading.gif" alt="loading" />
+          </LoadingWrapper>
+        ) : null}
+        {isSuccess ? (
+          <TableWrapper>
+            <AdminGenreTable
+              columns={genreColumns}
+              data={filteredGenres}
+              handleClickRow={handleClickRow}
+            />
+          </TableWrapper>
+        ) : null}
         <Bottom>
           <HStack>
             <NavigateButton onClick={handleClickPrevNav}>
@@ -85,13 +121,22 @@ export default function AdminGenrePage() {
         </Bottom>
       </Content>
       <AdminGenreModal onClose={onModalClose} isOpen={isModalOpen} />
+      {updateGenre && (
+        <AdminGenreUpdateModal
+          data={updateGenre}
+          isOpen={isUpdateModalOpen}
+          onClose={onUpdateModalClose}
+        />
+      )}
     </>
   );
 }
 
 const DeleteButton = ({ name }: Pick<Genre, 'name'>) => {
   const deleteGenre = useDeleteGenre();
-  const handleClickButton = () => {
+  const handleClickButton = (e: React.MouseEvent<HTMLOrSVGElement, MouseEvent>) => {
+    e.preventDefault();
+    e.stopPropagation();
     deleteGenre.mutate(
       { name },
       {
@@ -101,12 +146,12 @@ const DeleteButton = ({ name }: Pick<Genre, 'name'>) => {
         onError: (res: any) => {
           const { data } = res?.response;
 
-          toast.error(data?.message ?? '에러!');
+          toast.error(data?.message ?? '삭제 실패!');
         },
       },
     );
   };
-  return <StyledDeleteButton onClick={handleClickButton}>삭제</StyledDeleteButton>;
+  return <StyledIcon as={TrashBin} fontSize="xl" onClick={handleClickButton}></StyledIcon>;
 };
 
 export const getStaticProps = async () => ({
@@ -147,6 +192,13 @@ const TableWrapper = styled.div`
   flex-grow: 1;
 `;
 
+const LoadingWrapper = styled.div`
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
+`;
+
 type NavigateButtonProps = CSSProperties & {
   disabled?: boolean;
   selected?: boolean;
@@ -184,12 +236,11 @@ const StyledButton = styled.button`
   height: auto;
 `;
 
-const StyledDeleteButton = styled.button`
-  width: 3rem;
-  height: 1.5rem;
-  border-radius: 0.75rem;
-
-  font-size: small;
-  color: ${({ theme }) => theme.colors.white};
-  background-color: ${({ theme }) => theme.colors.reject};
+const StyledIcon = styled(Icon)`
+  cursor: pointer;
+  &:hover {
+    path {
+      fill: ${({ theme }) => theme.colors.reject};
+    }
+  }
 `;

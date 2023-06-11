@@ -17,6 +17,7 @@ import { pretendard } from '@root/src/pages/_app';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Partner } from '@root/src/@types';
 import { useCreatePartner } from '@root/src/api/query';
+import { toast } from 'react-toastify';
 
 type CreatePartner = Pick<Partner, 'name' | 'discount'>;
 
@@ -31,9 +32,23 @@ function AdminPartnerModal({ isOpen, onClose }: Props) {
 
   const createPartner = useCreatePartner();
 
-  const { register, handleSubmit } = useForm<CreatePartner>();
+  const { register, handleSubmit, reset } = useForm<CreatePartner>();
   const onSubmit: SubmitHandler<CreatePartner> = async (data) => {
-    createPartner.mutate(data);
+    if (Object.values(data).some((elem) => !Boolean(elem))) {
+      toast.error('모든 데이터를 채워주셔야 합니다!');
+      return;
+    }
+    createPartner.mutate(data, {
+      onSuccess: () => {
+        toast.success('제휴사 등록 성공!');
+        reset();
+        onClickClose();
+      },
+      onError: (res: any) => {
+        const { message } = res?.response?.data;
+        toast.error(message ?? '제휴사 등록 실패!');
+      },
+    });
   };
 
   return (

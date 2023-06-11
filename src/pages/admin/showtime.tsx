@@ -1,9 +1,9 @@
 import Head from 'next/head';
 import styled from '@emotion/styled';
 import { createColumnHelper } from '@tanstack/react-table';
-import { Button, Flex, HStack, Icon, useDisclosure } from '@chakra-ui/react';
+import { Button, Flex, HStack, Icon, Tag, useDisclosure } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
-import { Calendar, LeftArrow, Private, Public, RightArrow } from '@root/public/icons';
+import { Calendar, LeftArrow, Private, Public, RightArrow, TrashBin } from '@root/public/icons';
 import React, { CSSProperties } from 'react';
 import { Movie, ShowTime, Theater } from '@root/src/@types';
 import AdminShowTimeTable from '@root/src/components/admin/AdminShowTimeTable';
@@ -11,10 +11,16 @@ import { arrayDivision, getYYYYMMDD, runningTime } from '@root/src/utils';
 import ReactDatePicker from 'react-datepicker';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import { useGetAllShowTimes } from '@root/src/api/query/showTimeQuery';
-import { AdminShowTimeModal } from '@root/src/components/admin';
+import {
+  useDeleteShowTime,
+  useGetAllShowTimes,
+  usePublishShowTime,
+} from '@root/src/api/query/showTimeQuery';
+import { AdminShowTimeModal, AdminShowTimeUpdateModal } from '@root/src/components/admin';
 import { api } from '@root/src/api';
 import { GetServerSideProps } from 'next';
+import Image from 'next/image';
+import { toast } from 'react-toastify';
 
 const columnHelper = createColumnHelper<ShowTime>();
 
@@ -46,19 +52,33 @@ const showTimeColumns = [
     ),
     header: () => <Center>상영시간</Center>,
   }),
-  columnHelper.accessor((row) => `${row.remainSeatNm}/${row.theaterSize}`, {
-    id: 'amount',
-    cell: (info) => <Center>{info.getValue()}</Center>,
-    header: () => <Center>관객수</Center>,
-  }),
+  columnHelper.accessor(
+    (row) => ({ remainSeatNm: row.remainSeatNm, theaterSize: row.theaterSize }),
+    {
+      id: 'amount',
+      cell: (info) => {
+        const { remainSeatNm, theaterSize } = info.getValue();
+        const isOccupied = remainSeatNm === 0;
+        const seats = `${remainSeatNm}/${theaterSize}`;
+        return <Center>{isOccupied ? <Tag colorScheme="gray">매진</Tag> : seats}</Center>;
+      },
+      header: () => <Center>잔여석</Center>,
+    },
+  ),
   columnHelper.accessor((row) => row.id, {
-    id: 'remove',
+    id: 'id',
     cell: (info) => <RejectButton id={info.getValue()} />,
     header: () => <></>,
   }),
-  columnHelper.accessor((row) => row.id, {
+  columnHelper.accessor((row) => ({ id: row.id, isPublic: row.isPublic }), {
     id: 'approve',
-    cell: (info) => <ApproveButton id={info.getValue()} />,
+    cell: (info) => {
+      const { id, isPublic } = info.getValue();
+      if (isPublic === 'Y') {
+        return <></>;
+      }
+      return <ApproveButton id={id} />;
+    },
     header: () => <></>,
   }),
 ];
@@ -68,20 +88,28 @@ interface Props {
   theaters: Theater[];
 }
 
-export default function AdminDashBoardPage({ movies, theaters }: Props) {
+export default function AdminShowTimePage({ movies, theaters }: Props) {
   const theme = useTheme();
   const [pageNum, setPageNum] = React.useState(1);
+  const [updateShowTime, setUpdateShowTime] = React.useState<ShowTime | null>(null);
   const [dateFilter, setDateFilter] = React.useState<Date | null>(new Date());
   const navigateNum = pageNum - (pageNum % 4 === 0 ? 4 : pageNum % 4) + 1;
   const navigateArr = new Array(4).fill(0).map((_, idx) => navigateNum + idx);
 
-  const { data: showtimes, isSuccess } = useGetAllShowTimes();
+  const { data: showtimes, isSuccess, isLoading, isFetching } = useGetAllShowTimes();
 
   const filteredShowtimes = arrayDivision(
     [
-      ...(showtimes?.filter((showtime) =>
-        showtime.startDate.includes(getYYYYMMDD(dateFilter ?? new Date(), '-')),
-      ) ?? []),
+      ...(showtimes
+        ?.filter((showtime) =>
+          showtime.startDate.includes(getYYYYMMDD(dateFilter ?? new Date(), '-')),
+        )
+        .sort((a, b) => {
+          if (a.startDate === b.startDate) {
+            return a.theaterName > b.theaterName ? 1 : -1;
+          }
+          return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+        }) ?? []),
     ],
     10,
   )[pageNum - 1];
@@ -95,6 +123,19 @@ export default function AdminDashBoardPage({ movies, theaters }: Props) {
   ).length;
 
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
+  const {
+    isOpen: isUpdateModalOpen,
+    onOpen: onUpdateModalOpen,
+    onClose: onUpdateModalClose,
+  } = useDisclosure();
+
+  const handleClickRow = (id: number) => {
+    if (id === updateShowTime?.id) {
+      onUpdateModalOpen();
+      return;
+    }
+    setUpdateShowTime(filteredShowtimes.find((showTime: ShowTime) => showTime?.id === id));
+  };
 
   const handleClickPrevNav = () => {
     setPageNum((prev) => Math.max(prev - 1, 1));
@@ -108,10 +149,15 @@ export default function AdminDashBoardPage({ movies, theaters }: Props) {
     setPageNum(num);
   };
 
+  React.useEffect(() => {
+    if (updateShowTime) {
+      onUpdateModalOpen();
+    }
+  }, [updateShowTime, onUpdateModalOpen]);
   return (
     <>
       <Head>
-        <title>Admin</title>
+        <title>Admin / Showtime</title>
         <meta name="description" content="SCV Bank Page" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -128,11 +174,20 @@ export default function AdminDashBoardPage({ movies, theaters }: Props) {
           </DatePickerWrapper>
           <StyledButton onClick={onModalOpen}>일정 생성</StyledButton>
         </Header>
-        <TableWrapper>
-          {isSuccess ? (
-            <AdminShowTimeTable columns={showTimeColumns} data={filteredShowtimes} />
-          ) : null}
-        </TableWrapper>
+        {isLoading || isFetching ? (
+          <LoadingWrapper>
+            <Image width={64} height={64} src="/loading.gif" alt="loading" />
+          </LoadingWrapper>
+        ) : null}
+        {isSuccess && !isFetching ? (
+          <TableWrapper>
+            <AdminShowTimeTable
+              handleClickRow={handleClickRow}
+              columns={showTimeColumns}
+              data={filteredShowtimes}
+            />
+          </TableWrapper>
+        ) : null}
         <Bottom>
           <HStack>
             <NavigateButton onClick={handleClickPrevNav}>
@@ -159,8 +214,27 @@ export default function AdminDashBoardPage({ movies, theaters }: Props) {
         isOpen={isModalOpen}
         onClose={onModalClose}
         movies={movies}
-        theaters={theaters}
+        theaters={theaters.sort((a, b) => {
+          if (a.name === b.name) {
+            return b.id - a.id;
+          }
+          return a.name > b.name ? 1 : -1;
+        })}
       />
+      {updateShowTime && (
+        <AdminShowTimeUpdateModal
+          data={updateShowTime}
+          movies={movies}
+          theaters={theaters.sort((a, b) => {
+            if (a.name === b.name) {
+              return b.id - a.id;
+            }
+            return a.name > b.name ? 1 : -1;
+          })}
+          isOpen={isUpdateModalOpen}
+          onClose={onUpdateModalClose}
+        />
+      )}
     </>
   );
 }
@@ -193,7 +267,7 @@ export const getServerSideProps: GetServerSideProps<Pick<Props, 'movies'>> = asy
 const StatusCell = ({ isPublic }: Pick<ShowTime, 'isPublic'>) => {
   return (
     <Flex gap="1rem" alignItems="center">
-      {isPublic ? (
+      {isPublic === 'Y' ? (
         <>
           <Icon fontSize="lg" as={Public} />
           Public
@@ -218,8 +292,20 @@ const LengthCell = ({
 };
 
 const ApproveButton = ({ id }: Pick<ShowTime, 'id'>) => {
-  const handleClickButton = () => {
-    console.log(id);
+  const publishShowTime = usePublishShowTime();
+  const handleClickButton = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    publishShowTime.mutate(id, {
+      onSuccess: () => {
+        toast.success('공개 성공!');
+      },
+      onError: (res: any) => {
+        const { data } = res?.response;
+
+        toast.error(data?.message ?? '공개 실패!');
+      },
+    });
   };
   return (
     <ShowTimeButton onClick={handleClickButton} isApprove>
@@ -229,14 +315,22 @@ const ApproveButton = ({ id }: Pick<ShowTime, 'id'>) => {
 };
 
 const RejectButton = ({ id }: Pick<ShowTime, 'id'>) => {
-  const handleClickButton = () => {
-    console.log(id);
+  const deleteShowTime = useDeleteShowTime();
+  const handleClickButton = (e: React.MouseEvent<HTMLOrSVGElement, MouseEvent>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    deleteShowTime.mutate(id, {
+      onSuccess: () => {
+        toast.success('삭제 성공!');
+      },
+      onError: (res: any) => {
+        const { data } = res?.response;
+
+        toast.error(data?.message ?? '삭제 실패!');
+      },
+    });
   };
-  return (
-    <ShowTimeButton onClick={handleClickButton} isRemove>
-      삭제
-    </ShowTimeButton>
-  );
+  return <StyledIcon as={TrashBin} fontSize="xl" onClick={handleClickButton} />;
 };
 
 const Content = styled.div`
@@ -267,6 +361,13 @@ const Header = styled.div`
 
 const TableWrapper = styled.div`
   flex-grow: 1;
+`;
+
+const LoadingWrapper = styled.div`
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
+  align-items: center;
 `;
 
 const Bottom = styled.div`
@@ -334,4 +435,13 @@ const ShowTimeButton = styled.button<ShowTimeButtonProps>`
   color: ${({ theme }) => theme.colors.white};
   background-color: ${({ theme, isApprove, isRemove }) =>
     isApprove ? theme.colors.approve : isRemove ? theme.colors.reject : 'none'};
+`;
+
+const StyledIcon = styled(Icon)`
+  cursor: pointer;
+  &:hover {
+    path {
+      fill: ${({ theme }) => theme.colors.reject};
+    }
+  }
 `;

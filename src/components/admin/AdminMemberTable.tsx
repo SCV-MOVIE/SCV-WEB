@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Table, Thead, Tbody, Tr, Th, Td } from '@chakra-ui/react';
+import { Table, Thead, Tbody, Tr, Th, Td, theme } from '@chakra-ui/react';
 import {
   useReactTable,
   flexRender,
@@ -58,7 +58,7 @@ function AdminMemberTable<Data extends object>({
       </Thead>
       <Tbody>
         {table.getRowModel().rows.map((row) => (
-          <Tr key={row.id} onClick={() => handleClickRow(row._valuesCache)}>
+          <StyledTr key={row.id} onClick={() => handleClickRow(row._valuesCache)}>
             {row.getVisibleCells().map((cell) => {
               const meta: any = cell.column.columnDef.meta;
               return (
@@ -67,7 +67,7 @@ function AdminMemberTable<Data extends object>({
                 </StyledTd>
               );
             })}
-          </Tr>
+          </StyledTr>
         ))}
       </Tbody>
     </Table>
@@ -87,6 +87,12 @@ const StyledTd = styled(Td)`
   vertical-align: middle;
   height: 4rem;
   padding: 0.5rem 1.5rem;
+`;
+
+const StyledTr = styled(Tr)`
+  &:hover {
+    background-color: ${theme.colors.gray['50']};
+  }
 `;
 
 export default AdminMemberTable;

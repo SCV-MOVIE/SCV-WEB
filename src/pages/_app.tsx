@@ -63,8 +63,6 @@ export default function App({ Component, pageProps }: AppProps) {
             </main>
           </UserContextProvider>
         )}
-
-        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       </QueryClientProvider>
     </ChakraProvider>
   );

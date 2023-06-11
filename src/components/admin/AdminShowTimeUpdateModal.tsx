@@ -16,14 +16,14 @@ import {
 
 import { pretendard } from '@root/src/pages/_app';
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
-import { Movie, Theater } from '@root/src/@types';
+import { Movie, ShowTime, Theater } from '@root/src/@types';
 import ReactDatePicker from 'react-datepicker';
 import styled from '@emotion/styled';
-import { useCreateShowTime, useGetSuggestedStartDate } from '@root/src/api/query';
+import { useGetSuggestedStartDate, useUpdateShowTime } from '@root/src/api/query';
 import { getHHMM, getYYYYMMDD } from '@root/src/utils';
 import { toast } from 'react-toastify';
 
-interface CreateShowTime {
+interface UpdateShowTime {
   movieId: number;
   round: number;
   startDate: Date;
@@ -31,61 +31,81 @@ interface CreateShowTime {
 }
 
 interface Props {
+  data: ShowTime;
   movies: Movie[];
   theaters: Theater[];
   isOpen: boolean;
   onClose: VoidFunction;
 }
-function AdminShowTimeModal({ movies, theaters, isOpen, onClose }: Props) {
-  const createShowTime = useCreateShowTime();
-  const [buttonText, setButtonText] = useState('생성');
+function AdminShowTimeUpdateModal({ data, movies, theaters, isOpen, onClose }: Props) {
+  const updateShowTime = useUpdateShowTime();
+  const [buttonText, setButtonText] = useState('수정');
   const [movieId, setMovieId] = useState(movies[0]?.id ?? 0);
 
   const onClickClose = React.useCallback(() => {
     onClose();
   }, [onClose]);
 
-  const { register, handleSubmit, control, setValue, reset } = useForm<CreateShowTime>();
-  const onSubmit: SubmitHandler<CreateShowTime> = async (data) => {
-    if (Object.values(data).some((elem) => !Boolean(elem))) {
+  const { register, handleSubmit, control, setValue, reset } = useForm<UpdateShowTime>();
+  const onSubmit: SubmitHandler<UpdateShowTime> = async (inputData) => {
+    if (Object.values(inputData).some((elem) => !Boolean(elem))) {
       toast.error('모든 데이터를 채워주셔야 합니다!');
       return;
     }
     setButtonText('Loading...');
-    const { round, startDate: dateData, theaterId } = data;
-    const startTime = getHHMM(dateData, ':');
-    const startDate = getYYYYMMDD(dateData, '-');
-    createShowTime.mutate(
-      { movieId, round, theaterId, startDate, startTime },
+    const { round, startDate: dateData, theaterId } = inputData;
+    const startDate = `${getYYYYMMDD(dateData, '-')} ${getHHMM(dateData, ':')}`;
+    updateShowTime.mutate(
+      { showtimeId: data.id, movieId, round, theaterId, startDate },
       {
         onSuccess: () => {
-          toast.success('상영 일정 생성 성공!');
-          reset();
+          toast.success('상영 일정 수정 성공!');
           onClickClose();
         },
         onSettled: () => {
-          setButtonText('생성');
+          setButtonText('수정');
         },
         onError: (res: any) => {
           const { message } = res?.response?.data;
-          toast.error(message ?? '상영 일정 생성 실패!');
+          toast.error(message ?? '상영 일정 수정 실패!');
         },
       },
     );
   };
 
-  const { data, isSuccess, isLoading, isFetching } = useGetSuggestedStartDate(movieId);
+  const {
+    data: suggestedData,
+    isSuccess,
+    isLoading,
+    isFetching,
+  } = useGetSuggestedStartDate(movieId);
 
   const validTheaters = theaters.filter((theater) => theater.deleted === 'N');
 
   const suggestedStartTime = useMemo(
-    () => (isSuccess ? new Date(data) : new Date()),
-    [data, isSuccess],
+    () => (isSuccess ? new Date(suggestedData) : new Date()),
+    [suggestedData, isSuccess],
   );
 
   useEffect(() => {
     setValue('startDate', suggestedStartTime);
   }, [setValue, suggestedStartTime]);
+
+  useEffect(() => {
+    if (data) {
+      reset({
+        movieId: data.movieDTO.id,
+        round: data.round,
+        startDate: new Date(data.startDate),
+        theaterId: Number(
+          theaters.find(
+            (theater) =>
+              theater.name === data.theaterName && theater.theaterType === data.theaterType,
+          )?.id ?? 0,
+        ),
+      });
+    }
+  }, [data, reset, theaters]);
 
   return (
     <Modal isOpen={isOpen} onClose={onClickClose} size="5xl">
@@ -93,7 +113,7 @@ function AdminShowTimeModal({ movies, theaters, isOpen, onClose }: Props) {
       <ModalContent overflow="scroll" minH={620} className={pretendard.className}>
         <ModalHeader>
           <HStack justifyContent="center" position="relative">
-            <Text>상영 일정 생성</Text>
+            <Text>상영 일정 수정</Text>
           </HStack>
         </ModalHeader>
         <ModalCloseButton />
@@ -152,7 +172,7 @@ function AdminShowTimeModal({ movies, theaters, isOpen, onClose }: Props) {
                   </Select>
                 </Stack>
               </Stack>
-              <Button type="submit" colorScheme="blue" isDisabled={buttonText !== '생성'}>
+              <Button type="submit" colorScheme="blue" isDisabled={buttonText !== '수정'}>
                 {buttonText}
               </Button>
             </Stack>
@@ -171,4 +191,4 @@ const StyledDatePicker = styled(ReactDatePicker)`
   border-radius: 0.375rem;
 `;
 
-export default AdminShowTimeModal;
+export default AdminShowTimeUpdateModal;

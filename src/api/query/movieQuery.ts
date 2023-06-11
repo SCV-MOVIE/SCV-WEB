@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { api } from '..';
-import { Genre, Movie, RequestGenre, RequestMovie } from '@root/src/@types';
+import { Genre, Movie, RequestGenre, RequestMovie, RequestUpdateMovie } from '@root/src/@types';
 
 const MOVIE_KEY = 'movie';
 const GENRE_KEY = 'genre';
@@ -22,11 +22,20 @@ export const useCreateMovie = () => {
   });
 };
 
+export const useUpdateMovie = () => {
+  const queryClient = useQueryClient();
+  return useMutation((data: RequestUpdateMovie) => api.patch('/api/movie', data), {
+    onSuccess: () => {
+      queryClient.invalidateQueries([MOVIE_KEY]);
+    },
+  });
+};
+
 export const useDeleteMovie = () => {
   const queryClient = useQueryClient();
   return useMutation((movieId: number) => api.patch('/api/movie/delete', { movieId }), {
     onSuccess: () => {
-      queryClient.invalidateQueries([MOVIE_KEY, GENRE_KEY]);
+      queryClient.invalidateQueries([MOVIE_KEY]);
     },
   });
 };
