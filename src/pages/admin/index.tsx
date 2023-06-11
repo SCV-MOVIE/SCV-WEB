@@ -3,15 +3,15 @@ import Head from 'next/head';
 import styled from '@emotion/styled';
 import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
-import { Button, Input, Stack, Text, Box, Center } from '@chakra-ui/react';
+import { Button, Input, Stack, Text, Center } from '@chakra-ui/react';
 
 import { Logo } from '@/components';
 import { useTheme } from '@emotion/react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 
-const BANK_ADMIN = {
-  ID: 'bankAdmin',
+const ADMIN = {
+  ID: 'admin',
   PW: '1234',
 };
 
@@ -20,18 +20,18 @@ interface LoginType {
   password: string;
 }
 
-export default function BankLogin() {
+export default function AdminLogin() {
   const theme = useTheme();
 
   const router = useRouter();
   const { register, handleSubmit } = useForm<LoginType>();
   const onSubmit: SubmitHandler<LoginType> = (data) => {
-    if (data.id !== BANK_ADMIN.ID || data.password !== BANK_ADMIN.PW) {
+    if (data.id !== ADMIN.ID || data.password !== ADMIN.PW) {
       toast.error('아이디 또는 비밀번호가 일치하지 않습니다.');
       return;
     }
     toast.success('로그인 성공!');
-    router.push('/bank/dashboard');
+    router.push('/admin/movie');
   };
 
   return (
@@ -98,7 +98,7 @@ export default function BankLogin() {
 
 export const getStaticProps = async () => ({
   props: {
-    layout: 'bank',
+    layout: 'admin',
     title: 'Login',
   },
 });

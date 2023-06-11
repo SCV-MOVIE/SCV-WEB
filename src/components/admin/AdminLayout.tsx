@@ -1,9 +1,17 @@
 import React, { ReactNode } from 'react';
 
 import styled from '@emotion/styled';
-import BankSideBar from './BankSideBar';
+import AdminSideBar from './AdminSideBar';
 import { Flex, Icon, Text } from '@chakra-ui/react';
-import { DashBoard } from '@root/public/icons';
+import {
+  Application,
+  Business,
+  Category,
+  DashBoard,
+  Film,
+  People,
+  Theater,
+} from '@root/public/icons';
 import { pretendard } from '@root/src/pages/_app';
 
 import { ToastContainer } from 'react-toastify';
@@ -11,18 +19,24 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const ICON_TITLE_TABLE: { [key: string]: any } = {
   Dashboard: DashBoard,
+  Movie: Film,
+  Showtime: Application,
+  Theater: Theater,
+  Genre: Category,
+  Partner: Business,
+  Member: People,
 } as const;
 
-interface BankLayoutProps {
+interface AdminLayoutProps {
   title: string;
   children: ReactNode;
 }
-function BankLayout({ title, children }: BankLayoutProps) {
+function AdminLayout({ title, children }: AdminLayoutProps) {
   return (
     <Wrapper className={pretendard.className}>
       {title !== 'Login' ? (
         <>
-          <BankSideBar />
+          <AdminSideBar />
           <Main>
             <Flex mb="8" alignItems="center">
               <Icon mr="4" fontSize="36" as={ICON_TITLE_TABLE[`${title}`]} />
@@ -69,4 +83,4 @@ const Content = styled.div`
     0px 1px 1px rgba(0, 0, 0, 0.08);
 `;
 
-export default BankLayout;
+export default AdminLayout;

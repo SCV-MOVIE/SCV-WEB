@@ -3,16 +3,16 @@ import styled from '@emotion/styled';
 import { Flex, FlexProps, Icon, Text } from '@chakra-ui/react';
 
 import Logo from '../Logo';
-import { DashBoard, Users } from '@root/public/icons';
+import { Application, Business, Category, Film, People, Theater, Users } from '@root/public/icons';
 import { useTheme } from '@emotion/react';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 
-function BankSideBar() {
+function AdminSideBar() {
   const router = useRouter();
   const handleClickLogOut = () => {
     toast.success('로그아웃 성공!');
-    router.push('/bank');
+    router.push('/admin');
   };
 
   return (
@@ -21,8 +21,23 @@ function BankSideBar() {
         <Logo width={36} height={36} />
       </LogoWrapper>
       <SideBarContent title="MAIN MENU" flexGrow={1}>
-        <NavItem icon={DashBoard} isSelected>
-          Dashboard
+        <NavItem pathname="/admin/movie" icon={Film}>
+          Movie
+        </NavItem>
+        <NavItem pathname="/admin/genre" icon={Category}>
+          Genre
+        </NavItem>
+        <NavItem pathname="/admin/theater" icon={Theater}>
+          Theater
+        </NavItem>
+        <NavItem pathname="/admin/showtime" icon={Application}>
+          Showtime
+        </NavItem>
+        <NavItem pathname="/admin/partner" icon={Business}>
+          Partner
+        </NavItem>
+        <NavItem pathname="/admin/member" icon={People}>
+          Member
         </NavItem>
       </SideBarContent>
       <SideBarContent title="GENERAL" minHeight="30%">
@@ -52,10 +67,17 @@ function SideBarContent({ title, children, ...rest }: SideBarContentProps) {
 
 interface NavItemProps extends FlexProps {
   icon: any;
-  isSelected?: boolean;
+  pathname?: string;
 }
-function NavItem({ icon, isSelected = false, children, ...rest }: NavItemProps) {
+function NavItem({ icon, pathname, children, ...rest }: NavItemProps) {
   const theme = useTheme();
+  const link = useRouter();
+  const isSelected = link.pathname === pathname;
+  const handleClickNav = () => {
+    if (pathname) {
+      link.push(pathname);
+    }
+  };
   return (
     <Flex
       p="2"
@@ -71,11 +93,12 @@ function NavItem({ icon, isSelected = false, children, ...rest }: NavItemProps) 
         bg: 'rgba(33, 150, 243, 0.1)',
         color: theme.colors.black,
       }}
+      onClick={handleClickNav}
       {...rest}
     >
       <Icon
         mr="4"
-        fontSize="24"
+        fontSize="lg"
         filter={
           isSelected
             ? 'invert(42%) sepia(85%) saturate(942%) hue-rotate(180deg) brightness(98%) contrast(94%)'
@@ -118,4 +141,4 @@ const LogoWrapper = styled.div`
   margin-bottom: 2rem;
 `;
 
-export default BankSideBar;
+export default AdminSideBar;

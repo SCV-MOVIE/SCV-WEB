@@ -10,6 +10,7 @@ import { initialUserValue, UserContext, UserContextProvider } from '../component
 import React from 'react';
 import { User } from '../@types';
 import BankLayout from '../components/bank/BankLayout';
+import AdminLayout from '../components/admin/AdminLayout';
 import { api } from '../api';
 
 const queryClient = new QueryClient();
@@ -49,6 +50,10 @@ export default function App({ Component, pageProps }: AppProps) {
           <BankLayout title={pageProps.title}>
             <Component {...pageProps} />
           </BankLayout>
+        ) : pageProps.layout === 'admin' ? (
+          <AdminLayout title={pageProps.title}>
+            <Component {...pageProps} />
+          </AdminLayout>
         ) : (
           <UserContextProvider user={user} setUser={setUser}>
             <main className={pretendard.className} style={{ height: '100%' }}>
@@ -58,8 +63,6 @@ export default function App({ Component, pageProps }: AppProps) {
             </main>
           </UserContextProvider>
         )}
-
-        <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
       </QueryClientProvider>
     </ChakraProvider>
   );
