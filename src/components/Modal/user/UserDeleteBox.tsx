@@ -11,7 +11,7 @@ interface DeleteProps {
 }
 
 function UserDeleteBox() {
-  const { user } = useUserInfo();
+  const { user, logout } = useUserInfo();
   const router = useRouter();
   const { register, handleSubmit } = useForm<DeleteProps>();
   const onSubmit: SubmitHandler<DeleteProps> = async (data) => {
@@ -23,6 +23,7 @@ function UserDeleteBox() {
             password: data.password,
           },
         });
+        await logout();
         router.push('/');
         alert('탈퇴가 완료되었습니다.');
       }
