@@ -14,11 +14,11 @@ export function isEmptyValue(str: string) {
 }
 
 function CheckTicketBox({ color, ticket, onClickPrint, onClickCancel }: Props) {
-  const isDisabled =
-    ticket?.status === 'CANCELLED' || ticket?.status === 'REJECTED' || ticket?.status === 'PRINTED';
   if (!ticket) {
     return null;
   }
+  const isDisabled =
+    ticket.status === 'CANCELLED' || ticket.status === 'REJECTED' || ticket.status === 'PRINTED';
   return (
     <HStack gap={12}>
       <Image
@@ -122,7 +122,10 @@ function CheckTicketBox({ color, ticket, onClickPrint, onClickCancel }: Props) {
         </HStack>
       </Stack>
       <Stack w={320}>
-        <Button onClick={!isDisabled ? onClickPrint : undefined} disabled={isDisabled}>
+        <Button
+          onClick={!isDisabled || ticket.status === 'STANDBY' ? onClickPrint : undefined}
+          disabled={isDisabled}
+        >
           출력하기
         </Button>
         <Button

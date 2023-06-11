@@ -37,8 +37,7 @@ export default function MyPage() {
         const result = await api.get<CheckTicket[]>('/api/ticket/list');
         setTickets(
           result.data.sort(
-            (a, b) =>
-              new Date(a.paymentDate).getMilliseconds() - new Date(b.paymentDate).getMilliseconds(),
+            (a, b) => new Date(a.paymentDate).getTime() - new Date(b.paymentDate).getTime(),
           ),
         );
       }
