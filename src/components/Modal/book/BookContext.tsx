@@ -13,7 +13,7 @@ export interface SelectedMovie {
   movie: Movie;
   showTime: ShowTime;
   headCount: HeadCount;
-  selectedSeats: number[];
+  selectedSeats: string[];
   payment: Pick<Payment, 'method'> &
     Pick<Ticket, 'usedPoint'> &
     Pick<User, 'membership'> & { partner?: Partner; account?: string };
@@ -52,6 +52,8 @@ export const initialSelectedMovieValue: SelectedMovie = {
     isPublic: true,
     movieDTO: DUMMY_MOVIE,
     remainSeatNm: 23,
+    theaterId: -1,
+    theaterLayout: '',
     theaterName: '1관',
     theaterType: '3D',
     theaterSize: 30,

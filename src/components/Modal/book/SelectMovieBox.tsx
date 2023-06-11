@@ -26,13 +26,15 @@ import {
   moviesFromShowTimes,
   formattedShowTimes,
 } from '@root/src/utils';
-import { useRouter } from 'next/router';
 
 const currentDate = dateFormatter.format(new Date()).split(', ');
 const formattedDate = currentDate[0].split('/');
 
-function SelectMovieBox() {
-  const { query } = useRouter();
+interface Props {
+  showTimes: ShowTime[];
+}
+
+function SelectMovieBox({ showTimes }: Props) {
   const [movies, setMovies] = React.useState<Movie[]>([]);
   const [showTimesByDay, setShowTimeByDay] = React.useState<Record<string, ShowTime[]>>({});
   const [selectedDay, setSelectedDay] = React.useState<keyof (typeof showTimesByDay)[string]>(
@@ -41,9 +43,9 @@ function SelectMovieBox() {
   const { value, setValue } = useBookContext();
 
   React.useEffect(() => {
-    const nextMovies = moviesFromShowTimes(DUMMY_SHOWTIMES);
+    const nextMovies = moviesFromShowTimes(showTimes);
     setMovies(nextMovies);
-    const nextShowTimes = formattedShowTimes(DUMMY_SHOWTIMES);
+    const nextShowTimes = formattedShowTimes(showTimes);
     setShowTimeByDay(nextShowTimes);
 
     if (value.showTime.id !== -1) {
@@ -51,15 +53,7 @@ function SelectMovieBox() {
         value.showTime.startDate.slice(8, 10) as keyof (typeof showTimesByDay)[string],
       );
     }
-    // id가 있으면 해당 영화를 선택한다.
-    if (query.id) {
-      const targetMovie = nextMovies.find((movie) => movie.id === Number(query.id));
-      setValue((prev) => ({
-        ...prev,
-        movie: targetMovie ? targetMovie : initialSelectedMovieValue.movie,
-      }));
-    }
-  }, [query.id, setValue, value.showTime.id, value.showTime.startDate]);
+  }, [setValue, showTimes, value.showTime.id, value.showTime.startDate]);
 
   return (
     <HStack width="100%" alignItems="start">

@@ -12,7 +12,7 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-import { BookModal, Bottom, CheckModal } from '@/components';
+import { BookModal, Bottom, CheckModal, NavBar } from '@/components';
 import { Film, Printer } from '@root/public/icons';
 import { Partner, ShowTime } from '../@types';
 import { GetServerSideProps } from 'next';
@@ -39,6 +39,8 @@ export default function BookPage({ showTimes, partners }: Props) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <NavBar />
+
       <Content>
         <Stack gap={4} mt={120}>
           <Text color="white" fontSize={'28px'}>

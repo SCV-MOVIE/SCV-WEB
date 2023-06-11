@@ -5,11 +5,11 @@ import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
 import { Button, Input, Stack, Text, Box, Center, HStack, useDisclosure } from '@chakra-ui/react';
 
-import { Bottom, Logo } from '@/components';
+import { Bottom, Logo, NavBar } from '@/components';
 import { useTheme } from '@emotion/react';
 import { UserUtilModal } from '../components/Modal/user';
-import { api } from '../api';
 import { useRouter } from 'next/router';
+import { useUserInfo } from '../hooks';
 
 interface LoginType {
   loginId: string;
@@ -19,6 +19,7 @@ interface LoginType {
 export default function Login() {
   const router = useRouter();
   const theme = useTheme();
+  const { login } = useUserInfo();
   const [utilModalType, setUtilModalType] = React.useState<'findID' | 'findPW' | 'signUp'>(
     'findID',
   );
@@ -33,14 +34,12 @@ export default function Login() {
 
   const { register, handleSubmit } = useForm<LoginType>();
   const onSubmit: SubmitHandler<LoginType> = async (data) => {
-    try {
-      const result = await api.post('/api/member/login', data);
-      if (result.status === 200) {
-        router.back();
-        alert('로그인에 성공했습니다.');
-      }
-    } catch (err) {
-      alert(err);
+    const { isSuccess } = await login(data);
+    if (isSuccess) {
+      router.back();
+      alert('로그인에 성공했습니다.');
+    } else {
+      alert('로그인에 실패하였습니다.');
     }
   };
 
@@ -49,6 +48,8 @@ export default function Login() {
       <Head>
         <title>Login</title>
       </Head>
+      <NavBar />
+
       <LoginForm onSubmit={handleSubmit(onSubmit)}>
         <Box height={'100%'}>
           <Center>

@@ -12,10 +12,10 @@ import {
 import { pretendard } from '@root/src/pages/_app';
 import type { CheckTicket, Information, Ticket } from '@root/src/@types';
 import CheckTicketInformationBox from './CheckTicketInformationBox';
-import PayedTicketInformationBox from './PayedTicketInformationBox';
-import { DUMMY_CHECK_TICKET } from '@root/src/constants/dummy';
 import { api } from '@root/src/api';
 import { forPhoneNumber, forSecurityNumber } from '@root/src/utils';
+import CheckTicketBox from '../../CheckTicket';
+import CheckTicketList from '../../CheckTicketList';
 
 interface Props {
   isOpen: boolean;
@@ -23,12 +23,23 @@ interface Props {
 }
 
 const ModalContents: Record<
-  'information' | 'complete',
+  'information' | 'complete' | 'completeList',
   { header: string; body: React.ReactElement }
 > = {
   complete: {
     header: '예매 정보 확인',
-    body: <PayedTicketInformationBox payedTicket={null} />,
+    body: <CheckTicketBox color={'black'} ticket={undefined} />,
+  },
+  completeList: {
+    header: '예매 정보 확인',
+    body: (
+      <CheckTicketList
+        color={'black'}
+        tickets={[]}
+        onClickPrint={() => {}}
+        onClickCancel={() => {}}
+      />
+    ),
   },
   information: {
     header: '예매 정보 입력',
@@ -47,7 +58,7 @@ const ModalContents: Record<
 
 function CheckModal({ isOpen, onClose }: Props) {
   const [step, setStep] = React.useState<keyof typeof ModalContents>('information');
-  const [ticketInformation, setTicketInformation] = React.useState<CheckTicket | null>(null);
+  const [ticketInformation, setTicketInformation] = React.useState<CheckTicket[] | null>(null);
 
   const handleClose = () => {
     setTicketInformation(null);
@@ -57,16 +68,13 @@ function CheckModal({ isOpen, onClose }: Props) {
 
   const onInfoSubmit: SubmitHandler<Information> = async (data) => {
     try {
-      const result = await api.get(`/api/ticket/check-by/info`, {
-        data: {
-          name: data.name,
-          phoneNm: forPhoneNumber(data.phoneNumber),
-          securityNm: forSecurityNumber(data.securityFrontNumber, data.securityBackNumber),
-        },
+      const result = await api.post(`/api/ticket/check-by/info`, {
+        name: data.name,
+        phoneNm: forPhoneNumber(data.phoneNumber),
+        securityNm: forSecurityNumber(data.securityFrontNumber, data.securityBackNumber),
       });
-      console.log(result.data);
-      setStep('complete');
-      setTicketInformation(DUMMY_CHECK_TICKET);
+      setStep('completeList');
+      setTicketInformation(result.data);
     } catch (err) {
       alert(err);
     }
@@ -75,12 +83,23 @@ function CheckModal({ isOpen, onClose }: Props) {
   const onTicketSubmit: SubmitHandler<Pick<Ticket, 'reserveNumber'>> = async (data) => {
     try {
       const result = await api.get(`/api/ticket/check-by/reserveNm/${data.reserveNumber}`);
-      console.log(result.data);
       setStep('complete');
-      setTicketInformation(DUMMY_CHECK_TICKET);
+      setTicketInformation(result.data);
     } catch (err) {
       alert(err);
     }
+  };
+
+  const handleClickPrint = async (id: number) => {
+    await api.patch(`/api/ticket/print/${id}`);
+
+    alert('발권이 완료되었습니다.');
+  };
+
+  const handleClickCancel = async (id: number) => {
+    await api.patch(`/api/ticket/cancel/${id}`);
+
+    alert('취소가 완료되었습니다.');
   };
 
   return (
@@ -91,9 +110,13 @@ function CheckModal({ isOpen, onClose }: Props) {
         <ModalCloseButton />
         <ModalBody>
           {React.cloneElement(ModalContents[step].body, {
-            payedTicket: ticketInformation,
+            color: 'black',
+            ticket: ticketInformation,
+            tickets: ticketInformation,
             onInfoSubmit,
             onTicketSubmit,
+            onTicketPrint: handleClickPrint,
+            onClickCancel: handleClickCancel,
           })}
         </ModalBody>
       </ModalContent>

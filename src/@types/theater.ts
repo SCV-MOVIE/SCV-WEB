@@ -9,8 +9,10 @@ export interface ShowTime {
   isPublic: 'Y' | 'N';
   movieDTO: Movie;
   remainSeatNm: number;
+  theaterId: number;
   theaterName: string;
-  theaterType: TheaterType | Pick<TheaterType, 'value'>;
+  theaterLayout: string;
+  theaterType: TheaterType['value'];
   theaterSize: number;
 }
 

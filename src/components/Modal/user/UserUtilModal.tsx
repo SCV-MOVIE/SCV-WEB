@@ -5,9 +5,10 @@ import ChangePWBox from './ChangePWBox';
 import FindIdBox from './FindIDBox';
 import FindPWBox from './FindPWBox';
 import SignUpBox from './SignUpBox';
+import UserDeleteBox from './UserDeleteBox';
 
 interface Props {
-  type: 'findID' | 'findPW' | 'signUp' | 'changePW';
+  type: 'findID' | 'findPW' | 'signUp' | 'changePW' | 'delete';
   isOpen: boolean;
   onClose: VoidFunction;
 }
@@ -28,6 +29,10 @@ const ModalContents: Record<Props['type'], { header: string; body: JSX.Element }
   changePW: {
     header: '비밀번호 변경',
     body: <ChangePWBox />,
+  },
+  delete: {
+    header: '회원 탈퇴하기',
+    body: <UserDeleteBox />,
   },
 };
 
