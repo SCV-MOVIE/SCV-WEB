@@ -26,7 +26,7 @@ export default function MainPage({ movies }: Props) {
       <Content>
         <LinedTitle title={'현재 상영작'} />
         <Grid templateColumns="repeat(4, 1fr)" rowGap={24} columnGap={8} mt={8}>
-          {DUMMY_MOVIES.map((movie) => (
+          {movies.map((movie) => (
             <MovieCard movie={movie} key={movie.id} />
           ))}
         </Grid>

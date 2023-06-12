@@ -7,6 +7,7 @@ import { Movie } from '@/@types';
 import { Calendar } from '@root/public/icons';
 import { useRouter } from 'next/router';
 import { MovieModal } from './Modal';
+import { isEmptyValue } from './CheckTicket';
 
 interface Props {
   movie: Movie;
@@ -27,7 +28,13 @@ function MovieCard({ movie }: Props) {
         transition={'all 0.1s ease-in'}
         _hover={{ bgColor: 'blackAlpha.300' }}
       >
-        <MovieImage priority width={360} height={320} src={movie.imgUrl} alt="movie-image" />
+        <MovieImage
+          priority
+          width={360}
+          height={320}
+          src={isEmptyValue(movie.imgUrl) ? '/mario.jpeg' : movie.imgUrl}
+          alt="movie-image"
+        />
         <Stack
           paddingInline={4}
           boxSizing="border-box"
