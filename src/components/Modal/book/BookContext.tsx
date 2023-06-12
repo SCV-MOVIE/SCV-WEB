@@ -49,7 +49,7 @@ export const initialSelectedMovieValue: SelectedMovie = {
     id: -1,
     startDate: '2022-05-23 14:12',
     round: 1,
-    isPublic: true,
+    isPublic: 'Y',
     movieDTO: DUMMY_MOVIE,
     remainSeatNm: 23,
     theaterId: -1,

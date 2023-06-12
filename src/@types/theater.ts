@@ -38,14 +38,14 @@ export interface Theater {
   layout: string;
   name: string;
   deleted: 'Y' | 'N';
-  theaterType: TheaterType | Pick<TheaterType, 'value'>;
+  theaterType: TheaterType['value'];
 }
 
 export interface RequestTheater {
   column: number;
   row: number;
   name: string;
-  theaterType: TheaterType | Pick<TheaterType, 'value'>;
+  theaterType: TheaterType['value'];
 }
 
 export type RequestUpdateTheater = RequestTheater & {
