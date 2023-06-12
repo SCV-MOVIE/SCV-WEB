@@ -35,6 +35,7 @@ interface Props {
 }
 
 function SelectMovieBox({ showTimes }: Props) {
+  console.log(showTimes);
   const [movies, setMovies] = React.useState<Movie[]>([]);
   const [showTimesByDay, setShowTimeByDay] = React.useState<Record<string, ShowTime[]>>({});
   const [selectedDay, setSelectedDay] = React.useState<keyof (typeof showTimesByDay)[string]>(
@@ -119,17 +120,17 @@ function SelectMovieBox({ showTimes }: Props) {
                     color={
                       selectedDay === day
                         ? 'white'
-                        : colorDay(new Date(2023, 6, Number(day)).getDay()).kor
+                        : colorDay(new Date(2023, 5, Number(day)).getDay()).kor
                     }
                   >
-                    {korDay(new Date(2023, 6, Number(day)).getDay())}
+                    {korDay(new Date(2023, 5, Number(day)).getDay())}
                   </Text>
                   <Text
                     fontSize={18}
                     color={
                       selectedDay === day
                         ? 'white'
-                        : colorDay(new Date(2023, 6, Number(day)).getDay()).day
+                        : colorDay(new Date(2023, 5, Number(day)).getDay()).day
                     }
                   >
                     {day}
