@@ -89,8 +89,15 @@ export default function AdminMoviePage() {
     onClose: onUpdateModalClose,
   } = useDisclosure();
 
-  const filteredMovies = arrayDivision([...(movies ?? [])], 10)[pageNum - 1];
-  const maxNavigate = arrayDivision([...(movies ?? [])], 10).length;
+  const filteredMovies = arrayDivision(
+    [
+      ...(movies?.sort((a, b) => {
+        return b.id - a.id;
+      }) ?? []),
+    ],
+    8,
+  )[pageNum - 1];
+  const maxNavigate = arrayDivision([...(movies ?? [])], 8).length;
 
   const handleClickRow = (id: number) => {
     if (id === updateMovie?.id) {

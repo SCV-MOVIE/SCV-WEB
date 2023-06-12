@@ -52,15 +52,15 @@ export default function AdminMemberPage() {
   const { isSuccess, data: members, isLoading } = useGetAllMembers();
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
 
-  const filteredMembers = arrayDivision([...(members ?? [])], 10)[pageNum - 1];
-  const maxNavigate = arrayDivision([...(members ?? [])], 10).length;
+  const filteredMembers = arrayDivision([...(members ?? [])], 8)[pageNum - 1];
+  const maxNavigate = arrayDivision([...(members ?? [])], 8).length;
 
   const handleClickRow = (data: User) => {
     if (data.loginId === updateUser?.loginId) {
       onModalOpen();
       return;
     }
-    setUpdateUser(data);
+    setUpdateUser(filteredMembers.find((member: User) => member.loginId === data.loginId));
   };
 
   const handleClickPrevNav = () => {

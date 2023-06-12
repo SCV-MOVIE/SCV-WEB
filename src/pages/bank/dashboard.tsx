@@ -97,9 +97,9 @@ export default function BankPage() {
         return b.bankId - a.bankId;
       }) ?? []),
     ],
-    10,
+    8,
   )[pageNum - 1];
-  const maxNavigate = arrayDivision([...(requests ?? [])], 10).length;
+  const maxNavigate = arrayDivision([...(requests ?? [])], 8).length;
 
   const handleClickPrevNav = () => {
     setPageNum((prev) => Math.max(prev - 1, 1));

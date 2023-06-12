@@ -111,7 +111,7 @@ export default function AdminShowTimePage({ movies, theaters }: Props) {
           return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
         }) ?? []),
     ],
-    10,
+    8,
   )[pageNum - 1];
   const maxNavigate = arrayDivision(
     [
@@ -119,7 +119,7 @@ export default function AdminShowTimePage({ movies, theaters }: Props) {
         showtime.startDate.includes(getYYYYMMDD(dateFilter ?? new Date(), '-')),
       ) ?? []),
     ],
-    10,
+    8,
   ).length;
 
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();

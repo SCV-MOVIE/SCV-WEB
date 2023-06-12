@@ -10,3 +10,9 @@ export interface User {
   securityNm: string;
   membership: Membership | null;
 }
+
+export interface RequestUpdateUser {
+  clientId: number;
+  newMembership: Membership;
+  newPoint: string;
+}

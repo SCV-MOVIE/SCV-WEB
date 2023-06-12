@@ -14,7 +14,7 @@ import { useTheme } from '@emotion/react';
 export type DataTableProps<Data extends object> = {
   data: Data[];
   columns: ColumnDef<Data, any>[];
-  handleClickRow: (data: any) => void;
+  handleClickRow: (name: string) => void;
 };
 
 function AdminGenreTable<Data extends object>({
@@ -58,7 +58,7 @@ function AdminGenreTable<Data extends object>({
       </Thead>
       <Tbody>
         {table.getRowModel().rows.map((row) => (
-          <StyledTr key={row.id} onClick={() => handleClickRow(row._valuesCache)}>
+          <StyledTr key={row.id} onClick={() => handleClickRow(row._valuesCache.name as string)}>
             {row.getVisibleCells().map((cell) => {
               const meta: any = cell.column.columnDef.meta;
               return (

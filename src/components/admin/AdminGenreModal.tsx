@@ -31,17 +31,22 @@ function AdminGenreModal({ isOpen, onClose }: Props) {
     onClose();
   }, [onClose]);
   const createGenre = useCreateGenre();
+  const [buttonText, setButtonText] = React.useState('생성');
   const { register, handleSubmit, reset } = useForm<CreateGenre>();
   const onSubmit: SubmitHandler<CreateGenre> = async (data) => {
     if (Object.values(data).some((elem) => !Boolean(elem))) {
       toast.error('모든 데이터를 채워주셔야 합니다!');
       return;
     }
+    setButtonText('Loading...');
     createGenre.mutate(data, {
       onSuccess: () => {
         toast.success('장르 생성 성공!');
         reset();
         onClickClose();
+      },
+      onSettled: () => {
+        setButtonText('생성');
       },
       onError: (res: any) => {
         const { data } = res?.response;
@@ -68,8 +73,8 @@ function AdminGenreModal({ isOpen, onClose }: Props) {
                 <label htmlFor="name">장르 이름</label>
                 <Input placeholder="이름" {...register('name')} />
               </Stack>
-              <Button type="submit" colorScheme="blue">
-                생성
+              <Button type="submit" colorScheme="blue" isDisabled={buttonText !== '생성'}>
+                {buttonText}
               </Button>
             </Stack>
           </form>

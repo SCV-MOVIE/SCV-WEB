@@ -37,11 +37,11 @@ export default function AdminPartnerPage() {
 
   const filteredPartners = arrayDivision(
     [...(partners?.filter((partner) => partner.name !== 'none') ?? [])],
-    10,
+    8,
   )[pageNum - 1];
   const maxNavigate = arrayDivision(
     [...(partners?.filter((partner) => partner.name !== 'none') ?? [])],
-    10,
+    8,
   ).length;
 
   const handleClickPrevNav = () => {

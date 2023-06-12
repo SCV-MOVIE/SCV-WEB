@@ -60,9 +60,14 @@ function AdminMovieUpdateModal({ data, isOpen, onClose, genres }: Props) {
       toast.error('모든 데이터를 채워주셔야 합니다!');
       return;
     }
+
+    const uniqueCheckedGenres = checkedGenres.filter((element, index) => {
+      return checkedGenres.indexOf(element) === index;
+    });
+
     const req = {
       ...inputData,
-      genreDTOList: [...checkedGenres.map((genreName) => ({ name: genreName }))] as Pick<
+      genreDTOList: [...uniqueCheckedGenres.map((genreName) => ({ name: genreName }))] as Pick<
         Genre,
         'name'
       >[],

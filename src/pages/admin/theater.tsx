@@ -61,11 +61,11 @@ export default function AdminTheaterPage() {
           return a.name > b.name ? 1 : -1;
         }) ?? []),
     ],
-    10,
+    8,
   )[pageNum - 1] as Theater[];
   const maxNavigate = arrayDivision(
     [...(theaters?.filter((theater) => theater.deleted === 'N') ?? [])],
-    10,
+    8,
   ).length;
 
   const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();

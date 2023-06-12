@@ -25,7 +25,7 @@ const genreColumns = [
     header: () => <Center>장르</Center>,
   }),
   columnHelper.accessor((row) => row.name, {
-    id: 'id',
+    id: 'delete',
     cell: (info) => <DeleteButton name={info.getValue()} />,
     header: () => <></>,
   }),
@@ -47,12 +47,12 @@ export default function AdminGenrePage() {
   const filteredGenres = arrayDivision([...(genres ?? [])], 10)[pageNum - 1];
   const maxNavigate = arrayDivision([...(genres ?? [])], 10).length;
 
-  const handleClickRow = (data: Genre) => {
-    if (data.id === updateGenre?.id) {
+  const handleClickRow = (name: string) => {
+    if (name === updateGenre?.name) {
       onUpdateModalOpen();
       return;
     }
-    setUpdateGenre(data);
+    setUpdateGenre(filteredGenres.find((genre: Genre) => genre.name === name));
   };
 
   const handleClickPrevNav = () => {

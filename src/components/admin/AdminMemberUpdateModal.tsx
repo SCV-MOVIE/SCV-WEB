@@ -16,12 +16,11 @@ import {
 
 import { pretendard } from '@root/src/pages/_app';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Membership, User } from '@root/src/@types';
+import { Membership, RequestUpdateUser, User } from '@root/src/@types';
+import { useUpdateMember } from '@root/src/api/query';
+import { toast } from 'react-toastify';
 
-interface UpdateUser {
-  newMembership: User['membership'];
-  newPoint: User['point'];
-}
+type UpdateUser = Pick<RequestUpdateUser, 'newMembership' | 'newPoint'>;
 
 interface Props {
   data: User;
@@ -29,20 +28,40 @@ interface Props {
   onClose: VoidFunction;
 }
 function AdminMemberUpdateModal({ data, isOpen, onClose }: Props) {
+  const updateMember = useUpdateMember();
   const onClickClose = React.useCallback(() => {
     onClose();
   }, [onClose]);
 
   const { register, handleSubmit, reset } = useForm<UpdateUser>();
-  const onSubmit: SubmitHandler<UpdateUser> = async (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<UpdateUser> = async (inputData) => {
+    if (inputData.newPoint.length === 0) {
+      toast.error('모든 데이터를 정확히 채워주셔야 합니다!');
+      return;
+    }
+
+    const req = {
+      ...inputData,
+      clientId: data.id,
+    };
+    updateMember.mutate(req, {
+      onSuccess: () => {
+        toast.success('회원 수정 성공!');
+        onClickClose();
+      },
+      onError: (res: any) => {
+        const { message } = res?.response?.data;
+
+        toast.error(message ?? '회원 수정 실패!');
+      },
+    });
   };
 
   useEffect(() => {
     if (data) {
       reset({
-        newMembership: data.membership,
-        newPoint: data.point,
+        newMembership: data.membership ?? 'COMMON',
+        newPoint: `${data.point}`,
       });
     }
   }, [data, reset]);

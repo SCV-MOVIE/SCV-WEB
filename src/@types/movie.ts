@@ -3,7 +3,7 @@ export interface Movie {
   actor: string;
   director: string;
   distributor: string;
-  genreDTOList: Pick<Genre, 'name'>[];
+  genreDTOList: Genre[];
   imgUrl: string;
   introduction: string;
   length: string | number;
@@ -45,3 +45,6 @@ export interface Genre {
 }
 
 export type RequestGenre = Pick<Genre, 'name'>;
+export type RequestUpdateGenre = Pick<Genre, 'id'> & {
+  newName: string;
+};
