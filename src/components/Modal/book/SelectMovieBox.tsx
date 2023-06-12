@@ -70,13 +70,14 @@ function SelectMovieBox({ showTimes }: Props) {
               py={6}
               pl={12}
               justifyContent="start"
-              onClick={() =>
+              onClick={() => {
                 setValue((prev) => ({
                   ...prev,
                   movie,
                   showTime: initialSelectedMovieValue.showTime,
-                }))
-              }
+                }));
+                setSelectedDay('' as keyof (typeof showTimesByDay)[string]);
+              }}
               colorScheme={movie.id === value.movie.id ? 'teal' : 'gray'}
             >
               <HStack justifyContent="start">
