@@ -3,6 +3,7 @@ import Image from 'next/image';
 import { Button, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 
 import type { CheckTicket } from '@root/src/@types';
+import { isEmptyValue } from '../../CheckTicket';
 
 interface Props {
   payedTicket: CheckTicket | null;
@@ -15,7 +16,11 @@ function PayedTicketInformationBox({ payedTicket }: Props) {
         <Image
           width={240}
           height={500}
-          src={payedTicket?.movieImgUrl ?? ''}
+          src={
+            isEmptyValue(payedTicket?.movieImgUrl ?? '')
+              ? '/mario.jpeg'
+              : payedTicket?.movieImgUrl ?? '/mario.jpeg'
+          }
           alt="image-thumbnail"
         />
       </Stack>

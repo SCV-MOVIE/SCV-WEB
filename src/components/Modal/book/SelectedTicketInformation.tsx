@@ -4,6 +4,7 @@ import { Divider, Grid, Heading, HStack, Stack, Text } from '@chakra-ui/react';
 import { SelectedMovie } from './BookContext';
 import { getSeatName, MemberShipPriceRate, salesTotalPrice, totalPrice } from '@root/src/utils';
 import { TheaterType } from '@root/src/@types';
+import { isEmptyValue } from '../../CheckTicket';
 
 interface Props {
   selectedMovie: SelectedMovie;
@@ -28,8 +29,9 @@ function SelectedTicketInformation({ selectedMovie, theaterType }: Props) {
           <Image
             width={160}
             height={160}
-            // src={selectedMovie.movie.imgUrl}
-            src={'/mario.jpeg'}
+            src={
+              isEmptyValue(selectedMovie.movie.imgUrl) ? '/mario.jpeg' : selectedMovie.movie.imgUrl
+            }
             alt="image-thumbnail"
           />
           <Heading as="h3" size="md">
