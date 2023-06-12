@@ -1,12 +1,13 @@
 import Head from 'next/head';
 import styled from '@emotion/styled';
-import { HStack, Icon, useDisclosure } from '@chakra-ui/react';
+import { HStack, Icon, Tag, useDisclosure } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import { LeftArrow, RightArrow, TrashBin } from '@root/public/icons';
 import React, { CSSProperties, useEffect } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
 import { Theater } from '@root/src/@types';
 import {
+  AdminTheaterLayoutModal,
   AdminTheaterModal,
   AdminTheaterTable,
   AdminTheaterUpdateModal,
@@ -44,6 +45,7 @@ export default function AdminTheaterPage() {
   const theme = useTheme();
   const [pageNum, setPageNum] = React.useState(1);
   const [updateTheater, setUpdateTheater] = React.useState<Theater | null>(null);
+  const [layoutTheater, setLayoutTheater] = React.useState<Theater | null>(null);
   const navigateNum = pageNum - (pageNum % 4 === 0 ? 4 : pageNum % 4) + 1;
   const navigateArr = new Array(4).fill(0).map((_, idx) => navigateNum + idx);
   const { isSuccess, data: theaters } = useGetAllTheaters();
@@ -60,7 +62,7 @@ export default function AdminTheaterPage() {
         }) ?? []),
     ],
     10,
-  )[pageNum - 1];
+  )[pageNum - 1] as Theater[];
   const maxNavigate = arrayDivision(
     [...(theaters?.filter((theater) => theater.deleted === 'N') ?? [])],
     10,
@@ -73,12 +75,18 @@ export default function AdminTheaterPage() {
     onClose: onUpdateModalClose,
   } = useDisclosure();
 
+  const {
+    isOpen: isLayoutModalOpen,
+    onOpen: onLayoutModalOpen,
+    onClose: onLayoutModalClose,
+  } = useDisclosure();
+
   const handleClickRow = (id: number) => {
     if (id === updateTheater?.id) {
       onUpdateModalOpen();
       return;
     }
-    setUpdateTheater(filteredTheaters.find((theater: Theater) => theater?.id === id));
+    setUpdateTheater(filteredTheaters.find((theater) => theater?.id === id) ?? null);
   };
 
   const handleClickPrevNav = () => {
@@ -93,11 +101,30 @@ export default function AdminTheaterPage() {
     setPageNum(num);
   };
 
+  const handleClickPreviewLayout = (
+    e: React.MouseEvent<HTMLSpanElement, MouseEvent>,
+    id: number,
+  ) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (id === layoutTheater?.id) {
+      onLayoutModalOpen();
+      return;
+    }
+    setLayoutTheater(filteredTheaters.find((theater) => theater?.id === id) ?? null);
+  };
+
   useEffect(() => {
     if (updateTheater) {
       onUpdateModalOpen();
     }
   }, [updateTheater, onUpdateModalOpen]);
+
+  useEffect(() => {
+    if (layoutTheater) {
+      onLayoutModalOpen();
+    }
+  }, [layoutTheater, onLayoutModalOpen]);
   return (
     <>
       <Head>
@@ -114,7 +141,26 @@ export default function AdminTheaterPage() {
           {isSuccess ? (
             <AdminTheaterTable
               handleClickRow={handleClickRow}
-              columns={theaterColumns}
+              columns={[
+                ...theaterColumns,
+                {
+                  ...columnHelper.accessor((row) => row.id, {
+                    id: 'preview',
+                    cell: (info) => (
+                      <Tag
+                        colorScheme="red"
+                        onClick={(e) => {
+                          handleClickPreviewLayout(e, info.getValue());
+                        }}
+                        cursor="pointer"
+                      >
+                        미리보기
+                      </Tag>
+                    ),
+                    header: () => <></>,
+                  }),
+                },
+              ]}
               data={filteredTheaters}
             />
           ) : null}
@@ -147,6 +193,13 @@ export default function AdminTheaterPage() {
           data={updateTheater}
           isOpen={isUpdateModalOpen}
           onClose={onUpdateModalClose}
+        />
+      )}
+      {layoutTheater && (
+        <AdminTheaterLayoutModal
+          data={layoutTheater}
+          isOpen={isLayoutModalOpen}
+          onClose={onLayoutModalClose}
         />
       )}
     </>
