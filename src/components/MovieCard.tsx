@@ -46,7 +46,7 @@ function MovieCard({ movie }: Props) {
             whiteSpace: 'nowrap',
           }}
         >
-          <Heading color={theme.colors.gray100}>{movie.name}</Heading>
+          <HeadingEllipsis color={theme.colors.gray100}>{movie.name}</HeadingEllipsis>
           <Text color={theme.colors.gray200}>감독: {movie.director}</Text>
           <Text color={theme.colors.gray200}>배급사: {movie.distributor}</Text>
         </Stack>
@@ -75,11 +75,13 @@ function MovieCard({ movie }: Props) {
 
 const Wrapper = styled.div`
   width: 100%;
+  max-width: 320px;
 `;
 
 const MovieImage = styled(Image)`
   max-width: 100%;
   max-height: 320px;
+  object-fit: fill;
 `;
 
 const BookingButton = styled(Button)`
@@ -107,6 +109,13 @@ const BookingButton = styled(Button)`
       stroke: ${({ theme }) => theme.colors.gray100};
     }
   }
+`;
+
+const HeadingEllipsis = styled(Heading)`
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 `;
 
 export default MovieCard;
