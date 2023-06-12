@@ -68,7 +68,7 @@ export default function AdminMemberPage() {
   };
 
   const handleClickNextNav = () => {
-    setPageNum((prev) => prev + 1);
+    setPageNum((prev) => (prev + 2 > maxNavigate ? prev : prev + 1));
   };
 
   const handleClickNumNav = (num: number) => {

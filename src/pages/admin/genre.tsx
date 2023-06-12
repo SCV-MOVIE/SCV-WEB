@@ -44,8 +44,8 @@ export default function AdminGenrePage() {
     onOpen: onUpdateModalOpen,
     onClose: onUpdateModalClose,
   } = useDisclosure();
-  const filteredGenres = arrayDivision([...(genres ?? [])], 10)[pageNum - 1];
-  const maxNavigate = arrayDivision([...(genres ?? [])], 10).length;
+  const filteredGenres = arrayDivision([...(genres ?? [])], 8)[pageNum - 1];
+  const maxNavigate = arrayDivision([...(genres ?? [])], 8).length;
 
   const handleClickRow = (name: string) => {
     if (name === updateGenre?.name) {
@@ -60,7 +60,7 @@ export default function AdminGenrePage() {
   };
 
   const handleClickNextNav = () => {
-    setPageNum((prev) => prev + 1);
+    setPageNum((prev) => (prev + 2 > maxNavigate ? prev : prev + 1));
   };
 
   const handleClickNumNav = (num: number) => {

@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import styled from '@emotion/styled';
 import { createColumnHelper } from '@tanstack/react-table';
-import { Button, Flex, HStack, Icon, Tag, useDisclosure } from '@chakra-ui/react';
+import { Flex, HStack, Icon, Tag, useDisclosure } from '@chakra-ui/react';
 import { useTheme } from '@emotion/react';
 import { Calendar, LeftArrow, Private, Public, RightArrow, TrashBin } from '@root/public/icons';
 import React, { CSSProperties } from 'react';
@@ -10,7 +10,6 @@ import AdminShowTimeTable from '@root/src/components/admin/AdminShowTimeTable';
 import { arrayDivision, getYYYYMMDD, runningTime } from '@root/src/utils';
 import ReactDatePicker from 'react-datepicker';
 
-import 'react-datepicker/dist/react-datepicker.css';
 import {
   useDeleteShowTime,
   useGetAllShowTimes,
@@ -142,7 +141,7 @@ export default function AdminShowTimePage({ movies, theaters }: Props) {
   };
 
   const handleClickNextNav = () => {
-    setPageNum((prev) => prev + 1);
+    setPageNum((prev) => (prev + 2 > maxNavigate ? prev : prev + 1));
   };
 
   const handleClickNumNav = (num: number) => {
