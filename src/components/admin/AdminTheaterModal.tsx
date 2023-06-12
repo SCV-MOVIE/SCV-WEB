@@ -44,7 +44,7 @@ function AdminTheaterModal({ isOpen, onClose }: Props) {
 
     createTheater.mutate(data, {
       onSuccess: () => {
-        toast.success('상영 일정 생성 성공!');
+        toast.success('상영관 생성 성공!');
         reset();
         onClickClose();
       },
@@ -53,7 +53,7 @@ function AdminTheaterModal({ isOpen, onClose }: Props) {
       },
       onError: (res: any) => {
         const { message } = res?.response?.data;
-        toast.error(message ?? '상영 일정 생성 실패!');
+        toast.error(message ?? '상영관 생성 실패!');
       },
     });
   };
