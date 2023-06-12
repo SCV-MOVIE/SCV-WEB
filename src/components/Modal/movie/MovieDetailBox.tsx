@@ -2,6 +2,7 @@ import React from 'react';
 import Image from 'next/image';
 import { Movie } from '@root/src/@types';
 import { Heading, HStack, Text, Stack, Center } from '@chakra-ui/react';
+import { isEmptyValue } from '../../CheckTicket';
 
 interface Props {
   movie: Movie;
@@ -11,7 +12,12 @@ function MovieDetailBox({ movie }: Props) {
   return (
     <Stack>
       <HStack>
-        <Image width={240} height={240} src={movie.imgUrl} alt="image-thumbnail" />
+        <Image
+          width={240}
+          height={240}
+          src={isEmptyValue(movie.imgUrl) ? '/mario.jpeg' : movie.imgUrl}
+          alt="image-thumbnail"
+        />
         <Stack>
           <Heading as="h3" size="md">
             {movie.name}

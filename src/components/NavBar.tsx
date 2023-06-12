@@ -6,13 +6,18 @@ import { HStack, Text } from '@chakra-ui/react';
 import Logo from './Logo';
 import { MENUS } from '../constants';
 import { useUserInfo } from '../hooks';
+import { useRouter } from 'next/router';
 
 function NavBar() {
+  const router = useRouter();
   const { isLogin, logout } = useUserInfo();
 
   const handleClickLogoutButton = async () => {
     const { isSuccess } = await logout();
     if (isSuccess) {
+      if (router.pathname === '/mypage') {
+        router.push('/');
+      }
       alert('로그아웃에 성공했습니다.');
     } else {
       alert('로그아웃에 실패했습니다.');

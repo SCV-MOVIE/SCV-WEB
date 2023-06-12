@@ -6,7 +6,7 @@ export interface ShowTime {
   id: number;
   round: number;
   startDate: string; // yyyy-mm-dd hh:mm
-  isPublic: boolean;
+  isPublic: 'Y' | 'N';
   movieDTO: Movie;
   remainSeatNm: number;
   theaterId: number;
@@ -16,12 +16,41 @@ export interface ShowTime {
   theaterSize: number;
 }
 
+export interface RequestShowTime {
+  movieId: number;
+  round: number;
+  startDate: string;
+  startTime: string;
+  theaterId: number;
+}
+
+export interface RequestUpdateShowTime {
+  showtimeId: number;
+  movieId: number;
+  round: number;
+  startDate: string;
+  theaterId: number;
+}
+
 export interface Theater {
+  id: number;
   theaterNm: number;
-  isOccupied: boolean;
   layout: string;
   name: string;
+  deleted: 'Y' | 'N';
+  theaterType: TheaterType | Pick<TheaterType, 'value'>;
 }
+
+export interface RequestTheater {
+  column: number;
+  row: number;
+  name: string;
+  theaterType: TheaterType | Pick<TheaterType, 'value'>;
+}
+
+export type RequestUpdateTheater = RequestTheater & {
+  theaterId: number;
+};
 
 export interface TheaterType {
   id: number;

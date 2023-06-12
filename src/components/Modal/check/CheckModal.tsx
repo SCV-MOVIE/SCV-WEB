@@ -16,6 +16,7 @@ import { api } from '@root/src/api';
 import { forPhoneNumber, forSecurityNumber } from '@root/src/utils';
 import CheckTicketBox from '../../CheckTicket';
 import CheckTicketList from '../../CheckTicketList';
+import { AxiosError } from 'axios';
 
 interface Props {
   isOpen: boolean;
@@ -69,16 +70,16 @@ function CheckModal({ isOpen, onClose }: Props) {
   const onInfoSubmit: SubmitHandler<Information> = async (data) => {
     try {
       const result = await api.post(`/api/ticket/check-by/info`, {
-        data: {
-          name: data.name,
-          phoneNm: forPhoneNumber(data.phoneNumber),
-          securityNm: forSecurityNumber(data.securityFrontNumber, data.securityBackNumber),
-        },
+        name: data.name,
+        phoneNm: forPhoneNumber(data.phoneNumber),
+        securityNm: forSecurityNumber(data.securityFrontNumber, data.securityBackNumber),
       });
       setStep('completeList');
       setTicketInformation(result.data);
     } catch (err) {
-      alert(err);
+      const error = err as AxiosError;
+      const data = error.response?.data as { message: string };
+      alert(data.message);
     }
   };
 
@@ -88,7 +89,9 @@ function CheckModal({ isOpen, onClose }: Props) {
       setStep('complete');
       setTicketInformation(result.data);
     } catch (err) {
-      alert(err);
+      const error = err as AxiosError;
+      const data = error.response?.data as { message: string };
+      alert(data.message);
     }
   };
 
@@ -117,7 +120,7 @@ function CheckModal({ isOpen, onClose }: Props) {
             tickets: ticketInformation,
             onInfoSubmit,
             onTicketSubmit,
-            onTicketPrint: handleClickPrint,
+            onClickPrint: handleClickPrint,
             onClickCancel: handleClickCancel,
           })}
         </ModalBody>

@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';
 import { api } from '@root/src/api';
 import { forPhoneNumber, forSecurityNumber } from '@root/src/utils';
+import { AxiosError } from 'axios';
 
 interface SignUp {
   name: string;
@@ -39,9 +40,13 @@ function SignUpBox({ onClose }: { onClose: VoidFunction }) {
       if (result.status === 200) {
         alert('회원가입이 완료되었습니다.');
         onClose();
+      } else {
+        alert(result.data.message);
       }
     } catch (err) {
-      alert(err);
+      const error = err as AxiosError;
+      const data = error.response?.data as { message: string };
+      alert(data.message);
     }
   };
 

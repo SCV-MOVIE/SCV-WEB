@@ -4,6 +4,7 @@ import { useTheme } from '@emotion/react';
 import { Heading, HStack, Stack, Text } from '@chakra-ui/react';
 
 import { Movie } from '@/@types';
+import { isEmptyValue } from './CheckTicket';
 
 interface Props {
   movie: Movie;
@@ -44,7 +45,11 @@ function MainMovieThumbnail({ movie }: Props) {
           </HStack>
         </Stack>
       </MovieDescription>
-      <MainThumbnail fill src={movie.imgUrl} alt="main-movie thumbnail" />
+      <MainThumbnail
+        fill
+        src={isEmptyValue(movie.imgUrl) ? '/mario.jpeg' : movie.imgUrl}
+        alt="main-movie thumbnail"
+      />
     </>
   );
 }

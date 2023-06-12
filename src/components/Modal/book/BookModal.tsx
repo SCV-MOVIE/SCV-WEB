@@ -21,6 +21,7 @@ import { forPhoneNumber, forSecurityNumber, getAge, totalPrice } from '@root/src
 import { Partner, ShowTime } from '@root/src/@types';
 import { useUserInfo } from '@root/src/hooks';
 import { api } from '@root/src/api';
+import { AxiosError } from 'axios';
 
 interface Props {
   isOpen: boolean;
@@ -85,7 +86,7 @@ function BookModal({ isOpen, partners, showTimes, onClose }: Props) {
     try {
       const result = await api.post('/api/ticket/reserve', {
         cardOrAccountNm: value.payment.account,
-        partnerName: value.payment.partner?.name,
+        partnerName: value.payment.partner?.name || 'none',
         paymentMethod: value.payment.method,
         price: totalPrice(value.headCount, value.showTime.theaterType),
         privateInfoDTO: {
@@ -106,12 +107,15 @@ function BookModal({ isOpen, partners, showTimes, onClose }: Props) {
         usedPoint: value.payment.usedPoint,
       });
       if (result.status === 200) {
-        alert('영화가 성공적으로 예매되었습니다.');
+        alert('영화가 성공적으로 예매되었습니다. 핸드폰으로 예매 번호를 보냈습니다.');
+        dispatch({ direction: 'reset', isLogin });
         setValue(initialSelectedMovieValue);
         onClose();
       }
     } catch (err) {
-      console.log(err);
+      const error = err as AxiosError;
+      const data = error.response?.data as { message: string };
+      alert(data.message);
     }
   }, [
     isLogin,

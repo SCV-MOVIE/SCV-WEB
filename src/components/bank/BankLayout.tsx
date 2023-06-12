@@ -6,6 +6,9 @@ import { Flex, Icon, Text } from '@chakra-ui/react';
 import { DashBoard } from '@root/public/icons';
 import { pretendard } from '@root/src/pages/_app';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const ICON_TITLE_TABLE: { [key: string]: any } = {
   Dashboard: DashBoard,
 } as const;
@@ -33,6 +36,7 @@ function BankLayout({ title, children }: BankLayoutProps) {
       ) : (
         <Main>{children}</Main>
       )}
+      <ToastContainer />
     </Wrapper>
   );
 }

@@ -1,13 +1,9 @@
 import Head from 'next/head';
 import styled from '@emotion/styled';
-import Image from 'next/image';
 import {
   Button,
   Center,
-  Divider,
-  Heading,
   HStack,
-  Input,
   Stack,
   Tab,
   TabList,
@@ -29,16 +25,21 @@ export default function MyPage() {
   const { user } = useUserInfo();
   const [tickets, setTickets] = React.useState<CheckTicket[]>([]);
   const {
-    isOpen: isChangePWOpen,
-    onOpen: onChangePWOpen,
-    onClose: onChangePWClose,
+    isOpen: isChangeInfoOpen,
+    onOpen: onChangeInfoOpen,
+    onClose: onChangeInfoClose,
   } = useDisclosure();
+  const { isOpen: isDeleteOpen, onOpen: onDeleteOpen, onClose: onDeleteClose } = useDisclosure();
 
   React.useEffect(() => {
     (async () => {
       if (user?.id) {
-        const result = await api.get('/api/ticket/list');
-        setTickets(result.data);
+        const result = await api.get<CheckTicket[]>('/api/ticket/list');
+        setTickets(
+          result.data.sort(
+            (a, b) => new Date(a.paymentDate).getTime() - new Date(b.paymentDate).getTime(),
+          ),
+        );
       }
     })();
   }, [user?.id]);
@@ -91,8 +92,11 @@ export default function MyPage() {
                     <Text color="white">포인트</Text>
                     <Text color="white">{user?.point.toLocaleString()}</Text>
                   </HStack>
-                  <Button color="blue" onClick={onChangePWOpen}>
-                    비밀번호 변경
+                  <Button color="blue" onClick={onChangeInfoOpen}>
+                    내정보 변경
+                  </Button>
+                  <Button colorScheme="red" onClick={onDeleteOpen}>
+                    회원 탈퇴
                   </Button>
                 </Stack>
               </TabPanel>
@@ -113,7 +117,8 @@ export default function MyPage() {
           </Tabs>
         </Center>
       </Content>
-      <UserUtilModal type={'changePW'} isOpen={isChangePWOpen} onClose={onChangePWClose} />
+      <UserUtilModal type={'changeInfo'} isOpen={isChangeInfoOpen} onClose={onChangeInfoClose} />
+      <UserUtilModal type={'delete'} isOpen={isDeleteOpen} onClose={onDeleteClose} />
       <Bottom />
     </>
   );

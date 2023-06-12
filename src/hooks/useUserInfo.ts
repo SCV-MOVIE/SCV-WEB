@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import React from 'react';
 import { User } from '../@types';
 import { api } from '../api';
@@ -17,7 +18,9 @@ function useUserInfo() {
       }
       return { isSuccess: false };
     } catch (err) {
-      console.log(err);
+      const error = err as AxiosError;
+      const data = error.response?.data as { message: string };
+      alert(data.message);
       return { isSuccess: false };
     }
   };
@@ -26,13 +29,16 @@ function useUserInfo() {
     try {
       const result = await api.post('/api/member/logout');
       if (result.status === 200) {
-        setIsRefresh(true);
         setUser(null);
+        setIsRefresh(true);
+        setIsLogin(false);
         return { isSuccess: true };
       }
       return { isSuccess: false };
     } catch (err) {
-      console.log(err);
+      const error = err as AxiosError;
+      const data = error.response?.data as { message: string };
+      alert(data.message);
       return { isSuccess: false };
     }
   };
@@ -49,6 +55,9 @@ function useUserInfo() {
             setUser(userResult.data);
           }
         } catch (err) {
+          const error = err as AxiosError;
+          const data = error.response?.data as { message: string };
+          alert(data.message);
         } finally {
           setIsRefresh(false);
         }

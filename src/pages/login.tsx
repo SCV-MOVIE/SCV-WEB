@@ -20,12 +20,12 @@ export default function Login() {
   const router = useRouter();
   const theme = useTheme();
   const { login } = useUserInfo();
-  const [utilModalType, setUtilModalType] = React.useState<'findID' | 'findPW' | 'signUp'>(
+  const [utilModalType, setUtilModalType] = React.useState<'findID' | 'signUp' | 'changeInfo'>(
     'findID',
   );
   const { isOpen, onOpen, onClose } = useDisclosure();
   const handleClickModalOpen = React.useCallback(
-    (type: 'findID' | 'findPW' | 'signUp') => {
+    (type: 'changeInfo' | 'signUp') => {
       setUtilModalType(type);
       onOpen();
     },

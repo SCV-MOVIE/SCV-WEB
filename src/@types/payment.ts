@@ -11,6 +11,8 @@ export interface Partner {
   discount: number;
 }
 
+export type RequestPartner = Pick<Partner, 'name' | 'discount'>;
+
 export interface Information {
   name: string;
   phoneNumber: string;
