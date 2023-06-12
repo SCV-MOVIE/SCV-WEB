@@ -9,19 +9,23 @@ interface Props {
   onClickCancel?: VoidFunction;
 }
 
+export function isEmptyValue(str: string) {
+  return str === '""' || str === "''";
+}
+
 function CheckTicketBox({ color, ticket, onClickPrint, onClickCancel }: Props) {
-  const isDisabled =
-    ticket?.status === 'CANCELLED' || ticket?.status === 'REJECTED' || ticket?.status === 'PRINTED';
   if (!ticket) {
     return null;
   }
+  const isDisabled =
+    ticket.status === 'CANCELLED' || ticket.status === 'REJECTED' || ticket.status === 'PRINTED';
+
   return (
     <HStack gap={12}>
       <Image
         width={160}
         height={160}
-        // src={selectedMovie.movie.imgUrl}
-        src={'/mario.jpeg'}
+        src={isEmptyValue(ticket.movieImgUrl) ? '/mario.jpeg' : ticket.movieImgUrl}
         alt="image-thumbnail"
       />
       <Stack>
@@ -119,11 +123,14 @@ function CheckTicketBox({ color, ticket, onClickPrint, onClickCancel }: Props) {
         </HStack>
       </Stack>
       <Stack w={320}>
-        <Button onClick={!isDisabled ? onClickPrint : undefined} disabled={isDisabled}>
+        <Button
+          onClick={!isDisabled || ticket.status === 'STANDBY' ? onClickPrint : undefined}
+          disabled={isDisabled}
+        >
           출력하기
         </Button>
         <Button
-          onClick={!isDisabled ? onClickPrint : undefined}
+          onClick={!isDisabled ? onClickCancel : undefined}
           disabled={isDisabled}
           colorScheme={'red'}
         >
