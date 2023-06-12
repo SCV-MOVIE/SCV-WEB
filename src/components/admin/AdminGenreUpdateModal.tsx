@@ -41,7 +41,7 @@ function AdminGenreUpdateModal({ data, isOpen, onClose }: Props) {
     }
     setButtonText('Loading...');
     updateGenre.mutate(
-      { ...inputData, id: data.id },
+      { oldName: data.name, newName: inputData.newName },
       {
         onSuccess: () => {
           toast.success('장르 수정 성공!');
