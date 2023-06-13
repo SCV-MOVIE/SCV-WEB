@@ -26,9 +26,11 @@ export default function MainPage({ movies }: Props) {
       <Content>
         <LinedTitle title={'현재 상영작'} />
         <Grid templateColumns="repeat(4, 1fr)" rowGap={24} columnGap={8} mt={8}>
-          {movies.map((movie) => (
-            <MovieCard movie={movie} key={movie.id} />
-          ))}
+          {movies
+            .filter((v) => v.name !== '디비설 삭제용')
+            .map((movie) => (
+              <MovieCard movie={movie} key={movie.id} />
+            ))}
         </Grid>
       </Content>
       <Bottom />
